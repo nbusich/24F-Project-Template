@@ -206,6 +206,19 @@ CREATE TABLE application
         ON DELETE RESTRICT
 );
 
+CREATE TABLE article
+(
+     id int AUTO_INCREMENT NOT NULL,
+     title varchar(100),
+     body text,
+     date datetime,
+     publisherID,
+     PRIMARY KEY(id),
+     CONSTRAINT fk_company 
+         FOREIGN KEY (applicantID) REFERENCES user (id)
+         ON UPDATE CASCADE
+         ON DELETE RESTRICT
+);
 
 INSERT INTO user (role, email, userName, password) VALUES
 ('student', 'student1@example.com', 'student1', 'pass1'),
