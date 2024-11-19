@@ -216,8 +216,9 @@ SELECT * FROM user;
 INSERT INTO administrator (id, salary, firstName, lastName, startDate) VALUES
 (3, 75000, 'Alice', 'Admin', '2022-01-01');
 
-INSERT INTO advisor (id) VALUES
-(5);
+INSERT INTO advisor (id, firstName, lastName) VALUES
+(5, 'Melissa', 'Johnson'),
+(4, 'Cameron', 'Lester');
 
 INSERT INTO student (id, firstName, lastName, bio, resume, major, minor, gpa, advisorID) VALUES
 (1, 'John', 'Doe', 'Bio of John', 'Resume of John', 'Computer Science', 'Math', 3.5, 5),
