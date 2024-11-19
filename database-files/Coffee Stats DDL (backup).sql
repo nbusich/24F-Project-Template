@@ -69,6 +69,8 @@ CREATE TABLE friends
 CREATE TABLE advisor
 (
     id int AUTO_INCREMENT NOT NULL,
+    firstName varchar(30),
+    lastName varchar(30),
     PRIMARY KEY (id),
     CONSTRAINT fk_advisor_1
         FOREIGN KEY (id) REFERENCES user (id)
@@ -254,3 +256,9 @@ INSERT INTO message (chatroomID, senderID, content) VALUES
 
 INSERT INTO changes (lastChange, description, changerID, changedID) VALUES
 ('2023-01-10 09:00:00', 'Updated feature settings', 3, 1);
+
+SELECT s.firstName, s.lastName FROM student AS s;
+
+SELECT a.firstName, a.lastName
+FROM advisor a JOIN student AS s ON a.id = s.advisorID
+WHERE s.firstName = 'Jane';
