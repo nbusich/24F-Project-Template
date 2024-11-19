@@ -194,6 +194,7 @@ CREATE TABLE application
     id int AUTO_INCREMENT NOT NULL,
     applicantID int,
     listingID  int,
+    coverLetter text,
     PRIMARY KEY (id),
     CONSTRAINT fk_app_1
         FOREIGN KEY (applicantID) REFERENCES user (id)
