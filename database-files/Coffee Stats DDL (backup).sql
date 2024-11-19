@@ -40,7 +40,6 @@ CREATE TABLE changes
     lastChange datetime default CURRENT_TIMESTAMP,
     description varchar(300),
     changerID int NOT NULL,
-    changedID int NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_admin_1
         FOREIGN KEY (changerID) REFERENCES administrator(id)
