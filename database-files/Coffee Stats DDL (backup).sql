@@ -7,7 +7,7 @@ USE coffeeStats;
 DROP TABLE IF EXISTS changes, friends, user,
      administrator, student, jobListing,
      application, company, position, advisor,
-     alumnus, chatroom, message;
+     alumnus, chatroom, message, article;
 
 CREATE TABLE user
 (
@@ -212,10 +212,10 @@ CREATE TABLE article
      title varchar(100),
      body text,
      date datetime,
-     publisherID,
+     publisherID int,
      PRIMARY KEY(id),
      CONSTRAINT fk_company 
-         FOREIGN KEY (applicantID) REFERENCES user (id)
+         FOREIGN KEY (publisherID) REFERENCES user (id)
          ON UPDATE CASCADE
          ON DELETE RESTRICT
 );
