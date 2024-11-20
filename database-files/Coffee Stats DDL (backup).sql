@@ -7,7 +7,8 @@ USE coffeeStats;
 DROP TABLE IF EXISTS changes, friends, user,
      administrator, student, jobListing,
      application, company, position, advisor,
-     alumnus, chatroom, message, article;
+     alumnus, chatroom, message, article,
+     relevantMajors, relevantFields;
 
 CREATE TABLE user
 (
@@ -213,11 +214,33 @@ CREATE TABLE article
      body text,
      date datetime,
      publisherID int,
-     PRIMARY KEY(id),
+     PRIMARY KEY(id, publisherID),
      CONSTRAINT fk_company 
          FOREIGN KEY (publisherID) REFERENCES user (id)
          ON UPDATE CASCADE
          ON DELETE RESTRICT
+);
+
+CREATE TABLE relevantMajors
+(
+    listingID int,
+    major varchar(100),
+    PRIMARY KEY(listingId, major),
+    CONSTRAINT fk_rm
+        FOREIGN KEY (listingID) REFERENCES jobListing (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+CREATE TABLE relevantFields
+(
+    listingID int,
+    field varchar(200),
+    PRIMARY KEY(listingId, field),
+    CONSTRAINT fk_rf
+        FOREIGN KEY (listingID) REFERENCES jobListing (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 INSERT INTO user (role, email, userName, password) VALUES
@@ -268,8 +291,20 @@ INSERT INTO chatroom (receiverID, senderID) VALUES
 INSERT INTO message (chatroomID, senderID, content) VALUES
 (1, 2, 'Hello, John!');
 
-INSERT INTO changes (lastChange, description, changerID, changedID) VALUES
-('2023-01-10 09:00:00', 'Updated feature settings', 3, 1);
+INSERT INTO changes (lastChange, description, changerID) VALUES
+('2023-01-10 09:00:00', 'Updated feature settings', 3);
+
+INSERT INTO relevantFields (listingID, field)
+VALUES (1, 'Software Engineering');
+
+INSERT INTO relevantFields (listingID, field)
+VALUES (1, 'Software Development');
+
+INSERT INTO relevantMajors (listingID, major)
+VALUES (1, 'Computer Science');
+
+INSERT INTO relevantMajors (listingID, major)
+VALUES (1, 'Computer Engineering');
 
 SELECT s.firstName, s.lastName FROM student AS s;
 
