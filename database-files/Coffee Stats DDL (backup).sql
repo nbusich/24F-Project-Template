@@ -215,7 +215,7 @@ CREATE TABLE article
      date datetime,
      publisherID int,
      PRIMARY KEY(id, publisherID),
-     CONSTRAINT fk_company 
+     CONSTRAINT fk_company
          FOREIGN KEY (publisherID) REFERENCES user (id)
          ON UPDATE CASCADE
          ON DELETE RESTRICT
@@ -243,71 +243,130 @@ CREATE TABLE relevantFields
         ON DELETE CASCADE
 );
 
+-- Populate the user table with at least four entries per role
 INSERT INTO user (role, email, userName, password) VALUES
 ('student', 'student1@example.com', 'student1', 'pass1'),
 ('student', 'student2@example.com', 'student2', 'pass2'),
+('student', 'student3@example.com', 'student3', 'pass3'),
+('student', 'student4@example.com', 'student4', 'pass4'),
 ('administrator', 'admin@example.com', 'admin', 'adminpass'),
+('administrator', 'admin2@example.com', 'admin2', 'adminpass2'),
+('administrator', 'admin3@example.com', 'admin3', 'adminpass3'),
+('administrator', 'admin4@example.com', 'admin4', 'adminpass4'),
 ('company', 'company@example.com', 'company1', 'compass'),
-('advisor', 'advisor@example.com', 'advisor1', 'advisorpass');
+('company', 'company2@example.com', 'company2', 'compass2'),
+('company', 'company3@example.com', 'company3', 'compass3'),
+('company', 'company4@example.com', 'company4', 'compass4'),
+('advisor', 'advisor@example.com', 'advisor1', 'advisorpass'),
+('advisor', 'advisor2@example.com', 'advisor2', 'advisorpass2'),
+('advisor', 'advisor3@example.com', 'advisor3', 'advisorpass3'),
+('advisor', 'advisor4@example.com', 'advisor4', 'advisorpass4'),
+('alumnus', 'alumnus@example.com', 'alumnus1', 'alumpass'),
+('alumnus', 'alumnus2@example.com', 'alumnus2', 'alumpass2'),
+('alumnus', 'alumnus3@example.com', 'alumnus3', 'alumpass3'),
+('alumnus', 'alumnus4@example.com', 'alumnus4', 'alumpass4');
 
-SELECT * FROM user;
-
+-- Populate the administrator table
 INSERT INTO administrator (id, salary, firstName, lastName, startDate) VALUES
-(3, 75000, 'Alice', 'Admin', '2022-01-01');
+(5, 75000, 'Alice', 'Admin', '2022-01-01'),
+(6, 70000, 'Bob', 'Smith', '2022-02-01'),
+(7, 72000, 'Carol', 'Johnson', '2022-03-01'),
+(8, 68000, 'David', 'Williams', '2022-04-01');
 
+-- Populate the advisor table
 INSERT INTO advisor (id, firstName, lastName) VALUES
-(5, 'Melissa', 'Johnson'),
-(4, 'Cameron', 'Lester');
+(13, 'Melissa', 'Johnson'),
+(14, 'Cameron', 'Lester'),
+(15, 'Nina', 'Brown'),
+(16, 'Oliver', 'Davis');
 
+-- Populate the student table
 INSERT INTO student (id, firstName, lastName, bio, resume, major, minor, gpa, advisorID) VALUES
-(1, 'John', 'Doe', 'Bio of John', 'Resume of John', 'Computer Science', 'Math', 3.5, 5),
-(2, 'Jane', 'Smith', 'Bio of Jane', 'Resume of Jane', 'Engineering', NULL, 3.8, 5);
+(1, 'John', 'Doe', 'Bio of John', 'Resume of John', 'Computer Science', 'Math', 3.5, 13),
+(2, 'Jane', 'Smith', 'Bio of Jane', 'Resume of Jane', 'Engineering', NULL, 3.8, 13),
+(3, 'Alex', 'Green', 'Bio of Alex', 'Resume of Alex', 'Biology', 'Chemistry', 3.2, 14),
+(4, 'Emily', 'White', 'Bio of Emily', 'Resume of Emily', 'Mathematics', 'Physics', 3.9, 15);
 
+-- Populate the company table
 INSERT INTO company (id, name) VALUES
-(4, 'TechCorp');
+(9, 'TechCorp'),
+(10, 'BioHealth Inc.'),
+(11, 'FinServe LLC'),
+(12, 'EduLearn Co.');
 
+-- Populate the position table
 INSERT INTO position (comment, companyID) VALUES
-('Software Engineer Position', 4);
+('Software Engineer Position', 9),
+('Marketing Manager Position', 10),
+('Data Analyst Position', 11),
+('Curriculum Developer Position', 12);
 
+-- Populate the jobListing table
 INSERT INTO jobListing (requiredGPA, numOpenings, applicationDeadline, payPerHour, numApplicants, description, title, companyID) VALUES
-(3.0, 5, '2023-12-31', 30.0, 0, 'Internship opportunity at TechCorp', 'Software Engineer Intern', 4);
+(3.0, 5, '2023-12-31', 30.0, 0, 'Internship opportunity at TechCorp', 'Software Engineer Intern', 9),
+(3.5, 3, '2023-11-30', 28.0, 0, 'Research Assistant in Biology', 'Biology Research Intern', 10),
+(3.2, 2, '2023-10-31', 25.0, 0, 'Finance internship', 'Financial Analyst Intern', 11),
+(3.0, 4, '2023-12-15', 20.0, 0, 'Education sector opportunity', 'Teaching Assistant Intern', 12);
 
-INSERT INTO application (applicantID, listingID) VALUES
-(1, 1);
+-- Populate the application table
+INSERT INTO application (applicantID, listingID, coverLetter) VALUES
+(1, 1, 'Cover letter from John Doe for listing 1'),
+(2, 2, 'Cover letter from Jane Smith for listing 2'),
+(3, 3, 'Cover letter from Alex Green for listing 3'),
+(4, 4, 'Cover letter from Emily White for listing 4');
 
-INSERT INTO user (role, email, userName, password) VALUES
-('alumnus', 'alumnus@example.com', 'alumnus1', 'alumpass');
-
+-- Populate the alumnus table
 INSERT INTO alumnus (id, firstName, lastName, jobID) VALUES
-(6, 'Mike', 'Alumni', 1);
+(17, 'Mike', 'Alumni', 1),
+(18, 'Sarah', 'Alumni', 2),
+(19, 'Tom', 'Alumni', 3),
+(20, 'Lisa', 'Alumni', 4);
 
+-- Populate the friends table
 INSERT INTO friends (friend1ID, friend2ID) VALUES
 (1, 2),
-(2, 1);
+(2, 1),
+(3, 4),
+(4, 3);
 
+-- Populate the chatroom table
 INSERT INTO chatroom (receiverID, senderID) VALUES
-(1, 2);
+(1, 3),
+(2, 4),
+(3, 2),
+(4, 1);
 
+-- Populate the message table
 INSERT INTO message (chatroomID, senderID, content) VALUES
-(1, 2, 'Hello, John!');
+(1, 3, 'Hi, John!'),
+(2, 4, 'Hello, Jane!'),
+(3, 2, 'Hey Alex, how are you?'),
+(4, 1, 'Hi Emily, doing great!');
 
+-- Populate the changes table
 INSERT INTO changes (lastChange, description, changerID) VALUES
-('2023-01-10 09:00:00', 'Updated feature settings', 3);
+('2023-01-10 09:00:00', 'Updated feature settings', 5),
+('2023-02-15 10:00:00', 'Fixed bug in system', 6),
+('2023-03-20 11:30:00', 'Updated user interface', 7),
+('2023-04-05 15:45:00', 'Database maintenance', 8);
 
-INSERT INTO relevantFields (listingID, field)
-VALUES (1, 'Software Engineering');
+-- Populate the article table
+INSERT INTO article (title, body, date, publisherID) VALUES
+('TechCorp Announces New Product', 'Details about the new product...', '2023-05-01 12:00:00', 9),
+('BioHealth Inc. Research Findings', 'Latest findings in biohealth...', '2023-06-10 14:00:00', 10),
+('FinServe LLC Financial Tips', 'Top 10 financial tips...', '2023-07-15 09:30:00', 11),
+('EduLearn Co. Launches New Courses', 'Introducing new online courses...', '2023-08-20 16:20:00', 12);
 
-INSERT INTO relevantFields (listingID, field)
-VALUES (1, 'Software Development');
+-- Populate the relevantMajors table
+INSERT INTO relevantMajors (listingID, major) VALUES
+(1, 'Computer Science'),
+(2, 'Biology'),
+(3, 'Finance'),
+(4, 'Education');
 
-INSERT INTO relevantMajors (listingID, major)
-VALUES (1, 'Computer Science');
-
-INSERT INTO relevantMajors (listingID, major)
-VALUES (1, 'Computer Engineering');
-
-SELECT s.firstName, s.lastName FROM student AS s;
-
-SELECT a.firstName, a.lastName
-FROM advisor a JOIN student AS s ON a.id = s.advisorID
-WHERE s.firstName = 'Jane';
+-- Populate the relevantFields table
+INSERT INTO relevantFields (listingID, field) VALUES
+(1, 'Software Engineering'),
+(2, 'Biology Research'),
+(3, 'Financial Services'),
+(4, 'Teaching');
