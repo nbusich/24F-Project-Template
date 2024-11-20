@@ -26,7 +26,7 @@ CREATE TABLE administrator
     salary float,
     firstName varchar(50),
     lastname varchar(50),
-    startDate datetime DEFAULT CURRENT_TIMESTAMP,
+    startDate datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
     endDate date,
     PRIMARY KEY (id),
     CONSTRAINT fk_admin_2
@@ -69,8 +69,8 @@ CREATE TABLE friends
 CREATE TABLE advisor
 (
     id int AUTO_INCREMENT NOT NULL,
-    firstName varchar(30),
-    lastName varchar(30),
+    firstName varchar(30) NOT NULL,
+    lastName varchar(30) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_advisor_1
         FOREIGN KEY (id) REFERENCES user (id)
@@ -145,8 +145,8 @@ CREATE TABLE chatroom
 CREATE TABLE message
 (
     id int AUTO_INCREMENT NOT NULL,
-    chatroomID int,
-    senderID int,
+    chatroomID int NOT NULL,
+    senderID int NOT NULL,
     content varchar (1500),
     PRIMARY KEY (id),
     CONSTRAINT fk_message_1
@@ -163,7 +163,7 @@ CREATE TABLE position
 (
     id int AUTO_INCREMENT NOT NULL,
     comment text,
-    companyID int,
+    companyID int NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_pos_1
         FOREIGN KEY (companyID) REFERENCES user (id)
@@ -193,8 +193,8 @@ CREATE TABLE jobListing
 CREATE TABLE application
 (
     id int AUTO_INCREMENT NOT NULL,
-    applicantID int,
-    listingID  int,
+    applicantID int NOT NULL,
+    listingID  int NOT NULL,
     coverLetter text,
     PRIMARY KEY (id),
     CONSTRAINT fk_app_1
@@ -210,10 +210,10 @@ CREATE TABLE application
 CREATE TABLE article
 (
      id int AUTO_INCREMENT NOT NULL,
-     title varchar(100),
+     title varchar(100) NOT NULL,
      body text,
-     date datetime,
-     publisherID int,
+     date datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+     publisherID int NOT NULL,
      PRIMARY KEY(id, publisherID),
      CONSTRAINT fk_company
          FOREIGN KEY (publisherID) REFERENCES user (id)
@@ -223,8 +223,8 @@ CREATE TABLE article
 
 CREATE TABLE relevantMajors
 (
-    listingID int,
-    major varchar(100),
+    listingID int NOT NULL,
+    major varchar(100) NOT NULL,
     PRIMARY KEY(listingId, major),
     CONSTRAINT fk_rm
         FOREIGN KEY (listingID) REFERENCES jobListing (id)
@@ -234,8 +234,8 @@ CREATE TABLE relevantMajors
 
 CREATE TABLE relevantFields
 (
-    listingID int,
-    field varchar(200),
+    listingID int NOT NULL,
+    field varchar(200) NOT NULL,
     PRIMARY KEY(listingId, field),
     CONSTRAINT fk_rf
         FOREIGN KEY (listingID) REFERENCES jobListing (id)
