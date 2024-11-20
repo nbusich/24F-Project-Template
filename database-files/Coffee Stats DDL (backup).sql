@@ -78,29 +78,6 @@ CREATE TABLE advisor
         ON DELETE RESTRICT
 );
 
-CREATE TABLE student
-(
-    id int AUTO_INCREMENT NOT NULL,
-    firstName varchar(50) NOT NULL,
-    lastName  varchar(50) NOT NULL,
-    bio       text,
-    resume    text,
-    major     varchar(50),
-    minor     varchar(50),
-    gpa       float,
-    advisorID int,
-    pastPositionID int,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_student_1
-        FOREIGN KEY (id) REFERENCES user (id)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT,
-    CONSTRAINT fk_student_2
-        FOREIGN KEY (advisorID) REFERENCES advisor (id)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-);
-
 
 CREATE TABLE company
 (
@@ -111,18 +88,6 @@ CREATE TABLE company
         FOREIGN KEY (id) REFERENCES user (id)
             ON UPDATE CASCADE
 
-);
-CREATE TABLE alumnus
-(
-    id int AUTO_INCREMENT NOT NULL,
-    firstName varchar (30),
-    lastName varchar (30),
-    jobID int,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_alum_1
-        FOREIGN KEY (id) REFERENCES user (id)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
 );
 
 CREATE TABLE chatroom
@@ -186,6 +151,46 @@ CREATE TABLE jobListing
     PRIMARY KEY (id),
     CONSTRAINT fk_jb_1
         FOREIGN KEY (companyID) REFERENCES user (id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+CREATE TABLE student
+(
+    id int AUTO_INCREMENT NOT NULL,
+    firstName varchar(50) NOT NULL,
+    lastName  varchar(50) NOT NULL,
+    bio       text,
+    resume    text,
+    major     varchar(50),
+    minor     varchar(50),
+    gpa       float,
+    advisorID int,
+    pastPositionID int,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_student_1
+        FOREIGN KEY (id) REFERENCES user (id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+    CONSTRAINT fk_student_2
+        FOREIGN KEY (advisorID) REFERENCES advisor (id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT fk_position
+        FOREIGN KEY (pastPositionID) REFERENCES position (id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+);
+
+CREATE TABLE alumnus
+(
+    id int AUTO_INCREMENT NOT NULL,
+    firstName varchar (30),
+    lastName varchar (30),
+    jobID int,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_alum_1
+        FOREIGN KEY (id) REFERENCES user (id)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
 );
