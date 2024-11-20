@@ -180,6 +180,7 @@ CREATE TABLE jobListing
     numApplicants       int,
     description         text,
     title               varchar(75),
+    acceptanceRate      float,
     companyID           int NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_jb_1
