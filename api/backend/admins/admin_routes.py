@@ -14,7 +14,7 @@ from backend.db_connection import db
 # routes.
 customers = Blueprint('admins', __name__)
 #------------------------------------------------------------
-# Get all customers from the system
+# Gets system status for queries, uptime, and cursers
 @admins.route('/dashboard', methods=['GET'])
 def get_dashboard():
 
@@ -43,32 +43,33 @@ def get_dashboard():
     return the_response
 
 #------------------------------------------------------------
-# Update customer info for customer with particular userID
-#   Notice the manner of constructing the query.
+# Update change info for change with particular changeID
 @admins.route('/changelog/<changeID>', methods=['PUT'])
 def update_customer():
-    current_app.logger.info('PUT /customers route')
-    cust_info = request.json
-    cust_id = cust_info['id']
-    first = cust_info['first_name']
-    last = cust_info['last_name']
-    company = cust_info['company']
+    current_app.logger.info('PUT /changelog/<changeID> route')
+    change_info = request.json
+    description = change_info['description']
+    changerID = change_info['changerID']
 
-    query = 'UPDATE customers SET first_name = %s, last_name = %s, company = %s where id = %s'
-    data = (first, last, company, cust_id)
+    query = 'UPDATE changes SET description = %s, changerID = %s'
+    data = (description, changerID)
     cursor = db.get_db().cursor()
     r = cursor.execute(query, data)
     db.get_db().commit()
-    return 'customer updated!'
+    return 'change updated!'
 
 #------------------------------------------------------------
-# Get customer detail for customer with particular userID
-#   Notice the manner of constructing the query. 
+# Gets the changelog's most recent changes
 @admins.route('/changelog', methods=['GET'])
-def get_customer(userID):
-    current_app.logger.info('GET /customers/<userID> route')
+def get_changes():
+    current_app.logger.info('GET /changelog route')
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT id, first_name, last_name FROM customers WHERE id = {0}'.format(userID))
+    cursor.execute('''
+                    SELECT c.description, c.lastChange, a.firstname, a.lastname
+                    FROM changes c
+                        JOIN administrator a ON c.changerID = a.id
+                    ORDER BY lastChange DESC
+                    LIMIT 10;''')
     
     theData = cursor.fetchall()
     
@@ -77,17 +78,22 @@ def get_customer(userID):
     return the_response
 
 #------------------------------------------------------------
-# Makes use of the very simple ML model in to predict a value
-# and returns it to the user
-@admins.route('/home/<adminID>', methods=['GET'])
-def predict_value(var01, var02):
-    current_app.logger.info(f'var01 = {var01}')
-    current_app.logger.info(f'var02 = {var02}')
+# Creates a change in the changelog
+@advisors.route('/changelog/<adminID>', methods=['POST'])
+def add_new_change(changerid, description):
+    # In a POST request, there is a
+    # collecting data from the request object
 
-    returnVal = predict(var01, var02)
-    return_dict = {'result': returnVal}
+    query = f"""
+        INSERT INTO changes (description, changerid) VALUES
+        (%s, %s);
+    """
+    data = (description, changerid)
+    # executing and committing the insert statement
+    cursor = db.get_db().cursor()
+    cursor.execute(query, data)
+    db.get_db().commit()
 
-    the_response = make_response(jsonify(return_dict))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
+    response = make_response("Successfully added chat")
+    response.status_code = 200
+    return response

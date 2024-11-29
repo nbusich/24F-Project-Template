@@ -35,21 +35,7 @@ def get_customers():
 #------------------------------------------------------------
 # Update customer info for customer with particular userID
 #   Notice the manner of constructing the query.
-@customers.route('/customers', methods=['PUT'])
-def update_customer():
-    current_app.logger.info('PUT /customers route')
-    cust_info = request.json
-    cust_id = cust_info['id']
-    first = cust_info['first_name']
-    last = cust_info['last_name']
-    company = cust_info['company']
 
-    query = 'UPDATE customers SET first_name = %s, last_name = %s, company = %s where id = %s'
-    data = (first, last, company, cust_id)
-    cursor = db.get_db().cursor()
-    r = cursor.execute(query, data)
-    db.get_db().commit()
-    return 'customer updated!'
 
 #------------------------------------------------------------
 # Get customer detail for customer with particular userID
