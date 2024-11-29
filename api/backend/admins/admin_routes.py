@@ -45,7 +45,7 @@ def get_dashboard():
 #------------------------------------------------------------
 # Update change info for change with particular changeID
 @admins.route('/changelog/<changeID>', methods=['PUT'])
-def update_customer():
+def update_change(changeID):
     current_app.logger.info('PUT /changelog/<changeID> route')
     change_info = request.json
     description = change_info['description']
