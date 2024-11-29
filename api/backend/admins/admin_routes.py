@@ -79,10 +79,12 @@ def get_changes():
 
 #------------------------------------------------------------
 # Creates a change in the changelog
-@advisors.route('/changelog/<adminID>', methods=['POST'])
-def add_new_change(changerid, description):
+@advisors.route('/changelog/<changerid>', methods=['POST'])
+def add_new_change(changerid):
     # In a POST request, there is a
     # collecting data from the request object
+    the_data = request.json
+    description = the_data.get('description')
 
     query = f"""
         INSERT INTO changes (description, changerid) VALUES
@@ -94,6 +96,6 @@ def add_new_change(changerid, description):
     cursor.execute(query, data)
     db.get_db().commit()
 
-    response = make_response("Successfully added chat")
+    response = make_response("Successfully added change")
     response.status_code = 200
     return response
