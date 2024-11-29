@@ -99,3 +99,26 @@ def add_new_change(changerid):
     response = make_response("Successfully added change")
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# Creates a change in the changelog
+@advisors.route('/changelog/<changerid>', methods=['POST'])
+def add_new_change(changerid):
+    # In a POST request, there is a
+    # collecting data from the request object
+    the_data = request.json
+    description = the_data.get('description')
+
+    query = f"""
+        INSERT INTO changes (description, changerid) VALUES
+        (%s, %s);
+    """
+    data = (description, changerid)
+    # executing and committing the insert statement
+    cursor = db.get_db().cursor()
+    cursor.execute(query, data)
+    db.get_db().commit()
+
+    response = make_response("Successfully added change")
+    response.status_code = 200
+    return response
