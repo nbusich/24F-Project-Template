@@ -35,6 +35,8 @@ def add_new_joblisting():
     openings = the_data['listing_openings']
     gpa = the_data['listing_req_gpa']
     
+    companyID = 1 #hardcoded for now
+    
     query = f'''
         INSERT INTO jobListing (title,
                               description,
@@ -42,9 +44,10 @@ def add_new_joblisting():
                               payPerHour,
                               applicationDeadline,
                               numOpenings,
-                              requiredGPA)
+                              requiredGPA,
+                              companyID)
         VALUES ('{title}', '{description}', {str(applicants)}, 
-        {str(pay)}, {str(deadline)}, {str(openings)}, {str(gpa)})
+        {str(pay)}, {str(deadline)}, {str(openings)}, {str(gpa)}, {str(companyID)})
     '''
 
     current_app.logger.info(query)
@@ -65,10 +68,10 @@ def add_new_joblisting():
 def view_joblisting (id):
     
     query = f'''
-        SELECT title, description, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA
-        FROM jobListing
-        WHERE listingID = {str(id)}
-
+        SELECT title, company.name, description, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA
+        FROM jobListing JOIN company
+            ON jobListing.companyID = company.id
+        WHERE jobListing.id = {str(id)}
     '''
 
     # logging the query for debugging purposes.  

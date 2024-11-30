@@ -265,7 +265,8 @@ INSERT INTO user (role, email, userName, password) VALUES
 ('alumnus', 'alumnus@example.com', 'alumnus1', 'alumpass'),
 ('alumnus', 'alumnus2@example.com', 'alumnus2', 'alumpass2'),
 ('alumnus', 'alumnus3@example.com', 'alumnus3', 'alumpass3'),
-('alumnus', 'alumnus4@example.com', 'alumnus4', 'alumpass4');
+('alumnus', 'alumnus4@example.com', 'alumnus4', 'alumpass4'), 
+('company', 'jbaker@example.com', 'bhlarma', 'compass5');
 
 -- Populate the administrator table
 INSERT INTO administrator (id, salary, firstName, lastName, startDate) VALUES
@@ -293,7 +294,8 @@ INSERT INTO company (id, name) VALUES
 (9, 'TechCorp'),
 (10, 'BioHealth Inc.'),
 (11, 'FinServe LLC'),
-(12, 'EduLearn Co.');
+(12, 'EduLearn Co.'),
+(21, 'Bhlarma Advance');
 
 -- Populate the position table
 INSERT INTO position (comment, companyID) VALUES

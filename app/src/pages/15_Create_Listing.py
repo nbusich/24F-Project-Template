@@ -19,27 +19,27 @@ col1, col2, col3, col4 = st.columns(4)
 
 # add one number input for number of applicants into column 1
 with col1:
-  number_of_applicants = st.number_input('Number of Applicants',
-                           step=1)
+  number_of_applicants = st.number_input('\# Applicants',
+                           step=1, min_value = 0)
 
 # add another number input for pay into column 2
 with col2:
   listing_pay = st.number_input('Pay per Hour',
-                           step=1)
+                           step=1, min_value = 0)
 
 # add another number input for number of openings into column 3
 with col3:
-  listing_openings = st.number_input('Number of Openings',
-                           step=1)
+  listing_openings = st.number_input('\# Openings',
+                           step=1, min_value = 0)
   
 # add another number input for required GPA into column 4
 with col4:
   listing_req_gpa = st.number_input('Required GPA',
-                           step=1)
+                           step=0.25, max_value=4.0, value=2.0, min_value = 0.0)
   
 listing_description = st.text_area('Job Description')
 
-listing_deadline = st.date_input('Deadline')
+listing_deadline = st.date_input('Application Deadline')
 
 logger.info(f'listing_title = {listing_title}')
 logger.info(f'listing_description = {listing_description}')
