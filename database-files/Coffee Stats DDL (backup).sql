@@ -1,3 +1,4 @@
+/*
 DROP DATABASE IF EXISTS coffeeStats;
 
 CREATE DATABASE coffeeStats;
@@ -375,3 +376,4 @@ INSERT INTO relevantFields (listingID, field) VALUES
 (2, 'Biology Research'),
 (3, 'Financial Services'),
 (4, 'Teaching');
+*/

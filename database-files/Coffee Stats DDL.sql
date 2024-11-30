@@ -1,3 +1,4 @@
+/*
 CREATE DATABASE coffeeStats;
 
 USE coffeeStats;
@@ -127,3 +128,4 @@ CREATE TABLE message
     senderID   int
 );
 
+*/

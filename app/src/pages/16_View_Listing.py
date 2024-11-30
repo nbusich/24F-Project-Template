@@ -10,8 +10,18 @@ st.set_page_config(layout = 'wide')
 # Display the appropriate sidebar links for the role of the logged in user
 SideBarLinks()
 
-st.title('Create a Job Listing')
+st.title('Behold: job listing')
 
+data = {} 
+try:
+  data = requests.get('http://api:4000/comp/listing/1').json()
+except:
+  st.write("**Important**: Could not connect to sample api, so using dummy data.")
+  data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
+
+st.dataframe(data)
+
+'''
 listing_title = st.text_input('Title')
 
 # create a 4 column layout
@@ -65,3 +75,4 @@ if st.button('Post Job Listing',
   
   r = requests.post(f'http://api:4000/comp/joblisting/', data=post_data)
   st.write(r)
+  '''
