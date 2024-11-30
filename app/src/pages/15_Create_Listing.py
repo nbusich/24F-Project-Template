@@ -54,5 +54,14 @@ logger.info(f'listing_req_gpa = {listing_req_gpa}')
 if st.button('Post Job Listing',
              type='primary',
              use_container_width=True):
-  r = requests.post('http://api:4000/c/joblisting/')
   
+  post_data={listing_title: listing_title, 
+        listing_description: listing_description, 
+        number_of_applicants: number_of_applicants, 
+        listing_pay: listing_pay, 
+        listing_deadline: listing_deadline, 
+        listing_openings: listing_openings, 
+        listing_req_gpa: listing_req_gpa}
+  
+  r = requests.post(f'http://4000/comp/joblisting/', data=post_data)
+  st.write(r)
