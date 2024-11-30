@@ -41,6 +41,8 @@ listing_description = st.text_area('Job Description')
 
 listing_deadline = st.date_input('Application Deadline')
 
+companyid = 1
+
 logger.info(f'listing_title = {listing_title}')
 logger.info(f'listing_description = {listing_description}')
 logger.info(f'number_of_applicants = {number_of_applicants}')
@@ -48,6 +50,7 @@ logger.info(f'listing_pay = {listing_pay}')
 logger.info(f'listing_deadline = {listing_deadline}')
 logger.info(f'listing_openings = {listing_openings}')
 logger.info(f'listing_req_gpa = {listing_req_gpa}')
+logger.info(f'companyid = {companyid}')
 
 # add a button to use the values entered into the number field to send to the 
 # prediction function via the REST API
@@ -55,13 +58,14 @@ if st.button('Post Job Listing',
              type='primary',
              use_container_width=True):
   
-  post_data={listing_title: listing_title, 
-        listing_description: listing_description, 
-        number_of_applicants: number_of_applicants, 
-        listing_pay: listing_pay, 
-        listing_deadline: listing_deadline, 
-        listing_openings: listing_openings, 
-        listing_req_gpa: listing_req_gpa}
+  post_data={'listing_title': listing_title, 
+        'listing_description': listing_description, 
+        'number_of_applicants': number_of_applicants, 
+        'listing_pay': listing_pay, 
+        'listing_deadline': listing_deadline.isoformat(), 
+        'listing_openings': listing_openings, 
+        'listing_req_gpa': listing_req_gpa,
+        'companyid': companyid}
   
-  r = requests.post(f'http://api:4000/comp/joblisting/', data=post_data)
+  r = requests.post(f'http://api:4000/comp/jobListing', json=post_data)
   st.write(r)
