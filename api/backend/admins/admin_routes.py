@@ -51,8 +51,8 @@ def update_change(changeID):
     description = change_info['description']
     changerID = change_info['changerID']
 
-    query = 'UPDATE changes SET description = %s, changerID = %s'
-    data = (description, changerID)
+    query = 'UPDATE changes SET description = %s, changerID = %s WHERE id = %s'
+    data = (description, changerID, changeID)
     cursor = db.get_db().cursor()
     r = cursor.execute(query, data)
     db.get_db().commit()
@@ -102,18 +102,12 @@ def add_new_change(changerid):
 
 #------------------------------------------------------------
 # Creates a change in the changelog
-@advisors.route('/changelog/<changerid>', methods=['POST'])
-def add_new_change(changerid):
-    # In a POST request, there is a
-    # collecting data from the request object
-    the_data = request.json
-    description = the_data.get('description')
+@advisors.route('/changelog/<changeid>', methods=['DELETE'])
+def delete_change(changeid):
 
     query = f"""
-        INSERT INTO changes (description, changerid) VALUES
-        (%s, %s);
-    """
-    data = (description, changerid)
+        DELETE FROM changes WHERE id=%s;"""
+    data = (changeid)
     # executing and committing the insert statement
     cursor = db.get_db().cursor()
     cursor.execute(query, data)
