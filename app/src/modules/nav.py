@@ -11,7 +11,7 @@ def HomeNav():
 
 
 def AboutPageNav():
-    st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
+    st.sidebar.page_link("pages/30_About.py", label="About", icon="ℹ️")
 
 
 #### ------------------------ Examples for Role of pol_strat_advisor ------------------------
@@ -50,9 +50,15 @@ def ClassificationNav():
 
 #### ------------------------ System Admin Role ------------------------
 def AdminPageNav():
-    st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
+    st.sidebar.page_link("pages/20_Admin_Home.py", label="Dashboard", icon="📊")
     st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
+        "pages/21_ML_Model_Mgmt.py", label="Document Changes", icon="📝"
+    )
+    st.sidebar.page_link(
+        "pages/21_ML_Model_Mgmt.py", label="View Changes", icon="✏️"
+    )
+    st.sidebar.page_link(
+        "pages/21_ML_Model_Mgmt.py", label="Delete Changes", icon="❌️"
     )
 
 

@@ -1,16 +1,18 @@
 import logging
 logger = logging.getLogger(__name__)
+from modules.nav import SideBarLinks
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import streamlit as st
-from modules.nav import SideBarLinks
+import altair as alt
 import requests
+import time
+from datetime import datetime
+
 
 st.set_page_config(layout = 'wide')
 
 SideBarLinks()
 
 # Dashboard title
-st.title("System Administrator Dashboard")
+st.markdown("<div style='padding-top: -50px;font-size:18px; text-align:left; color:black;'>System Administrator Dashboard</div>", unsafe_allow_html=True)
 

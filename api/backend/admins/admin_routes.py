@@ -101,7 +101,7 @@ def add_new_change(changerid):
     return response
 
 #------------------------------------------------------------
-# Creates a change in the changelog
+# Deletes a change in the changelog
 @admins.route('/changelog/<changeid>', methods=['DELETE'])
 def delete_change(changeid):
 
