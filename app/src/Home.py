@@ -65,6 +65,14 @@ if st.button('Act as Catumbulo, an Northeastern Co-op Advisor',
     st.session_state['first_name'] = 'Catumbulo'
     st.switch_page('pages/10_CoopAdvisor_Home.py')
 
+if st.button('Act as Jennifer, the HR contact for Bhlarma Advance', 
+            type = 'primary', 
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'company'
+    st.session_state['first_name'] = 'Jennifer'
+    st.switch_page('pages/14_Company_Home.py')
+
 if st.button('Act as System Administrator', 
             type = 'primary', 
             use_container_width=True):
