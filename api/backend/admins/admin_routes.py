@@ -37,10 +37,10 @@ def get_dashboard():
     );''')
     
     theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
 
 #------------------------------------------------------------
 # Update change info for change with particular changeID
