@@ -7,12 +7,12 @@ from flask import request
 from flask import jsonify
 from flask import make_response
 from flask import current_app
-from backend.db_connection import db
+from api.backend.db_connection import db
 
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-customers = Blueprint('admins', __name__)
+admins = Blueprint('admins', __name__)
 #------------------------------------------------------------
 # Gets system status for queries, uptime, and cursers
 @admins.route('/dashboard', methods=['GET'])
@@ -79,7 +79,7 @@ def get_changes():
 
 #------------------------------------------------------------
 # Creates a change in the changelog
-@advisors.route('/changelog/<changerid>', methods=['POST'])
+@admins.route('/changelog/<changerid>', methods=['POST'])
 def add_new_change(changerid):
     # In a POST request, there is a
     # collecting data from the request object
@@ -102,7 +102,7 @@ def add_new_change(changerid):
 
 #------------------------------------------------------------
 # Creates a change in the changelog
-@advisors.route('/changelog/<changeid>', methods=['DELETE'])
+@admins.route('/changelog/<changeid>', methods=['DELETE'])
 def delete_change(changeid):
 
     query = f"""

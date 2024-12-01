@@ -73,12 +73,12 @@ if st.button('Act as Jennifer, the HR contact for Bhlarma Advance',
     st.session_state['first_name'] = 'Jennifer'
     st.switch_page('pages/14_Company_Home.py')
 
-if st.button('Act as System Administrator', 
+if st.button('Act as Winston, System Administrator',
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
-    st.session_state['first_name'] = 'SysAdmin'
+    st.session_state['first_name'] = 'Winston'
     st.switch_page('pages/20_Admin_Home.py')
 
 

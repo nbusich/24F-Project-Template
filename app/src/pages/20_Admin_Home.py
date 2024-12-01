@@ -1,6 +1,8 @@
 import logging
 logger = logging.getLogger(__name__)
-
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
 import streamlit as st
 from modules.nav import SideBarLinks
 import requests
@@ -9,9 +11,6 @@ st.set_page_config(layout = 'wide')
 
 SideBarLinks()
 
-st.title('System Admin Home Page')
+# Dashboard title
+st.title("System Administrator Dashboard")
 
-if st.button('Update ML Models', 
-             type='primary',
-             use_container_width=True):
-  st.switch_page('pages/21_ML_Model_Mgmt.py')
