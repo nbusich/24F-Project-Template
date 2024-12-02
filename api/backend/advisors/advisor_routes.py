@@ -61,8 +61,8 @@ def get_rel_coops(id):
                    JOIN 
                    jobListing ON student.gpa >= jobListing.requiredGPA
                    WHERE 
-                   student.id = id;
-    ''')
+                   student.id = %s;
+    ''', (id,))
     
     theData = cursor.fetchall()
     
@@ -211,19 +211,16 @@ def get_students_app_info(id):
     return the_response
 
 #------------------------------------------------------------
-# Update customer info for customer with particular userID
-#   Notice the manner of constructing the query.
-@advisors.route('/students/<id>', methods=['PUT'])
-def update_customer(id):
-    current_app.logger.info('PUT /students route')
+# Update student info for student with particular ID
+@advisors.route('/student', methods=['PUT'])
+def update_student():
+    current_app.logger.info('PUT /student route')
     stud_info = request.json
     stud_id = stud_info['id']
-    first = cust_info['first_name']
-    last = cust_info['last_name']
-    company = cust_info['company']
+    stud_resume = stud_info['resume']
 
-    query = 'UPDATE students SET first_name = %s, last_name = %s, company = %s where id = id'
-    data = (first, last, company, cust_id)
+    query = 'UPDATE student SET resume = %s where id = %s'
+    data = (stud_id, stud_resume)
     cursor = db.get_db().cursor()
     r = cursor.execute(query, data)
     db.get_db().commit()
