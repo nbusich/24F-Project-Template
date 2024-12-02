@@ -54,19 +54,18 @@ def ClassificationNav():
 
 
 #### ------------------------ System Admin Role ------------------------
-def AdminPageNav():
-    st.sidebar.page_link("pages/A1_admin_home.py", label="Dashboard", icon="📊")
-
+def AdminDash():
+    st.sidebar.page_link(
+        "pages/A1_admin_home.py", label="Dashboard", icon="📊"
+    )
+def AdminChange():
     st.sidebar.page_link(
         "pages/A2_admin_changes.py", label="View Changes", icon="✏️"
     )
+def AdminUsage():
     st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="Document Changes", icon="📝"
+        "pages/A3_admin_analytics.py", label="Usage Analytics", icon="📈"
     )
-    st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="Delete Changes", icon="❌️"
-    )
-
 #### ------------------------ HR Contact Role ------------------------
 def CompanyNav():
     st.sidebar.page_link("pages/14_Company_Home.py", label="Company Home", icon="👤")
@@ -120,7 +119,9 @@ def SideBarLinks(show_home=False):
 
         # If the user is an administrator, give them access to the administrator pages
         if st.session_state["role"] == "administrator":
-            AdminPageNav()
+            AdminDash()
+            AdminChange()
+            AdminUsage()
 
 
         # If the user is an HR Contact, give them access to the company pages
@@ -129,7 +130,6 @@ def SideBarLinks(show_home=False):
 
 
     # Always show the Explore and About pages at the bottom of the list of links
-    ExploreListingsNav()
     AboutPageNav()
 
     if st.session_state["authenticated"]:
