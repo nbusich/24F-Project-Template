@@ -24,7 +24,7 @@ with col1:
 
 # add another number input for pay into column 2
 with col2:
-  listing_pay = st.number_input('Pay per Hour',
+  listing_pay = st.number_input('Pay per Hour ($)',
                            step=1, min_value = 0)
 
 # add another number input for number of openings into column 3
@@ -35,11 +35,18 @@ with col3:
 # add another number input for required GPA into column 4
 with col4:
   listing_req_gpa = st.number_input('Required GPA',
-                           step=0.25, max_value=4.0, value=2.0, min_value = 0.0)
+                           step=0.25, max_value=4.0, value=3.0, min_value = 0.0)
   
 listing_description = st.text_area('Job Description')
 
 listing_deadline = st.date_input('Application Deadline')
+
+ex_majors = ['Computer Science', 'Biology', 'Data Science', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Music Technology', 'Pre-med', 'English', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Design']
+rel_majors = st.multiselect(label='Relevant Majors', options=ex_majors)
+
+ex_fields = ['Software Engineering', 'Information Technology', 'Biology', 'Data Analysis', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Audio Engineering', 'Medical Research', 'Writing', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Graphic Design']
+rel_fields = st.multiselect(label='Relevant Fields', options=ex_fields)
+
 
 companyid = 1
 
@@ -51,9 +58,9 @@ logger.info(f'listing_deadline = {listing_deadline}')
 logger.info(f'listing_openings = {listing_openings}')
 logger.info(f'listing_req_gpa = {listing_req_gpa}')
 logger.info(f'companyid = {companyid}')
+logger.info(f'rel_majors = {rel_majors}')
+logger.info(f'rel_fields = {rel_fields}')
 
-# add a button to use the values entered into the number field to send to the 
-# prediction function via the REST API
 if st.button('Post Job Listing',
              type='primary',
              use_container_width=True):
@@ -65,7 +72,10 @@ if st.button('Post Job Listing',
         'listing_deadline': listing_deadline.isoformat(), 
         'listing_openings': listing_openings, 
         'listing_req_gpa': listing_req_gpa,
-        'companyid': companyid}
+        'companyid': companyid,
+        'rel_majors' : rel_majors,
+        'rel_fields' : rel_fields}
   
   r = requests.post(f'http://api:4000/comp/jobListing', json=post_data)
   st.write(r)
+

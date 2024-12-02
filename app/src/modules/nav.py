@@ -13,6 +13,9 @@ def HomeNav():
 def AboutPageNav():
     st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
 
+def ExploreListingsNav():
+    st.sidebar.page_link("pages/17_All_Listings.py", label="Explore Listings", icon="🚀")
+
 
 #### ------------------------ Examples for Role of pol_strat_advisor ------------------------
 def PolStratAdvHomeNav():
@@ -55,6 +58,11 @@ def AdminPageNav():
         "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
     )
 
+#### ------------------------ HR Contact Role ------------------------
+def CompanyNav():
+    st.sidebar.page_link("pages/14_Company_Home.py", label="Company Home", icon="👤")
+
+
 
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=False):
@@ -93,7 +101,14 @@ def SideBarLinks(show_home=False):
         if st.session_state["role"] == "administrator":
             AdminPageNav()
 
-    # Always show the About page at the bottom of the list of links
+
+        # If the user is an HR Contact, give them access to the company pages
+        if st.session_state["role"] == "company":
+            CompanyNav()
+
+
+    # Always show the Explore and About pages at the bottom of the list of links
+    ExploreListingsNav()
     AboutPageNav()
 
     if st.session_state["authenticated"]:
