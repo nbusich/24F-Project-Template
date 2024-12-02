@@ -66,7 +66,7 @@ def get_changes():
 
     # Debugging the query execution
     query = '''
-        SELECT c.description, a.firstname, a.lastname
+        SELECT c.description, c.lastChange, a.firstname, a.lastname
         FROM changes c
         JOIN administrator a ON c.changerID = a.id
         ORDER BY lastChange DESC

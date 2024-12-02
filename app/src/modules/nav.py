@@ -55,12 +55,13 @@ def ClassificationNav():
 
 #### ------------------------ System Admin Role ------------------------
 def AdminPageNav():
-    st.sidebar.page_link("pages/20_Admin_Home.py", label="Dashboard", icon="📊")
+    st.sidebar.page_link("pages/A1_admin_home.py", label="Dashboard", icon="📊")
+
     st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="Document Changes", icon="📝"
+        "pages/A2_admin_changes.py", label="View Changes", icon="✏️"
     )
     st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="View Changes", icon="✏️"
+        "pages/21_ML_Model_Mgmt.py", label="Document Changes", icon="📝"
     )
     st.sidebar.page_link(
         "pages/21_ML_Model_Mgmt.py", label="Delete Changes", icon="❌️"
