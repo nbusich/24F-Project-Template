@@ -330,7 +330,6 @@ INSERT INTO advisor (id, firstName, lastName) VALUES (202, 'Collin', 'Stewart');
 INSERT INTO advisor (id, firstName, lastName) VALUES (203, 'Adam', 'Jones');
 INSERT INTO advisor (id, firstName, lastName) VALUES (271, 'Stephanie', 'Bright');
 
-select id from advisor
 
 INSERT INTO student (id, firstName, lastName, bio, resume, major, minor, gpa, advisorID) VALUES (2, 'Samantha', 'Walker', 'Bio of Samantha Walker', 'Resume of Samantha Walker', 'Chemistry', NULL, 2.24, 271);
 INSERT INTO student (id, firstName, lastName, bio, resume, major, minor, gpa, advisorID) VALUES (3, 'Carrie', 'Parker', 'Bio of Carrie Parker', 'Resume of Carrie Parker', 'Computer Science', 'Physics', 2.81, 56);
@@ -772,7 +771,7 @@ INSERT INTO jobListing (requiredGPA, numOpenings, applicationDeadline, payPerHou
 INSERT INTO jobListing (requiredGPA, numOpenings, applicationDeadline, payPerHour, numApplicants, description, title, companyID) VALUES (3.6, 10, '2024-12-02', 44.44, 5, 'Optional non-volatile application at Diaz and Sons', 'Investment banker, operational', 61);
 INSERT INTO jobListing (requiredGPA, numOpenings, applicationDeadline, payPerHour, numApplicants, description, title, companyID) VALUES (2.9, 3, '2024-12-02', 19.31, 50, 'Re-contextualized high-level orchestration at Keller-Freeman', 'Television camera operator', 35);
 
---Populate the application table
+
 INSERT INTO application (applicantID, listingID, coverLetter) VALUES (2, 1, 'Cover letter from Tiffany Smith for listing 1');
 INSERT INTO application (applicantID, listingID, coverLetter) VALUES (3, 2, 'Cover letter from Larry Walker for listing 2');
 INSERT INTO application (applicantID, listingID, coverLetter) VALUES (6, 3, 'Cover letter from Carla Graves for listing 3');

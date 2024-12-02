@@ -4,6 +4,7 @@ from flask import jsonify
 from flask import make_response
 from flask import current_app
 from backend.db_connection import db
+from datetime import datetime
 
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
@@ -33,7 +34,6 @@ def get_dashboard():
     );''')
     
     theData = cursor.fetchall()
-
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
@@ -56,21 +56,38 @@ def update_change(changeID):
 
 #------------------------------------------------------------
 # Gets the changelog's most recent changes
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+
 @admins.route('/changelog', methods=['GET'])
 def get_changes():
     cursor = db.get_db().cursor()
-    cursor.execute('''
-                    SELECT c.description, c.lastChange, a.firstname, a.lastname
-                    FROM changes c
-                        JOIN administrator a ON c.changerID = a.id
-                    ORDER BY lastChange DESC
-                    LIMIT 10;''')
+
+    # Debugging the query execution
+    query = '''
+        SELECT c.description, a.firstname, a.lastname
+        FROM changes c
+        JOIN administrator a ON c.changerID = a.id
+        ORDER BY lastChange DESC
+        LIMIT 10;
+    '''
+
+    logging.debug(f"Executing query: {query}")
+    cursor.execute(query)
 
     theData = cursor.fetchall()
-
     response = make_response(jsonify(theData))
     response.status_code = 200
+
+    logging.debug(f"Fetched rows: {theData}")  # Inspect the rows returned
+
+    cursor.execute('SELECT DATABASE();')
+    db_name = cursor.fetchone()
+    logging.debug(f"Connected to database: {db_name}")
+
     return response
+
 
 #------------------------------------------------------------
 # Creates a change in the changelog
