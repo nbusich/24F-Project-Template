@@ -1,18 +1,15 @@
-########################################################
-# Sample customers blueprint of endpoints
-# Remove this file if you are not using it in your project
-########################################################
 from flask import Blueprint
 from flask import request
 from flask import jsonify
 from flask import make_response
 from flask import current_app
 from backend.db_connection import db
+from datetime import datetime
 
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-customers = Blueprint('admins', __name__)
+admins = Blueprint('admins', __name__)
 #------------------------------------------------------------
 # Gets system status for queries, uptime, and cursers
 @admins.route('/dashboard', methods=['GET'])
@@ -37,10 +34,9 @@ def get_dashboard():
     );''')
     
     theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
 
 #------------------------------------------------------------
 # Update change info for change with particular changeID
@@ -60,26 +56,42 @@ def update_change(changeID):
 
 #------------------------------------------------------------
 # Gets the changelog's most recent changes
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+
 @admins.route('/changelog', methods=['GET'])
 def get_changes():
-    current_app.logger.info('GET /changelog route')
     cursor = db.get_db().cursor()
-    cursor.execute('''
-                    SELECT c.description, c.lastChange, a.firstname, a.lastname
-                    FROM changes c
-                        JOIN administrator a ON c.changerID = a.id
-                    ORDER BY lastChange DESC
-                    LIMIT 10;''')
-    
+
+    # Debugging the query execution
+    query = '''
+        SELECT c.description, c.lastChange, a.firstname, a.lastname
+        FROM changes c
+        JOIN administrator a ON c.changerID = a.id
+        ORDER BY lastChange DESC
+        LIMIT 10;
+    '''
+
+    logging.debug(f"Executing query: {query}")
+    cursor.execute(query)
+
     theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+
+    logging.debug(f"Fetched rows: {theData}")  # Inspect the rows returned
+
+    cursor.execute('SELECT DATABASE();')
+    db_name = cursor.fetchone()
+    logging.debug(f"Connected to database: {db_name}")
+
+    return response
+
 
 #------------------------------------------------------------
 # Creates a change in the changelog
-@advisors.route('/changelog/<changerid>', methods=['POST'])
+@admins.route('/changelog/<changerid>', methods=['POST'])
 def add_new_change(changerid):
     # In a POST request, there is a
     # collecting data from the request object
@@ -101,8 +113,8 @@ def add_new_change(changerid):
     return response
 
 #------------------------------------------------------------
-# Creates a change in the changelog
-@advisors.route('/changelog/<changeid>', methods=['DELETE'])
+# Deletes a change in the changelog
+@admins.route('/changelog/<changeid>', methods=['DELETE'])
 def delete_change(changeid):
 
     query = f"""
