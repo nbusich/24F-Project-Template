@@ -5,13 +5,15 @@
 import streamlit as st
 
 
+
+
 #### ------------------------ General ------------------------
 def HomeNav():
     st.sidebar.page_link("Home.py", label="Home", icon="🏠")
 
 
 def AboutPageNav():
-    st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
+    st.sidebar.page_link("pages/30_About.py", label="About", icon="ℹ️")
 
 def ExploreListingsNav():
     st.sidebar.page_link("pages/17_All_Listings.py", label="Explore Listings", icon="🚀")
@@ -53,9 +55,15 @@ def ClassificationNav():
 
 #### ------------------------ System Admin Role ------------------------
 def AdminPageNav():
-    st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
+    st.sidebar.page_link("pages/20_Admin_Home.py", label="Dashboard", icon="📊")
     st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
+        "pages/21_ML_Model_Mgmt.py", label="Document Changes", icon="📝"
+    )
+    st.sidebar.page_link(
+        "pages/21_ML_Model_Mgmt.py", label="View Changes", icon="✏️"
+    )
+    st.sidebar.page_link(
+        "pages/21_ML_Model_Mgmt.py", label="Delete Changes", icon="❌️"
     )
 
 #### ------------------------ HR Contact Role ------------------------
@@ -70,8 +78,20 @@ def SideBarLinks(show_home=False):
     This function handles adding links to the sidebar of the app based upon the logged-in user's role, which was put in the streamlit session_state object when logging in.
     """
 
+    st.markdown(
+        """
+        <style>
+            [data-testid="stSidebar"] {
+                width: 250px;  /* Adjust sidebar width */
+                min-width: 250px; /* Ensure it doesn't shrink below this width */
+            }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     # add a logo to the sidebar always
-    st.sidebar.image("assets/logo.png", width=150)
+    st.sidebar.image("assets/Coffee_stats_logo.png", width=200)
 
     # If there is no logged in user, redirect to the Home (Landing) page
     if "authenticated" not in st.session_state:
