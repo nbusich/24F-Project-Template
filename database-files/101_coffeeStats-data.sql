@@ -1,3 +1,5 @@
+USE coffeeStats;
+
 INSERT INTO user (id, role, email, userName, password) VALUES (1, 'Student', 'aliciathompson@hotmail.com', 'hilljohn', '0*P3_F&s_5KQ');
 INSERT INTO user (id, role, email, userName, password) VALUES (2, 'Student', 'uerickson@wilson.com', 'laurawilliams', 's_W1Fqvo@zS3');
 INSERT INTO user (id, role, email, userName, password) VALUES (3, 'Student', 'mary87@gmail.com', 'aaron92', 's$ySTMe1_*8A');
