@@ -17,7 +17,7 @@ advisors = Blueprint('advisors', __name__)
 
 #------------------------------------------------------------
 # Get statistics about job applications
-@advisors.route('/jobListing', methods=['GET'])
+@advisors.route('/jobListingData', methods=['GET'])
 def get_applicationstats():
 
     cursor = db.get_db().cursor()
@@ -26,8 +26,8 @@ def get_applicationstats():
                    jobListing.title AS PositionTitle,
                    company.name AS CompanyName,
                    AVG(jobListing.payPerHour) AS AvgPayPerHour,
-                   COUNT(application.id) AS TotalApplications,
-                   COUNT(application.id) / jobListing.numOpenings AS AcceptanceRate
+                   COUNT(application.listingID) AS TotalApplications,
+                   COUNT(application.listingID) / jobListing.numOpenings AS AcceptanceRate
                    FROM 
                    jobListing
                    JOIN 
@@ -46,7 +46,7 @@ def get_applicationstats():
 
 #------------------------------------------------------------
 # Get co-ops that the student can apply to based on their gpa and deadline to submit
-@advisors.route('/students/<id>', methods=['GET'])
+@advisors.route('/studentRecs/<id>', methods=['GET'])
 def get_rel_coops(id):
     cursor = db.get_db().cursor()
     cursor.execute('''
@@ -72,7 +72,7 @@ def get_rel_coops(id):
 
 #------------------------------------------------------------
 # Get students with the same major as given student
-@advisors.route('/students/<id>', methods=['GET'])
+@advisors.route('/studentConnect/<id>', methods=['GET'])
 def get_students_same_major(id):
     cursor = db.get_db().cursor()
     cursor.execute('''
@@ -98,8 +98,8 @@ def get_students_same_major(id):
 
 #------------------------------------------------------------
 # Get students that have worked in a specified company
-@advisors.route('/company/<id>', methods=['GET'])
-def get_rel_coops(id):
+@advisors.route('/studentAtCompany/<id>', methods=['GET'])
+def get_rel_students(id):
     cursor = db.get_db().cursor()
     cursor.execute('''
                    SELECT 
@@ -109,6 +109,37 @@ def get_rel_coops(id):
                    JOIN company c ON p.companyID = company.id
                    WHERE 
                    company.id = id;
+    ''')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
+# Get student information from a certain application
+@advisors.route('/application/<id>', methods=['GET'])
+def get_students_app_info(id):
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+                   SELECT
+                   student.firstName,
+                   student.lastName,
+                   student.resume,
+                   student.major,
+                   application.coverLetter,
+                   jobListing.title AS JobTitle,
+                   jobListing.description AS JobDescription
+                   FROM
+                   student
+                   JOIN
+                   application ON student.id = application.applicantID
+                   JOIN
+                   jobListing ON application.listingID = jobListing.id
+                   WHERE
+                   application.id = id;
+
     ''')
     
     theData = cursor.fetchall()
@@ -180,39 +211,8 @@ def delete_chat(id):
     return response
 
 #------------------------------------------------------------
-# Get student information from a certain application
-@advisors.route('/application/<id>', methods=['GET'])
-def get_students_app_info(id):
-    cursor = db.get_db().cursor()
-    cursor.execute('''
-                   SELECT
-                   student.firstName,
-                   student.lastName,
-                   student.resume,
-                   student.major,
-                   application.coverLetter,
-                   jobListing.title AS JobTitle,
-                   jobListing.description AS JobDescription
-                   FROM
-                   student
-                   JOIN
-                   application ON student.id = application.applicantID
-                   JOIN
-                   jobListing ON application.listingID = jobListing.id
-                   WHERE
-                   application.id = id;
-
-    ''')
-    
-    theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
-
-#------------------------------------------------------------
 # Update student info for student with particular ID
-@advisors.route('/student', methods=['PUT'])
+@advisors.route('/updateStudent', methods=['PUT'])
 def update_student():
     current_app.logger.info('PUT /student route')
     stud_info = request.json
