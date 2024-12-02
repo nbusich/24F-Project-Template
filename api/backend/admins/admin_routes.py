@@ -58,7 +58,6 @@ def update_change(changeID):
 # Gets the changelog's most recent changes
 @admins.route('/changelog', methods=['GET'])
 def get_changes():
-    current_app.logger.info('GET /changelog route')
     cursor = db.get_db().cursor()
     cursor.execute('''
                     SELECT c.description, c.lastChange, a.firstname, a.lastname
@@ -66,12 +65,12 @@ def get_changes():
                         JOIN administrator a ON c.changerID = a.id
                     ORDER BY lastChange DESC
                     LIMIT 10;''')
-    
+
     theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
 
 #------------------------------------------------------------
 # Creates a change in the changelog
