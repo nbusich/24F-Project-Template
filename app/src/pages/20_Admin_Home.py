@@ -15,7 +15,7 @@ st.markdown("<div style='padding-top: -50px;font-size:18px; text-align:left; col
 
 data = {}
 
-response = requests.get('http://api:4000/admin/dashboard').json()
+response = requests.get('http://api:4000/admin/changelog').json()
 
 st.dataframe(response)
 
