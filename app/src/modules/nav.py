@@ -128,8 +128,12 @@ def SideBarLinks(show_home=False):
         if st.session_state["role"] == "company":
             CompanyNav()
 
+        # All authenticated users get to use the Explore page
+        if st.session_state["authenticated"]:
+            ExploreListingsNav()
 
-    # Always show the Explore and About pages at the bottom of the list of links
+
+    # Always show the About page at the bottom of the list of links
     AboutPageNav()
 
     if st.session_state["authenticated"]:

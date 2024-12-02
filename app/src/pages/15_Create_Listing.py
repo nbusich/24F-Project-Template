@@ -10,6 +10,8 @@ st.set_page_config(layout = 'wide')
 # Display the appropriate sidebar links for the role of the logged in user
 SideBarLinks()
 
+companyid = st.session_state['compID']
+
 st.title('Create a Job Listing')
 
 listing_title = st.text_input('Title')
@@ -46,9 +48,6 @@ rel_majors = st.multiselect(label='Relevant Majors', options=ex_majors)
 
 ex_fields = ['Software Engineering', 'Information Technology', 'Biology', 'Data Analysis', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Audio Engineering', 'Medical Research', 'Writing', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Graphic Design']
 rel_fields = st.multiselect(label='Relevant Fields', options=ex_fields)
-
-
-companyid = 1
 
 logger.info(f'listing_title = {listing_title}')
 logger.info(f'listing_description = {listing_description}')
