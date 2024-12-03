@@ -42,11 +42,12 @@ with jobStuff:
         continue
 
       with title:
-        if st.button(label=jobs_data[i].get('title'), type='primary', help='View Full Listing'):
+        if st.button(label=jobs_data[i].get('title'), type='primary', help='View Full Listing', key=str(i) + 'title'):
           st.session_state['current_listing'] = i + 1
+          st.write(jobs_data[i].get('jobListingID'))
           st.switch_page('pages/16_View_Listing.py')
       with comp:
-        st.button(jobs_data[i].get('companyName'))
+        st.button(jobs_data[i].get('companyName'), key=str(i) + 'comp')
       with pay:
         st.write('$' + str(jobs_data[i].get('payPerHour')))
       with deadline:
