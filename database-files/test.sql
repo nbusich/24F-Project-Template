@@ -63,7 +63,33 @@ SELECT COUNT(*), role
 FROM user
 GROUP BY role;
 
+
+SELECT
+    AVG(DATEDIFF(applicationDeadline, post_date)) AS average_days_to_fill
+FROM
+    jobListing
+WHERE
+    applicationDeadline IS NOT NULL AND post_date IS NOT NULL;
+
+
+SELECT
+    jl.id AS job_listing_id,
+    jl.title AS job_title,
+    COUNT(a.id) AS application_count
+FROM
+    jobListing jl
+LEFT JOIN
+    application a ON jl.id = a.listingID
+GROUP BY
+    jl.id, jl.title
+ORDER BY
+    application_count DESC;
+
+
 #-------------------------------------------------------------------
+DELETE FROM article where id = %s
+DELETE FROM jobListing where id = %s;
+DELETE FROM user WHERE id = %s;
 
 
 
