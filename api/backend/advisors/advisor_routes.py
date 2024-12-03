@@ -46,7 +46,7 @@ def get_applicationstats():
 
 #------------------------------------------------------------
 # Get co-ops that the student can apply to based on their gpa and deadline to submit
-@advisors.route('/students/<id>', methods=['GET'])
+@advisors.route('/rel_coops/<id>', methods=['GET'])
 def get_rel_coops(id):
     cursor = db.get_db().cursor()
     cursor.execute('''
@@ -63,9 +63,9 @@ def get_rel_coops(id):
                    WHERE 
                    student.id = %s;
     ''', (id,))
-    
+
     theData = cursor.fetchall()
-    
+
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response

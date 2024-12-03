@@ -32,7 +32,7 @@ ADD COLUMN submit_date DATETIME DEFAULT CURRENT_TIMESTAMP;
 UPDATE application
 SET submit_date = DATE_ADD(
     CURDATE(),
-    INTERVAL -FLOOR(RAND() * 730) DAY
+    INTERVAL -FLOOR(RAND() * 89) DAY
 ) + INTERVAL FLOOR(RAND() * 86400) SECOND;
 
 #-------------------------------------------------------------------
@@ -44,13 +44,13 @@ ADD COLUMN post_date DATETIME DEFAULT CURRENT_TIMESTAMP;
 UPDATE jobListing
 SET post_date = DATE_ADD(
     CURDATE(),
-    INTERVAL -FLOOR(RAND() * 730) DAY
+    INTERVAL -FLOOR(RAND() * 90) DAY
 ) + INTERVAL FLOOR(RAND() * 86400) SECOND;
 
 UPDATE jobListing
 SET applicationDeadline = DATE_ADD(
     CURDATE(),
-    INTERVAL -FLOOR(RAND() * 730) DAY
+    INTERVAL FLOOR(RAND() * 90) DAY
 );
 
 UPDATE jobListing
