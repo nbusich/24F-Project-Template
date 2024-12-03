@@ -64,11 +64,7 @@ FROM user
 GROUP BY role;
 
 #-------------------------------------------------------------------
-# Counting number of users in each role
 
-SELECT COUNT(*), role
-FROM user
-GROUP BY role;
 
 
 
