@@ -58,3 +58,20 @@ SET acceptanceRate = CASE
     WHEN RAND() < 0.75 THEN (RAND() * 0.3) + 0.001 -- 70% chance for a random value in 0-0.3
     ELSE 0.25 + (RAND() * 0.7)           -- 30% chance for a random value in 0.3-1.0
 END;
+
+ANALYZE TABLE `coffeeStats`.`administrator`;
+ANALYZE TABLE `coffeeStats`.`advisor`;
+ANALYZE TABLE `coffeeStats`.`alumnus`;
+ANALYZE TABLE `coffeeStats`.`application`;
+ANALYZE TABLE `coffeeStats`.`article`;
+ANALYZE TABLE `coffeeStats`.`changes`;
+ANALYZE TABLE `coffeeStats`.`chatroom`;
+ANALYZE TABLE `coffeeStats`.`company`;
+ANALYZE TABLE `coffeeStats`.`friends`;
+ANALYZE TABLE `coffeeStats`.`jobListing`;
+ANALYZE TABLE `coffeeStats`.`message`;
+ANALYZE TABLE `coffeeStats`.`position`;
+ANALYZE TABLE `coffeeStats`.`relevantFields`;
+ANALYZE TABLE `coffeeStats`.`relevantMajors`;
+ANALYZE TABLE `coffeeStats`.`student`;
+ANALYZE TABLE `coffeeStats`.`user`;

@@ -16,22 +16,7 @@ admins = Blueprint('admins', __name__)
 def get_dashboard():
 
     cursor = db.get_db().cursor()
-    cursor.execute('''
-                    SHOW STATUS
-    WHERE Variable_name IN ('Com_admin_commands',
-                        'Com_create_table',
-                        'Com_delete',
-                        'Com_insert',
-                        'Com_select',
-                        'Com_update',
-                        'Innodb_rows_inserted',
-                        'Innodb_rows_deleted',
-                        'Mysqlx_connections_rejected',
-                        'Mysqlx_errors_sent',
-                        'Mysqlx_cursor_fetch',
-                        'Queries',
-                        'Uptime'
-    );''')
+    cursor.execute('''SHOW STATUS WHERE Variable_name IN ('Queries');''')
     
     theData = cursor.fetchall()
     response = make_response(jsonify(theData))
@@ -415,4 +400,139 @@ def get_applications_per_week():
     response.status_code = 200
     return response
 
-#------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+@admins.route('/average_query_execution_time', methods=['GET'])
+def get_average_query_execution_time():
+    try:
+        cursor = db.get_db().cursor()
+
+        query = '''
+            SELECT
+    EVENT_NAME, ROUND(SUM_TIMER_WAIT/COUNT_STAR/1000000000000, 6) AS avg_exec_time_ms
+FROM
+    performance_schema.events_statements_summary_global_by_event_name
+WHERE
+    COUNT_STAR > 0 AND EVENT_NAME LIKE 'statement/sql/%';
+        '''
+
+        cursor.execute(query)
+
+        theData = cursor.fetchall()
+        response = make_response(jsonify(theData))
+        response.status_code = 200
+        return response
+
+    except Exception as e:
+        logging.error(f"Error in get_average_query_execution_time: {str(e)}")
+        return make_response(jsonify({'error': 'Internal Server Error'}), 500)
+
+#----------------------------------------------------------------------------------------------------------
+@admins.route('/number_of_slow_queries', methods=['GET'])
+def get_number_of_slow_queries():
+    try:
+        cursor = db.get_db().cursor()
+        query = "SHOW GLOBAL STATUS LIKE 'Slow_queries';"
+
+        cursor.execute(query)
+
+        theData = cursor.fetchall()
+        response = make_response(jsonify(theData))
+        response.status_code = 200
+        return response
+
+    except Exception as e:
+        logging.error(f"Error in get_number_of_slow_queries: {str(e)}")
+        return make_response(jsonify({'error': 'Internal Server Error'}), 500)
+
+#----------------------------------------------------------------------------------------------------------
+
+@admins.route('/number_of_connections', methods=['GET'])
+def get_number_of_connections():
+    try:
+        cursor = db.get_db().cursor()
+        query = "SHOW STATUS WHERE `variable_name` = 'Threads_connected';"
+
+        cursor.execute(query)
+
+        theData = cursor.fetchall()
+        response = make_response(jsonify(theData))
+        response.status_code = 200
+        return response
+
+    except Exception as e:
+        logging.error(f"Error in get_number_of_connections: {str(e)}")
+        return make_response(jsonify({'error': 'Internal Server Error'}), 500)
+#----------------------------------------------------------------------------------------------------------
+@admins.route('/database_uptime', methods=['GET'])
+def get_database_uptime():
+    try:
+        cursor = db.get_db().cursor()
+        query = "SHOW GLOBAL STATUS LIKE 'Uptime';"
+
+        cursor.execute(query)
+
+        theData = cursor.fetchall()
+        response = make_response(jsonify(theData))
+        response.status_code = 200
+        return response
+
+    except Exception as e:
+        logging.error(f"Error in get_database_uptime: {str(e)}")
+        return make_response(jsonify({'error': 'Internal Server Error'}), 500)
+#----------------------------------------------------------------------------------------------------------
+
+@admins.route('/table_sizes', methods=['GET'])
+def get_table_sizes():
+    try:
+        cursor = db.get_db().cursor()
+        query = '''
+            SELECT
+                table_name,
+                ROUND((data_length + index_length) / 1024 / 1024, 2) AS size_mb
+            FROM
+                information_schema.TABLES
+            WHERE
+                table_schema = 'coffeeStats'
+            ORDER BY
+                size_mb DESC;
+        '''
+
+        cursor.execute(query)
+
+        theData = cursor.fetchall()
+        response = make_response(jsonify(theData))
+        response.status_code = 200
+        return response
+
+    except Exception as e:
+        logging.error(f"Error in get_table_sizes: {str(e)}")
+        return make_response(jsonify({'error': 'Internal Server Error'}), 500)
+
+# ----------------------------------------------------------------------------------------------------------
+
+@admins.route('/table_row_counts', methods=['GET'])
+def get_table_row_counts():
+    try:
+        cursor = db.get_db().cursor()
+        query = '''
+            SELECT
+                table_name,
+                table_rows
+            FROM
+                information_schema.TABLES
+            WHERE
+                table_schema = 'coffeeStats';
+        '''
+
+        cursor.execute(query)
+
+        theData = cursor.fetchall()
+        response = make_response(jsonify(theData))
+        response.status_code = 200
+        return response
+
+    except Exception as e:
+        logging.error(f"Error in get_table_row_counts: {str(e)}")
+        return make_response(jsonify({'error': 'Internal Server Error'}), 500)
+
+
