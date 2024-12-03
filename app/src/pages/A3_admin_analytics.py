@@ -31,7 +31,7 @@ def fetch_data(endpoint):
         return None
 
 # Set the page title
-st.title('Analytics Dashboard')
+st.header('Analytics Dashboard')
 
 # Fetch data for existing metrics
 articles_df = fetch_data('articles_per_month')
@@ -50,7 +50,7 @@ applications_per_week_df = fetch_data('applications_per_week')
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('Applications Per Job Listing')
+    st.markdown('Top Applications Per Job Listing')
     if applications_per_job_listing_df is not None:
         if not applications_per_job_listing_df.empty:
             top_n = 10
@@ -58,8 +58,7 @@ with col1:
             chart = px.bar(
                 top_applications_df,
                 x='job_title',
-                y='application_count',
-                title='Top Job Listings by Number of Applications'
+                y='application_count'
             )
             st.plotly_chart(chart)
         else:
@@ -76,8 +75,7 @@ with col2:
             chart = px.bar(
                 top_gpa_df,
                 x='job_title',
-                y='average_gpa',
-                title='Average GPA of Applicants per Job Listing'
+                y='average_gpa'
             )
             st.plotly_chart(chart)
         else:
@@ -95,8 +93,7 @@ with col3:
             chart = px.bar(
                 most_common_majors_df,
                 x='major',
-                y='applicant_count',
-                title='Most Common Majors Among Applicants'
+                y='applicant_count'
             )
             st.plotly_chart(chart)
         else:
@@ -137,7 +134,7 @@ with col6:
         if not users_df.empty:
             users_df['year_week'] = users_df['year'].astype(str) + '-W' + users_df['week'].astype(str)
             users_chart = users_df.set_index('year_week')['user_count']
-            st.bar_chart(users_chart)
+            st.line_chart(users_chart)
         else:
             st.write("No data available for users joined per week.")
     else:
@@ -164,22 +161,21 @@ with col8:
         if not messages_df.empty:
             messages_df['year_week'] = messages_df['year'].astype(str) + '-W' + messages_df['week'].astype(str)
             messages_chart = messages_df.set_index('year_week')['message_count']
-            st.bar_chart(messages_chart)
+            st.line_chart(messages_chart)
         else:
             st.write("No data available for messages sent per week.")
     else:
         st.write("No data available for messages sent per week.")
 
 # Donut chart for Number of Users in Each Role
-st.markdown('Number of Users in Each Role')
+st.markdown('Distribution of Users in Each Role')
 if roles_df is not None:
     if not roles_df.empty:
         fig = px.pie(
             roles_df,
             names='role',
             values='user_count',
-            hole=0.4,
-            title='User Count per Role'
+            hole=0.4
         )
         st.plotly_chart(fig)
     else:
