@@ -91,7 +91,32 @@ DELETE FROM article where id = %s
 DELETE FROM jobListing where id = %s;
 DELETE FROM user WHERE id = %s;
 
+SHOW VARIABLES LIKE 'performance_schema';
+SELECT * FROM performance_schema.events_statements_summary_global_by_event_name
 
+####################################################################################
+SELECT
+    EVENT_NAME, ROUND(SUM_TIMER_WAIT/COUNT_STAR/1000000000000, 6) AS avg_exec_time_ms
+FROM
+    performance_schema.events_statements_summary_global_by_event_name
+WHERE
+    COUNT_STAR > 0 AND EVENT_NAME LIKE 'statement/sql/%';
+####################################################################################
 
+SHOW GLOBAL STATUS LIKE 'Slow_queries';
 
+SHOW STATUS WHERE `variable_name` = 'Threads_connected'
 
+SHOW GLOBAL STATUS LIKE 'Uptime';
+
+SELECT
+    table_name,
+    ROUND((data_length + index_length) / 1024 / 1024, 2) AS size_mb
+FROM
+    information_schema.TABLES
+WHERE
+    table_schema = 'coffeeStats'
+ORDER BY
+    size_mb DESC;
+
+SELECT * FROM performance_schema.events_statements_summary_global_by_event_name
