@@ -43,10 +43,7 @@ with jobStuff:
 
             # For other rows, display the content
             with title:
-                if st.button(label=df.iloc[i]['description'], type='primary', help='View Full Listing', key=f"{i}_desc"):
-                    st.session_state['current_listing'] = i + 1
-                    st.write(df.iloc[i]['description'])
-                    st.switch_page('pages/16_View_Listing.py')
+                st.button(label=df.iloc[i]['description'], type='primary', key=f"{i}_desc")
             with firstname:
                 st.write(df.iloc[i]['firstname'])
             with lastname:
