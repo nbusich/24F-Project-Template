@@ -20,6 +20,7 @@ df = pd.DataFrame(response)
 # Create a container for the job listings
 jobStuff = st.container(border = True)
 
+
 with jobStuff:
     for i in range(-1, len(df)):
         row = st.container(border = True)
@@ -51,4 +52,5 @@ with jobStuff:
             with lastChange:
                 st.write(df.iloc[i]['lastChange'][:16])
             with desc:
-                st.write(df.iloc[i]['description'][:16] + '...')
+                if st.button('Delete' + ' change'+ f' {i}'):
+                    pass
