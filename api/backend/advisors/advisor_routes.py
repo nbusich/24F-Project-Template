@@ -87,8 +87,8 @@ def get_students_same_major(id):
                    JOIN 
                    student AS s2 ON s1.major = s2.major AND s1.id != s2.id
                    WHERE 
-                   s1.id = id;
-    ''')
+                   s1.id = %s;
+    ''', (id,))
     
     theData = cursor.fetchall()
     
@@ -103,13 +103,13 @@ def get_rel_students(id):
     cursor = db.get_db().cursor()
     cursor.execute('''
                    SELECT 
-                   s.firstName, s.lastName,
+                   s.firstName, s.lastName, p.comment
                    FROM student s
                    JOIN position p ON s.pastPositionID = p.id
-                   JOIN company c ON p.companyID = company.id
+                   JOIN company c ON p.companyID = c.id
                    WHERE 
-                   company.id = id;
-    ''')
+                   c.id = %s;
+    ''', (id,))
     
     theData = cursor.fetchall()
     
@@ -119,7 +119,7 @@ def get_rel_students(id):
 
 #------------------------------------------------------------
 # Get student information from a certain application
-@advisors.route('/application/<id>', methods=['GET'])
+@advisors.route('/applicationInfo/<id>', methods=['GET'])
 def get_students_app_info(id):
     cursor = db.get_db().cursor()
     cursor.execute('''
@@ -138,9 +138,8 @@ def get_students_app_info(id):
                    JOIN
                    jobListing ON application.listingID = jobListing.id
                    WHERE
-                   application.id = id;
-
-    ''')
+                   application.id = %s;
+    ''', (id,))
     
     theData = cursor.fetchall()
     
