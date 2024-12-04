@@ -13,7 +13,7 @@ st.title('Edit Student Data')
 with st.container():
     st.markdown("Update Student Info")
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         student_id = st.number_input('Student Id', step=1, min_value=0)
