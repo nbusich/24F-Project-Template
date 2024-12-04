@@ -116,9 +116,7 @@ WHERE
 ORDER BY
     size_mb DESC;
 
-SELECT * FROM changes ORDER BY lastChange DESC LIMIT 10;
+DELETE FROM changes WHERE changerID = 16 AND lastChange = CURRENT_DATE;
 
-INSERT INTO changes (description,
-                            changerID)
-         VALUES ('OPTIMIZED QUERIES','16')
-DELETE FROM changes WHERE id = 101;
+SELECT * FROM jobListing where description = "Total global success at Brooks-Collins1";
+

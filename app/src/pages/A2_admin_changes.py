@@ -8,7 +8,7 @@ import pandas as pd
 st.set_page_config(layout = 'wide')
 SideBarLinks()
 
-tab1, tab2, tab3 = st.tabs(['View Changes', 'Make Changes', 'Update Changes'])
+tab1, tab2 = st.tabs(['View Changes', 'Make Changes'])
 with tab1:
 
     # Dashboard title
@@ -54,18 +54,105 @@ with tab1:
                     if st.button('Delete' + ' change'+ f' {i}'):
                         pass
 with tab2:
+    st.header('Make Changes')
+    with st.container(border = True):
+        st.markdown('Document a Change')
+        changerID = st.session_state['adminID']
+        description = st.text_area('Change Description')
 
-    st.title('Document a Change')
-    changerID = st.session_state['adminID']
-    description = st.text_area('Change Description')
+        if st.button('Log Change',
+                     type='primary'):
+            post_data = {
+                         'description': description, 'changerID': changerID
+                         }
 
-    if st.button('Post Job Listing',
-                 type='primary',
-                 use_container_width=True):
-        post_data = {
-                     'description': description, 'changerID': changerID
-                     }
+            r = requests.post(f'http://api:4000/admin/make_change', json=post_data)
 
-        r = requests.post(f'http://api:4000/admin/make_change', json=post_data)
-        st.write(r)
+            if r.status_code == 200:
+                st.success(r.text)
+            else:
+                pass
+    with st.container(border=True):
+        # Streamlit UI
+        st.markdown("Delete User")
+        userid = st.text_input("User ID", "")
+        username = st.text_input("Username", "")
+
+        if st.button("Delete User", type = "primary"):
+            if userid and username:
+                # Call Flask API
+                url = f"http://api:4000/admin/delete_user/{userid}/{username}"
+                response = requests.delete(url)
+
+                if response.status_code == 200:
+                    st.success(response.text)
+                else:
+                    st.error(response.text)
+            else:
+                st.warning("Please enter both User ID and Username")
+
+    with st.container(border = True):
+        listing_title = st.text_input('Title')
+
+        # create a 4 column layout
+        col1, col2, col3, col4 = st.columns(4)
+
+        # add one number input for number of applicants into column 1
+        with col1:
+            number_of_applicants = st.number_input('\# Applicants',
+                                                   step=1, min_value=0)
+
+        # add another number input for pay into column 2
+        with col2:
+            listing_pay = st.number_input('Pay per Hour ($)',
+                                          step=1, min_value=0)
+
+        # add another number input for number of openings into column 3
+        with col3:
+            listing_openings = st.number_input('\# Openings',
+                                               step=1, min_value=0)
+
+        # add another number input for required GPA into column 4
+        with col4:
+            listing_req_gpa = st.number_input('Required GPA',
+                                              step=0.25, max_value=4.0, value=3.0, min_value=0.0)
+
+        listing_description = st.text_area('Job Description')
+
+        companyid = st.number_input('Company ID',
+                                      step=1, min_value=0)
+
+        id = st.number_input('Listing to update ID',
+                                    step=1, min_value=0)
+
+        listing_deadline = st.date_input('Application Deadline')
+
+        logger.info(f'listing_title = {listing_title}')
+        logger.info(f'listing_description = {listing_description}')
+        logger.info(f'number_of_applicants = {number_of_applicants}')
+        logger.info(f'listing_pay = {listing_pay}')
+        logger.info(f'listing_deadline = {listing_deadline}')
+        logger.info(f'listing_openings = {listing_openings}')
+        logger.info(f'listing_req_gpa = {listing_req_gpa}')
+        logger.info(f'companyid = {companyid}')
+        logger.info(f'id = {id}')
+
+
+        if st.button('Post Job Listing',
+                     type='primary',
+                     use_container_width=True):
+            post_data = {'listing_title': listing_title,
+                         'listing_description': listing_description,
+                         'number_of_applicants': number_of_applicants,
+                         'listing_pay': listing_pay,
+                         'listing_deadline': listing_deadline.isoformat(),
+                         'listing_openings': listing_openings,
+                         'listing_req_gpa': listing_req_gpa,
+                         'companyid': companyid,
+                         'id': id}
+
+            r = requests.put(f'http://api:4000/admin/update_app', json=post_data)
+            st.write(r)
+
+
 

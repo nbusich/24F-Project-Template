@@ -6,11 +6,13 @@ from flask import current_app
 from backend.db_connection import db
 from datetime import datetime
 
-#------------------------------------------------------------
+
 # Create a new Blueprint object, which is a collection of 
 # routes.
 admins = Blueprint('admins', __name__)
-#------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+
 # Gets system status for queries, uptime, and cursers
 @admins.route('/dashboard', methods=['GET'])
 def get_dashboard():
@@ -23,23 +25,58 @@ def get_dashboard():
     response.status_code = 200
     return response
 
-#------------------------------------------------------------
-# Update change info for change with particular changeID
-@admins.route('/changelog/<changeID>', methods=['PUT'])
-def update_change(changeID):
-    current_app.logger.info('PUT /changelog/<changeID> route')
-    change_info = request.json
-    description = change_info['description']
-    changerID = change_info['changerID']
+#------------------------------------------------------------------------------
 
-    query = 'UPDATE changes SET description = %s, changerID = %s WHERE id = %s'
-    data = (description, changerID, changeID)
-    cursor = db.get_db().cursor()
-    r = cursor.execute(query, data)
-    db.get_db().commit()
-    return 'change updated!'
+@admins.route('/update_app', methods=['PUT'])
+def update_change():
+    current_app.logger.info('PUT /update_app route')
+    the_data = request.json
 
-#------------------------------------------------------------
+    # Extracting variables from the request
+    title = the_data['listing_title']
+    description = the_data['listing_description']
+    applicants = the_data['number_of_applicants']
+    pay = the_data['listing_pay']
+    deadline = the_data['listing_deadline']
+    openings = the_data['listing_openings']
+    gpa = the_data['listing_req_gpa']
+    companyID = the_data['companyid']
+    job_id = the_data['id']
+
+    query = '''UPDATE jobListing SET 
+        title = %s,
+        description = %s,
+        numApplicants = %s,
+        payPerHour = %s,
+        applicationDeadline = %s,
+        numOpenings = %s,
+        requiredGPA = %s,
+        companyID = %s 
+        WHERE id = %s'''
+
+    data = (title, description, applicants, pay, deadline, openings, gpa, companyID, job_id)
+
+    try:
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+
+        if cursor.rowcount > 0:
+            response = make_response("Successfully updated job listing")
+            response.status_code = 200
+        else:
+            response = make_response("No rows updated, check the ID")
+            response.status_code = 404
+    except Exception as e:
+        db.get_db().rollback()
+        response = make_response(f"Error updating job listing: {str(e)}")
+        response.status_code = 500
+
+    return response
+
+
+#------------------------------------------------------------------------------
+
 # Gets the changelog's most recent changes
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -74,7 +111,8 @@ def get_changes():
     return response
 
 
-#------------------------------------------------------------
+#------------------------------------------------------------------------------
+
 # Creates a change in the changelog
 @admins.route('/changelog/<changerid>', methods=['POST'])
 def add_newest_change(changerid):
@@ -97,24 +135,34 @@ def add_newest_change(changerid):
     response.status_code = 200
     return response
 
-#------------------------------------------------------------
-# Deletes a change in the changelog
-@admins.route('/changelog/<changeid>', methods=['DELETE'])
-def delete_change(changeid):
+#------------------------------------------------------------------------------
+# Bans a user
+@admins.route('/delete_user/<userid>/<username>', methods=['DELETE'])
+def delete_user(userid, username):
+    query = """
+        DELETE FROM user WHERE id=%s AND username=%s;
+    """
+    data = (userid, username)
 
-    query = f"""
-        DELETE FROM changes WHERE id=%s;"""
-    data = (changeid)
-    # executing and committing the insert statement
-    cursor = db.get_db().cursor()
-    cursor.execute(query, data)
-    db.get_db().commit()
+    try:
+        # Execute and commit the delete statement
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
 
-    response = make_response("Successfully added change")
-    response.status_code = 200
+        # Success response
+        response = make_response("Successfully deleted user")
+        response.status_code = 200
+    except Exception as e:
+        # Rollback on error
+        db.get_db().rollback()
+        response = make_response(f"Error deleting user: {str(e)}")
+        response.status_code = 500
+
     return response
 
-#------------------------------------------------------------
+
+#------------------------------------------------------------------------------
 
 @admins.route('/articles_per_month', methods=['GET'])
 def get_articles_per_month():
@@ -149,7 +197,7 @@ def get_articles_per_month():
 
     return response
 
-#------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 @admins.route('/users_joined_per_week', methods=['GET'])
 def get_users_joined_per_week():
@@ -184,7 +232,7 @@ def get_users_joined_per_week():
 
     return response
 
-#------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 @admins.route('/jobs_listed_per_week', methods=['GET'])
 def get_jobs_listed_per_week():
@@ -219,7 +267,7 @@ def get_jobs_listed_per_week():
 
     return response
 
-#------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 @admins.route('/messages_sent_per_week', methods=['GET'])
 def get_messages_sent_per_week():
@@ -254,7 +302,7 @@ def get_messages_sent_per_week():
 
     return response
 
-#------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 @admins.route('/user_count_per_role', methods=['GET'])
 def get_user_count_per_role():
@@ -285,7 +333,7 @@ def get_user_count_per_role():
 from flask import jsonify, make_response
 import logging
 
-#------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 @admins.route('/applications_per_job_listing', methods=['GET'])
 def get_applications_per_job_listing():
@@ -315,7 +363,7 @@ def get_applications_per_job_listing():
     return response
 
 
-#------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 @admins.route('/average_gpa_per_job_listing', methods=['GET'])
 def get_average_gpa_per_job_listing():
@@ -346,7 +394,7 @@ def get_average_gpa_per_job_listing():
     response.status_code = 200
     return response
 
-#------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 @admins.route('/most_common_majors', methods=['GET'])
 def get_most_common_majors():
@@ -373,7 +421,8 @@ def get_most_common_majors():
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
-#------------------------------------------------------------
+
+#------------------------------------------------------------------------------
 
 @admins.route('/applications_per_week', methods=['GET'])
 def get_applications_per_week():
@@ -536,6 +585,7 @@ def get_table_row_counts():
         return make_response(jsonify({'error': 'Internal Server Error'}), 500)
 
 #------------------------------------------------------------------------------
+
 @admins.route('/make_change', methods=['POST'])
 def add_new_change():
     # In a POST request, there is a
@@ -561,8 +611,8 @@ def add_new_change():
     db.get_db().commit()
 
 
-    response = make_response("Successfully added job listing")
+    response = make_response("Successfully logged change")
     response.status_code = 200
     return response
 
-
+#------------------------------------------------------------------------------
