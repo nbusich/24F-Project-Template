@@ -57,6 +57,15 @@ if st.button("Act as John, a Political Strategy Advisor",
     logger.info("Logging in as Political Strategy Advisor Persona")
     st.switch_page('pages/00_Pol_Strat_Home.py')
 
+# log in as John the alumn
+if st.button("Act as John, a Northeastern Alumnus", 
+            type = 'primary', 
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'alumnus'
+    st.session_state['first_name'] = 'John'
+    st.switch_page('pages/AL_1_alumnus_profile.py')
+
 if st.button('Act as Catumbulo, an Northeastern Co-op Advisor', 
             type = 'primary', 
             use_container_width=True):
