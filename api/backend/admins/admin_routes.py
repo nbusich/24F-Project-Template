@@ -77,7 +77,7 @@ def get_changes():
 #------------------------------------------------------------
 # Creates a change in the changelog
 @admins.route('/changelog/<changerid>', methods=['POST'])
-def add_new_change(changerid):
+def add_newest_change(changerid):
     # In a POST request, there is a
     # collecting data from the request object
     the_data = request.json
@@ -544,7 +544,6 @@ def add_new_change():
     current_app.logger.info(the_data)
 
     # extracting the variable
-
     description = the_data['description']
     changerID = the_data['changerID']
 

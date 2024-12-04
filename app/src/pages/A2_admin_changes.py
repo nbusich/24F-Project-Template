@@ -66,6 +66,6 @@ with tab2:
                      'description': description, 'changerID': changerID
                      }
 
-        r = requests.post(f'http://api:4000/comp/make_change', json=post_data)
+        r = requests.post(f'http://api:4000/admin/make_change', json=post_data)
         st.write(r)
 

@@ -86,10 +86,7 @@ ORDER BY
     application_count DESC;
 
 
-#-------------------------------------------------------------------
-DELETE FROM article where id = %s
-DELETE FROM jobListing where id = %s;
-DELETE FROM user WHERE id = %s;
+#-------------------------------------------------------------------ç
 
 SHOW VARIABLES LIKE 'performance_schema';
 SELECT * FROM performance_schema.events_statements_summary_global_by_event_name
@@ -119,4 +116,9 @@ WHERE
 ORDER BY
     size_mb DESC;
 
-SELECT * FROM performance_schema.events_statements_summary_global_by_event_name
+SELECT * FROM changes ORDER BY lastChange DESC LIMIT 10;
+
+INSERT INTO changes (description,
+                            changerID)
+         VALUES ('OPTIMIZED QUERIES','16')
+DELETE FROM changes WHERE id = 101;
