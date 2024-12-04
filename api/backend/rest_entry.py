@@ -8,6 +8,7 @@ from backend.simple.simple_routes import simple_routes
 import os
 from dotenv import load_dotenv
 from backend.admins.admin_routes import admins
+from backend.advisors.advisor_routes import advisors
 
 
 def create_app():
@@ -47,6 +48,7 @@ def create_app():
     app.register_blueprint(products,    url_prefix='/p')
     app.register_blueprint(companies,   url_prefix='/comp')
     app.register_blueprint(admins, url_prefix='/admin')
+    app.register_blueprint(advisors, url_prefix='/advisors')
     app.register_blueprint(alumnus, url_prefix='/alumnus')
 
 

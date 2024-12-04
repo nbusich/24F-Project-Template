@@ -60,7 +60,7 @@ def AdminDash():
     )
 def AdminChange():
     st.sidebar.page_link(
-        "pages/A2_admin_changes.py", label="View Changes", icon="✏️"
+        "pages/A2_admin_changes.py", label="Changes", icon="✏️"
     )
 def AdminUsage():
     st.sidebar.page_link(
@@ -128,8 +128,11 @@ def SideBarLinks(show_home=False):
         if st.session_state["role"] == "company":
             CompanyNav()
 
+        # All authenticated users get to use the Explore page
+        if st.session_state["authenticated"]:
+            ExploreListingsNav()
 
-    # Always show the Explore and About pages at the bottom of the list of links
+    # Always show the About page at the bottom of the list of links
     AboutPageNav()
 
     if st.session_state["authenticated"]:
