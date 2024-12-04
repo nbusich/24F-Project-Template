@@ -60,7 +60,7 @@ def AdminDash():
     )
 def AdminChange():
     st.sidebar.page_link(
-        "pages/A2_admin_changes.py", label="View Changes", icon="✏️"
+        "pages/A2_admin_changes.py", label="Changes", icon="✏️"
     )
 def AdminUsage():
     st.sidebar.page_link(

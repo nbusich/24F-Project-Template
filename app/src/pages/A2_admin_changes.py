@@ -92,6 +92,7 @@ with tab2:
                 st.warning("Please enter both User ID and Username")
 
     with st.container(border = True):
+        st.markdown("Update Job Listing")
         listing_title = st.text_input('Title')
 
         # create a 4 column layout
@@ -138,7 +139,7 @@ with tab2:
         logger.info(f'id = {id}')
 
 
-        if st.button('Post Job Listing',
+        if st.button('Update Job Listing',
                      type='primary',
                      use_container_width=True):
             post_data = {'listing_title': listing_title,

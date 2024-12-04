@@ -92,12 +92,12 @@ SHOW VARIABLES LIKE 'performance_schema';
 SELECT * FROM performance_schema.events_statements_summary_global_by_event_name
 
 ####################################################################################
-SELECT
-    EVENT_NAME, ROUND(SUM_TIMER_WAIT/COUNT_STAR/1000000000000, 6) AS avg_exec_time_ms
-FROM
-    performance_schema.events_statements_summary_global_by_event_name
-WHERE
-    COUNT_STAR > 0 AND EVENT_NAME LIKE 'statement/sql/%';
+# SELECT
+#     EVENT_NAME, ROUND(SUM_TIMER_WAIT/COUNT_STAR/1000000000000, 6) AS avg_exec_time_ms
+# FROM
+#     performance_schema.events_statements_summary_global_by_event_name
+# WHERE
+#     COUNT_STAR > 0 AND EVENT_NAME LIKE 'statement/sql/%';
 ####################################################################################
 
 SHOW GLOBAL STATUS LIKE 'Slow_queries';
