@@ -3,11 +3,23 @@ import pandas as pd
 import requests
 from modules.nav import SideBarLinks
 import plotly.express as px
+import matplotlib.pyplot as plt
 
-SideBarLinks()
+########################################################################
+# $$ average_query_execution_time
+# $$ number_of_slow_queries
+# $$ number_of_connections
+# $$ database_uptime
+# table_sizes
+# table_row_counts
+#########################################################################
 
 # Base URL for your API
 BASE_URL = 'http://api:4000/admin'
+SideBarLinks()
+st.header("**Database Analytics**")
+col1, col2 = st.columns(2)
+
 
 # Function to fetch data from API endpoints
 def fetch_data(endpoint):
@@ -21,8 +33,6 @@ def fetch_data(endpoint):
         st.error(f"Error fetching data from {endpoint}: {e}")
         return None
 
-# Set the page title
-st.title('Database Analytics Dashboard')
 
 # Fetch data for new metrics
 avg_query_time_data = fetch_data('average_query_execution_time')
@@ -32,74 +42,81 @@ number_of_slow_queries_data = fetch_data('number_of_slow_queries')
 table_sizes_data = fetch_data('table_sizes')
 table_row_counts_data = fetch_data('table_row_counts')
 
-# Display metrics
-col1, col2, col3 = st.columns(3)
-
 with col1:
-    avg_time = 'N/A'
-    if avg_query_time_data:
-        if isinstance(avg_query_time_data, list) and len(avg_query_time_data) > 0:
-            avg_time = avg_query_time_data[0].get('average_query_execution_time_ms', 'N/A')
-        elif isinstance(avg_query_time_data, dict):
-            avg_time = avg_query_time_data.get('average_query_execution_time_ms', 'N/A')
-    st.metric(label="Average Query Time (ms)", value=avg_time)
+    with st.container(height = 180, border = True):
+        st.write("##### Query Metrics")
+
+        response = requests.get('http://api:4000/admin/average_query_execution_time').json()
+        df = pd.DataFrame(response)
+        st.write(f"**Average SELECT Execution Time**: {df['avg_exec_time_ms'][0]} ms")
+
+
+        response = requests.get('http://api:4000/admin/number_of_slow_queries').json()
+        df = pd.DataFrame(response)
+        st.write(f"**Number of Slow Queries**: {df['Value'][0]}")
+
+        response = requests.get('http://api:4000/admin/dashboard').json()
+        df = pd.DataFrame(response)
+        st.write(f"**Number of Queries Run**: {df['Value'][0]}")
 
 with col2:
-    num_connections = 'N/A'
-    if number_of_connections_data:
-        if isinstance(number_of_connections_data, list) and len(number_of_connections_data) > 0:
-            num_connections = number_of_connections_data[0].get('number_of_connections', 'N/A')
-        elif isinstance(number_of_connections_data, dict):
-            num_connections = number_of_connections_data.get('number_of_connections', 'N/A')
-    st.metric(label="Number of Connections", value=num_connections)
+    with st.container(height=180, border=True):
+        st.write("##### Database Metrics")
 
-with col3:
-    uptime_hours = 'N/A'
-    if database_uptime_data:
-        if isinstance(database_uptime_data, list) and len(database_uptime_data) > 0:
-            uptime_seconds = int(database_uptime_data[0].get('database_uptime_seconds', 0))
-        elif isinstance(database_uptime_data, dict):
-            uptime_seconds = int(database_uptime_data.get('database_uptime_seconds', 0))
-        else:
-            uptime_seconds = 0
-        uptime_hours = round(uptime_seconds / 3600, 2)
-    st.metric(label="Database Uptime (hours)", value=uptime_hours)
+        response = requests.get('http://api:4000/admin/number_of_connections').json()
+        df = pd.DataFrame(response)
+        st.write(f"**Connected Threads**: {df['Value'][0]}")
 
-# Second row of metrics
-col4, col5 = st.columns(2)
+        response = requests.get('http://api:4000/admin/database_uptime').json()
+        df = pd.DataFrame(response)
+        st.write(f"**Database Uptime**: {df['Value'][0]} seconds")
 
-with col4:
-    slow_queries = 'N/A'
-    if number_of_slow_queries_data:
-        if isinstance(number_of_slow_queries_data, list) and len(number_of_slow_queries_data) > 0:
-            slow_queries = number_of_slow_queries_data[0].get('number_of_slow_queries', 'N/A')
-        elif isinstance(number_of_slow_queries_data, dict):
-            slow_queries = number_of_slow_queries_data.get('number_of_slow_queries', 'N/A')
-    st.metric(label="Number of Slow Queries", value=slow_queries)
-
-with col5:
-    # Calculate total database size
-    if table_sizes_data:
-        if isinstance(table_sizes_data, list):
-            total_db_size = sum(float(item['size_mb']) for item in table_sizes_data)
-            st.metric(label="Database Size (MB)", value=round(total_db_size, 2))
+        # Calculate total database size
+        if table_sizes_data:
+            if isinstance(table_sizes_data, list):
+                total_db_size = sum(float(item['size_mb']) for item in table_sizes_data)
+                st.write(f"**Database Size**: {round(total_db_size, 2)} (MB)")
+            else:
+                st.metric(label="Database Size (MB)", value='N/A')
         else:
             st.metric(label="Database Size (MB)", value='N/A')
+
+
+
+
+response = requests.get('http://api:4000/admin/average_query_execution_time').json()
+df = pd.DataFrame(response)
+fig = px.bar(
+    df,
+    x='EVENT_NAME',
+    y='avg_exec_time_ms',
+    color='EVENT_NAME',
+    title="Average Execution Time (ms)",
+    labels={
+        "EVENT_NAME": "Event Type",  # Custom x-axis title
+        "avg_exec_time_ms": "Execution Time (ms)" # Custom y-axis title
+    },
+    width=400,
+    height=400
+)
+with st.container(height=450, border=True):
+    st.plotly_chart(fig, use_container_width=True, on_select="rerun")
+
+
+
+with st.container(height=500, border=True):
+    # Display table sizes
+    if table_sizes_data and isinstance(table_sizes_data, list) and len(table_sizes_data) > 0:
+        table_sizes_df = pd.DataFrame(table_sizes_data)
+        fig = px.bar(table_sizes_df, x='TABLE_NAME', y='size_mb', title='Table Sizes')
+        st.plotly_chart(fig)
     else:
-        st.metric(label="Database Size (MB)", value='N/A')
-
-# Display table sizes
-if table_sizes_data and isinstance(table_sizes_data, list) and len(table_sizes_data) > 0:
-    table_sizes_df = pd.DataFrame(table_sizes_data)
-    fig = px.bar(table_sizes_df, x='TABLE_NAME', y='size_mb', title='Table Sizes')
-    st.plotly_chart(fig)
-else:
-    st.write("No data available for table sizes.")
-
-# Display number of rows per table
-if table_row_counts_data and isinstance(table_row_counts_data, list) and len(table_row_counts_data) > 0:
-    table_row_counts_df = pd.DataFrame(table_row_counts_data)
-    fig = px.bar(table_row_counts_df, x='TABLE_NAME', y='TABLE_ROWS', title='Rows per Table')
-    st.plotly_chart(fig)
-else:
-    st.write("No data available for table row counts.")
+        st.write("No data available for table sizes.")
+with st.container(height=500, border=True):
+    # Display number of rows per table
+    if table_row_counts_data and isinstance(table_row_counts_data, list) and len(table_row_counts_data) > 0:
+        table_row_counts_df = pd.DataFrame(table_row_counts_data)
+        fig = px.bar(table_row_counts_df, x='TABLE_NAME', y='TABLE_ROWS', title='Rows per Table')
+        st.plotly_chart(fig)
+    else:
+        st.write("No data available for table row counts.")
