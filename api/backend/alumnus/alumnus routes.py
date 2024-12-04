@@ -63,11 +63,11 @@ def update_alumni_job(id):
 
 #------------------------------------------------------------
 # creates a new chat with a student, hopefully
-@alumnus.route('/chatroom/<id>', methods=['POST'])
+@alumnus.route('/chatroom/<userID>', methods=['POST'])
 def create_new_chat(id):
 
     data = request.json
-    student_id = data['studentID']
+    student_id = data['userID']
 
     query = '''
     INSERT INTO chatroom (recieverID, senderID) VALUES (%s, %s);
@@ -83,7 +83,7 @@ def create_new_chat(id):
 
 # ------------------------------------------------------------
 # Deletes a chat 
-@alumnus.route('/chatroom/<id>', methods=['DELETE'])
+@alumnus.route('/chatroom/<senderID>', methods=['DELETE'])
 def delete_chat(id):
 
     query = '''
