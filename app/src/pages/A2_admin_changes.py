@@ -5,20 +5,21 @@ import streamlit as st
 import requests
 import pandas as pd
 
-
 st.set_page_config(layout = 'wide')
 SideBarLinks()
-# Dashboard title
-st.header('Change Log')
-
-response = requests.get('http://api:4000/admin/changelog').json()
-df = pd.DataFrame(response)
 
 tab1, tab2, tab3 = st.tabs(['View Changes', 'Make Changes', 'Update Changes'])
-# Create a container for the job listings
-jobStuff = st.container(border = True)
-
 with tab1:
+
+    # Dashboard title
+    st.header('Change Log')
+
+    response = requests.get('http://api:4000/admin/changelog').json()
+    df = pd.DataFrame(response)
+
+    # Create a container for the job listings
+    jobStuff = st.container(border = True)
+
     with jobStuff:
         for i in range(-1, len(df)):
             row = st.container(border = True)
@@ -52,3 +53,19 @@ with tab1:
                 with desc:
                     if st.button('Delete' + ' change'+ f' {i}'):
                         pass
+with tab2:
+
+    st.title('Document a Change')
+    changerID = st.session_state['adminID']
+    description = st.text_area('Change Description')
+
+    if st.button('Post Job Listing',
+                 type='primary',
+                 use_container_width=True):
+        post_data = {
+                     'description': description, 'changerID': changerID
+                     }
+
+        r = requests.post(f'http://api:4000/comp/make_change', json=post_data)
+        st.write(r)
+

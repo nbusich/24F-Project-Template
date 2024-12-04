@@ -80,7 +80,7 @@ if st.button('Act as Winston, System Administrator',
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
-    st.session_state['first_name'] = 'Winston'
+    st.session_state['adminID'] = 16
     st.switch_page('pages/A1_admin_home.py')
 
 

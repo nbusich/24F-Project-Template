@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 # $$ number_of_slow_queries
 # $$ number_of_connections
 # $$ database_uptime
-# table_sizes
-# table_row_counts
+# $$ table_sizes
+# $$ table_row_counts
 #########################################################################
 
 # Base URL for your API
