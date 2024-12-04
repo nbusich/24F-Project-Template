@@ -213,14 +213,32 @@ def delete_chat(id):
 # Update student info for student with particular ID
 @advisors.route('/updateStudent', methods=['PUT'])
 def update_student():
-    current_app.logger.info('PUT /student route')
-    stud_info = request.json
-    stud_id = stud_info['id']
-    stud_resume = stud_info['resume']
+    current_app.logger.info('PUT /updateStudent route')
 
-    query = 'UPDATE student SET resume = %s where id = %s'
-    data = (stud_id, stud_resume)
-    cursor = db.get_db().cursor()
-    r = cursor.execute(query, data)
-    db.get_db().commit()
-    return 'customer updated!'
+    stud_info = request.json
+    student_id = stud_info['student_id']
+    advisor_id = stud_info['advisor_id']
+    resume = stud_info['resume']
+
+    query = 'UPDATE student SET advisorID = %s, resume = %s WHERE id = %s'
+    data = (advisor_id, resume, student_id)
+
+    try:
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+
+        if cursor.rowcount > 0:
+            response = make_response("Successfully updated student")
+            response.status_code = 200
+        else:
+            response = make_response("No rows updated, check the ID")
+            response.status_code = 404
+    except Exception as e:
+        db.get_db().rollback()
+        current_app.logger.error(f"Error updating student: {str(e)}", exc_info=True)
+        response = make_response(f"Error updating student: {str(e)}")
+        response.status_code = 500
+
+    return response
+
