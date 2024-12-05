@@ -1,5 +1,5 @@
 ##################################################
-# Student Connections
+# Advisor Coffee Chat
 ##################################################
 
 import logging
@@ -12,7 +12,6 @@ st.set_page_config(layout='wide')
 
 # Sidebar links for the role of the currently logged-in user
 SideBarLinks()
-
 st.write("\n")
 st.markdown(
     """

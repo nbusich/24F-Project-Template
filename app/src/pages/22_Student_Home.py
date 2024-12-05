@@ -23,10 +23,10 @@ if st.button('💼 Related Co-op Opportunities', type='primary', use_container_w
     st.switch_page('pages/23_Coop_Opportunities.py')
 
 if st.button('📅 Schedule an Advising Session', type='primary', use_container_width=True):
-    st.switch_page('pages/24_Advisor_Scheduler.py')
+    st.switch_page('pages/24_Advisor_Coffee_Chat.py')
 
 if st.button('☕️ Connect with Alumni & Peers', type='primary', use_container_width=True):
-    st.switch_page('pages/25_Connections.py')
+    st.switch_page('pages/25_Student_Connections.py')
 
 st.write("\n")
 st.markdown(
