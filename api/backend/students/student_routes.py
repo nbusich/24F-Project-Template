@@ -54,13 +54,19 @@ def get_student(student_id):
     cursor.execute(query, (student_id,))
     result = cursor.fetchone()
 
-    if result:
-        response = make_response(jsonify(result), 200)
-  
-    else:
-        response = make_response({"error": f"Student not found"}), 404
+    if not result:
+        return make_response({"error": f"Student not found"}), 404)
 
-    return response
+    student_data = {
+        "id": result[0],
+        "firstName": result[1],
+        "lastName": result[2],
+        "major": result[4],
+        "minor": result[5],
+        "graduation_year": result[6],
+        "resume": result[7]
+    }
+    return jsonify(student_data), 200
 
 # ------------------------------------------------------------
 # This is a GET route for all students.
