@@ -43,35 +43,29 @@ def add_student():
 # This is a GET route for a specific student by ID.
 @students.route('/students/<student_id>', methods=['GET'])
 def get_student(student_id):
-    try:
-        query = '''
-            SELECT id, name, email, major, graduation_year
-            FROM Student
-            WHERE id = %s
-        '''
-        current_app.logger.info(f"Querying database for student ID: {student_id}")
+    query = '''
+        SELECT id, firstName, lastName, bio, major, minor, graduation_year, resume
+        FROM Student
+        WHERE id = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (student_id,))
+    result = cursor.fetchone()
 
-        cursor = db.get_db().cursor()
-        cursor.execute(query, (student_id,))
-        result = cursor.fetchone()
+    if not result:
+        return jsonify({"error": f"Student not found"}), 404
 
-        if not result:
-            return jsonify({"error": f"Student with ID {student_id} not found"}), 404
+    student_data = {
+        "id": result[0],
+        "firstName": result[1],
+        "lastName": result[2],
+        "major": result[4],
+        "minor": result[5],
+        "graduation_year": result[6],
+        "resume": result[7]
+    }
 
-        student_data = {
-            "id": result[0],
-            "name": result[1],
-            "email": result[2],
-            "major": result[3],
-            "graduation_year": result[4]
-        }
-
-        return jsonify(student_data), 200
-
-    except Exception as e:
-        # Log the error and return a server error response
-        current_app.logger.error(f"Error fetching student data: {e}")
-        return jsonify({"error": "An unexpected error occurred"}), 500
+    return jsonify(student_data), 200
 
 # ------------------------------------------------------------
 # This is a GET route for all students.
