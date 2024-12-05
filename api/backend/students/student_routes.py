@@ -11,12 +11,12 @@ from backend.db_connection import db
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-students = Blueprint('student', __name__)
+get_all_students = Blueprint('student', __name__)
 
 
 # ------------------------------------------------------------
 # This is POST route to add a new student.
-@student.route('/student', methods=['POST'])
+@students.route('/students', methods=['POST'])
 def add_student():
     the_data = request.json
     current_app.logger.info(the_data)
@@ -41,7 +41,7 @@ def add_student():
 
 # ------------------------------------------------------------
 # This is a GET route for a specific student by ID.
-@student.route('/student/<student_id>', methods=['GET'])
+@students.route('/students/<student_id>', methods=['GET'])
 def get_student(student_id):
     query = f'''
         SELECT id, name, email, major, graduation_year
@@ -59,7 +59,7 @@ def get_student(student_id):
 
 # ------------------------------------------------------------
 # This is a GET route for all students.
-@student.route('/students', methods=['GET'])
+@students.route('/students', methods=['GET'])
 def get_all_students():
     query = '''
         SELECT id, name, email, major, graduation_year
@@ -77,7 +77,7 @@ def get_all_students():
 
 # ------------------------------------------------------------
 # This is a PUT Route for specific students.
-@student.route('/student/<student_id>', methods=['PUT'])
+@students.route('/students/<student_id>', methods=['PUT'])
 def update_student(student_id):
     the_data = request.json
     current_app.logger.info(the_data)
@@ -103,7 +103,7 @@ def update_student(student_id):
 
 # ------------------------------------------------------------
 # This is DELETE route for specific students.
-@student.route('/student/<student_id>', methods=['DELETE'])
+@students.route('/students/<student_id>', methods=['DELETE'])
 def delete_student(student_id):
     query = f'''
         DELETE FROM Student
