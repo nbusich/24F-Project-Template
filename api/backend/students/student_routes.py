@@ -120,7 +120,7 @@ def delete_student(student_id):
 
 # ------------------------------------------------------------
 # This is a GET route for specific students.
-@students.route('/students/<student_id>/coop_jobs', methods=['GET'])
+@students.route('/students/<studentid>/coop_jobs', methods=['GET'])
 def get_coop_jobs(student_id):
     # Query to find the student's major using their unique ID
     query_student = f'''

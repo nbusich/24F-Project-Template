@@ -76,7 +76,7 @@ def StudentDash():
 
 def Links():
     st.sidebar.page_link("pages/22_Student_Home.py", label="Useful Links", icon="📎")
-    
+
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=False):
     """
@@ -136,6 +136,20 @@ def SideBarLinks(show_home=False):
         # All authenticated users get to use the Explore page
         if st.session_state["authenticated"]:
             ExploreListingsNav()
+
+        # If the user is a student, given them access to student pages.
+        if st.session_state["role"] == "student":
+            st.sidebar.write("### Student Links")
+            st.sidebar.page_link("pages/22_Student_Home.py", label="Student Dashboard", icon="🗂️")
+
+            # Quick Links Section for students
+            st.sidebar.write("\n")  # Adding space before Quick Links
+            st.sidebar.write("### Useful Links")
+            st.sidebar.write("""
+            - [Northeastern Co-op Portal](https://northeastern-csm.symplicity.com/students/?signin_tab=0)
+            - [Academic Calendar](https://registrar.northeastern.edu/calendar)
+            - [Student Support Services](https://studentlife.northeastern.edu/)
+            """)
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()

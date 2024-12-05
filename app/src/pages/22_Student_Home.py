@@ -28,15 +28,6 @@ if st.button('📅 Schedule an Advising Session', type='primary', use_container_
 if st.button('🤝 Connect with Alumni & Peers', type='primary', use_container_width=True):
     st.switch_page('pages/25_Connections.py')
 
-# Additional features section
-st.write("\n")
-st.write("### Quick Links")
-st.write("""
-- [Northeastern Co-op Portal](https://northeastern-csm.symplicity.com/students/?signin_tab=0)
-- [Academic Calendar](https://registrar.northeastern.edu/calendar)
-- [Student Support Services](https://studentlife.northeastern.edu/)
-""")
-
 st.write("\n")
 st.markdown(
     """
