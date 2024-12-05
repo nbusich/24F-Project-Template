@@ -20,20 +20,14 @@ st.title(f"Welcome, {st.session_state.get('first_name', 'Vinny')}!")
 st.write('### What would you like to do today?')
 st.write("Select one of the options below to get started:")
 
-# Action Buttons for Key Features
-col1, col2, col3 = st.columns(3)
+if st.button('🔍 Explore Co-op Opportunities', type='primary', use_container_width=True):
+    st.switch_page('pages/23_Coop_Opportunities.py')
 
-with col1:
-    if st.button('🔍 Explore Co-op Opportunities', type='primary', use_container_width=True):
-        st.switch_page('pages/23_Coop_Opportunities.py')
+if st.button('📅 Schedule an Advising Session', type='primary', use_container_width=True):
+    st.switch_page('pages/24_Advisor_Scheduler.py')
 
-with col2:
-    if st.button('📅 Schedule an Advising Session', type='primary', use_container_width=True):
-        st.switch_page('pages/24_Advisor_Scheduler.py')
-
-with col3:
-    if st.button('🤝 Connect with Alumni & Peers', type='primary', use_container_width=True):
-        st.switch_page('pages/25_Connections.py')
+if st.button('🤝 Connect with Alumni & Peers', type='primary', use_container_width=True):
+    st.switch_page('pages/25_Connections.py')
 
 # Additional Features Section
 st.write("\n")
