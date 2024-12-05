@@ -94,7 +94,7 @@ def SideBarLinks(show_home=False):
         if st.session_state["role"] == "student":
             st.sidebar.write("### Student Links")
             StudentDash()
-            Links()
+            StudentLinks()
         
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
