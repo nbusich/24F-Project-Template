@@ -40,7 +40,7 @@ def CompanyNav():
 def StudentDash():
     st.sidebar.page_link("pages/22_Student_Home.py", label="Student Dashboard", icon="🗂️")
 
-def Links():
+def StudentLinks():
     st.sidebar.page_link("pages/26_Useful_Links.py", label="Useful Links", icon="📎")
 
 # --------------------------------Links Function -----------------------------------------------
