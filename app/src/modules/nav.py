@@ -69,7 +69,6 @@ def SideBarLinks(show_home=False):
         st.switch_page("Home.py")
 
     # Always show the Home page and show the About page at the bottom of the list of links
-    HomeNav()
     AboutPageNav()
 
     # Show the other page navigators depending on the users' role.
@@ -77,6 +76,7 @@ def SideBarLinks(show_home=False):
 
         # All authenticated users get to use the Explore page
         if st.session_state["authenticated"]:
+            HomeNav()
             ExploreListingsNav()
 
         # If the user is an administrator, give them access to the administrator pages
