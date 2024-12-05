@@ -70,6 +70,14 @@ if st.button('Act as Winston, System Administrator',
     st.session_state['adminID'] = 16
     st.switch_page('pages/A1_admin_home.py')
 
+if st.button('Act as Vinny, a Northeastern Undergraduate Student',
+            type='primary',
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'undergrad_student'
+    st.session_state['first_name'] = 'Vinny'
+    st.switch_page('pages/18_Student_Home.py')
+
 
 
 

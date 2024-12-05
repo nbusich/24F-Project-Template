@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 from backend.admins.admin_routes import admins
 from backend.advisors.advisor_routes import advisors
+from backend.students.student_routes import students
 
 
 def create_app():
