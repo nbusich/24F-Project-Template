@@ -33,7 +33,7 @@ def fetch_student_data(student_id):
         response.raise_for_status()
         return response.json()
     except Exception as e:
-        st.warning(f"Failed to fetch data from {endpoint}. Using dummy data.")
+        st.warning(f"Failed to fetch data from {endpoint}.")
         logger.error(f"API Error: {e}")
         return None
 
