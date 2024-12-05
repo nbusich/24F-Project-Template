@@ -5,14 +5,16 @@
 import streamlit as st
 import requests
 
-# Page title
-st.title("Recommended Co-op Opportunities")
-st.write("Browse co-op job listings relevant to your major.")
+st.set_page_config(layout='wide')
 
-# Select the student's major
-major = st.selectbox("Select your major:", ["Computer Science", "Business", "Engineering", "Biology", "Other"])
+# Sidebar links for the role of the currently logged-in user
+SideBarLinks()
 
-# Display relevant job listings based on selected major
+st.title("Co-op Analysis")
+
+# Select user major
+major = st.selectbox("Select your major:", ["Computer Science", "Business", "Engineering", "Biology", "Chemistry", "Education", "Finance", "Mathematics", "Physics"])
+
 st.write(f"### Co-op Opportunities for {major} Majors:")
 
 # HTTP GET request to fetch job listings based on major
