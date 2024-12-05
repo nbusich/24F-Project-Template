@@ -33,7 +33,7 @@ if st.button('🤝 Connect with Alumni & Peers', type='primary', use_container_w
 st.write("\n")
 st.write("### Quick Links")
 st.write("""
-- [Northeastern Co-op Portal](https://www.northeastern.edu/coop)
+- [Northeastern Co-op Portal](https://northeastern-csm.symplicity.com/students/?signin_tab=0)
 - [Academic Calendar](https://registrar.northeastern.edu/calendar)
 - [Student Support Services](https://studentlife.northeastern.edu/)
 """)
