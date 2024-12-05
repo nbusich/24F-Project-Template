@@ -44,12 +44,6 @@ st.divider()
 
 col1, col2 = st.columns(2)
 
-
-To display more student data in the Streamlit UI and add corresponding fields to the edit functionality, you can enhance the layout by adding more columns to display other student information, such as name, email, etc. You can also extend the edit functionality to update these additional fields.
-
-Here's how you can modify your code to display and edit additional student data:
-
-Updated Streamlit Code with Additional Student Data Columns & Edit Functionality
 import requests
 import logging
 logger = logging.getLogger(__name__)
