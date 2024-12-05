@@ -18,7 +18,6 @@ st.title(f"Welcome, {st.session_state.get('first_name', 'Vinny')}!")
 
 # Main Content
 st.write('### What would you like to do today?')
-st.write("Select one of the options below to get started:")
 
 if st.button('🔍 Explore Co-op Opportunities', type='primary', use_container_width=True):
     st.switch_page('pages/23_Coop_Opportunities.py')
