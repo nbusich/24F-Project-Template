@@ -10,13 +10,13 @@ from modules.nav import SideBarLinks
 
 st.set_page_config(layout='wide')
 
-# Display appropriate sidebar links for the role of the currently logged-in user
+# Sidebar links for the role of the currently logged-in user
 SideBarLinks()
 
 # Welcome
 st.title(f"Welcome, {st.session_state.get('first_name', 'Vinny')}!")
 
-# Main Content
+# Link to pages
 st.write('### What would you like to do today?')
 
 if st.button('🔍 Explore Co-op Opportunities', type='primary', use_container_width=True):
@@ -28,7 +28,7 @@ if st.button('📅 Schedule an Advising Session', type='primary', use_container_
 if st.button('🤝 Connect with Alumni & Peers', type='primary', use_container_width=True):
     st.switch_page('pages/25_Connections.py')
 
-# Additional Features Section
+# Additional features section
 st.write("\n")
 st.write("### Quick Links")
 st.write("""
@@ -37,7 +37,6 @@ st.write("""
 - [Student Support Services](https://studentlife.northeastern.edu/)
 """)
 
-# Footer
 st.write("\n")
 st.markdown(
     """

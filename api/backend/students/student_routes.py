@@ -102,7 +102,7 @@ def update_student(student_id):
     return response
 
 # ------------------------------------------------------------
-# This is DELETE route for specific students.
+# This is a DELETE route for specific students.
 @students.route('/students/<student_id>', methods=['DELETE'])
 def delete_student(student_id):
     query = f'''
@@ -117,3 +117,43 @@ def delete_student(student_id):
 
     response = make_response("Student deleted successfully", 200)
     return response
+
+# ------------------------------------------------------------
+# This is a GET route for specific students.
+@students.route('/students/<student_id>/coop_jobs', methods=['GET'])
+def get_coop_jobs(student_id):
+    # Query to find the student's major using their unique ID
+    query_student = f'''
+        SELECT major 
+        FROM Student 
+        WHERE id = {student_id}
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query_student)
+    student_major = cursor.fetchone()  # Fetch one record (tuple)
+
+    if not student_major:
+        return make_response("Student not found", 404)
+    
+    major = student_major[0]
+    
+    query_jobs = f'''
+        SELECT jl.title, jl.description, jl.numOpenings, jl.payPerHour, jl.companyID
+        FROM jobListing jl
+        JOIN relevantMajors rm ON jl.id = rm.listingID
+        WHERE rm.major = '{major}'
+    '''
+    cursor.execute(query_jobs)
+    jobs_data = cursor.fetchall()
+
+    response = [
+        {
+            "title": job[0],
+            "description": job[1],
+            "numOpenings": job[2],
+            "payPerHour": job[3],
+            "companyID": job[4]
+        } 
+        for job in jobs_data
+    ]
+    return make_response(jsonify(response), 200)
