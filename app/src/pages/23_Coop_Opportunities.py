@@ -17,9 +17,8 @@ api_url = f"http://api:4000/students/{student_id}/coop_jobs"
 response = requests.get(api_url)
 
 if response.status_code == 200:
-    job_listings = response.json()  # Parse JSON response
+    job_listings = response.json()
 
-    # Display job listings or a message if none are available
     if len(job_listings) == 0:
         st.write("No co-op opportunities found for your major.")
     else:
