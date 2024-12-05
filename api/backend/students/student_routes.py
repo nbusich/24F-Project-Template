@@ -11,7 +11,7 @@ from backend.db_connection import db
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-student = Blueprint('students', __name__)
+students = Blueprint('student', __name__)
 
 
 # ------------------------------------------------------------
