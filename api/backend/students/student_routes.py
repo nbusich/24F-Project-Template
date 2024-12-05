@@ -53,7 +53,7 @@ def get_student(student_id):
         cursor.execute(query, (student_id,))
         result = cursor.fetchone()
         if not result:
-            return make_response({"error": f"Student not found"}), 404)
+            return make_response({"error": f"Student not found"}, 404)
 
         student_data = {
             "id": result[0],
