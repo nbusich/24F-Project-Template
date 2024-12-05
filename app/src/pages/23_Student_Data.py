@@ -16,7 +16,7 @@ SideBarLinks()
 st.title("Co-op Analysis: Compare Your Stats")
 
 # Fetch the current student ID from session state
-student_id = st.session_state.get('student_id', None)
+student_id = st.session_state.get('studentID')
 
 if not student_id:
     st.error("Student ID not found in session. Please log in again.")
