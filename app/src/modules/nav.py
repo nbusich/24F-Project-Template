@@ -74,13 +74,11 @@ def CompanyNav():
 def StudentDash():
     st.sidebar.page_link("pages/22_Student_Home.py", label="Student Dashboard", icon="🗂️")
 
-def Links():
-    st.sidebar.page_link("pages/22_Student_Home.py", label="Useful Links", icon="📎")
-
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=False):
     """
-    This function handles adding links to the sidebar of the app based upon the logged-in user's role, which was put in the streamlit session_state object when logging in.
+    This function handles adding links to the sidebar of the app.
+    Users do not need to be authenticated for the sidebar to show links.
     """
 
     st.markdown(
@@ -95,61 +93,32 @@ def SideBarLinks(show_home=False):
         unsafe_allow_html=True
     )
 
-    # add a logo to the sidebar always
     st.sidebar.image("assets/Coffee_stats_logo.png", width=200)
 
-    # If there is no logged in user, redirect to the Home (Landing) page
-    if "authenticated" not in st.session_state:
-        st.session_state.authenticated = False
-        st.switch_page("Home.py")
+    # Allow the user to select their role (replaces the need for authentication)
+    user_role = st.sidebar.selectbox("Select your role", ["Student", "Alumnus", "Administrator", "Advisor", "Company"])
 
-    if show_home:
-        # Show the Home page link (the landing page)
-        HomeNav()
+    # Links for all users
+    HomeNav()
+    ExploreListingsNav()
 
-    # Show the other page navigators depending on the users' role.
-    if st.session_state["authenticated"]:
+    # Show links based on the selected role
+    if user_role == "Student":
+        StudentDash()
+        st.sidebar.write("### Student Links")
+        st.sidebar.write("""
+        - [Northeastern Co-op Portal](https://northeastern-csm.symplicity.com/students/?signin_tab=0)
+        - [Academic Calendar](https://registrar.northeastern.edu/calendar)
+        - [Student Support Services](https://studentlife.northeastern.edu/)
+        """)
 
-        # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
-        if st.session_state["role"] == "pol_strat_advisor":
-            PolStratAdvHomeNav()
-            WorldBankVizNav()
-            MapDemoNav()
+    elif user_role == "Company":
+        CompanyNav()
 
-        # If the user role is usaid worker, show the Api Testing page
-        if st.session_state["role"] == "usaid_worker":
-            PredictionNav()
-            ApiTestNav()
-            ClassificationNav()
-
-        # If the user is an administrator, give them access to the administrator pages
-        if st.session_state["role"] == "administrator":
-            AdminDash()
-            AdminChange()
-            AdminUsage()
-
-
-        # If the user is an HR Contact, give them access to the company pages
-        if st.session_state["role"] == "company":
-            CompanyNav()
-
-        # All authenticated users get to use the Explore page
-        if st.session_state["authenticated"]:
-            ExploreListingsNav()
-
-        # If the user is a student, given them access to student pages.
-        if st.session_state["role"] == "student":
-            st.sidebar.write("### Student Links")
-            st.sidebar.page_link("pages/22_Student_Home.py", label="Student Dashboard", icon="🗂️")
-
-            # Quick Links Section for students
-            st.sidebar.write("\n")  # Adding space before Quick Links
-            st.sidebar.write("### Useful Links")
-            st.sidebar.write("""
-            - [Northeastern Co-op Portal](https://northeastern-csm.symplicity.com/students/?signin_tab=0)
-            - [Academic Calendar](https://registrar.northeastern.edu/calendar)
-            - [Student Support Services](https://studentlife.northeastern.edu/)
-            """)
+    elif user_role == "Administrator"
+        AdminDash()
+        AdminChange()
+        AdminUsage()
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
