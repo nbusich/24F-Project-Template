@@ -123,6 +123,10 @@ CREATE TABLE alumnus
     CONSTRAINT fk_alum_1
         FOREIGN KEY (id) REFERENCES user (id)
         ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT fk_alum_2
+        FOREIGN KEY (jobID) REFERENCES position (id)
+        ON UPDATE CASCADE
         ON DELETE CASCADE
 );
 

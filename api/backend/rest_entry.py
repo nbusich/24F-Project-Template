@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 from backend.admins.admin_routes import admins
 from backend.advisors.advisor_routes import advisors
-from backend.students.student_routes import students
+from backend.alumnus.alumnus_routes import alumnus
 
 
 def create_app():
@@ -32,7 +32,7 @@ def create_app():
     app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv('MYSQL_ROOT_PASSWORD').strip()
     app.config['MYSQL_DATABASE_HOST'] = os.getenv('DB_HOST').strip()
     app.config['MYSQL_DATABASE_PORT'] = int(os.getenv('DB_PORT').strip())
-    app.config['MYSQL_DATABASE_DB'] = os.getenv('DB_NAME').strip()  # Change this to your DB name
+    app.config['MYSQL_DATABASE_DB'] = "coffeeStats"  # Change this to your DB name
 
     # Initialize the database object with the settings above. 
     app.logger.info('current_app(): starting the database connection')
@@ -46,7 +46,6 @@ def create_app():
     app.register_blueprint(companies,   url_prefix='/comp')
     app.register_blueprint(admins, url_prefix='/admin')
     app.register_blueprint(advisors, url_prefix='/advisors')
-    app.register_blueprint(students, url_prefix='/students')
 
 
     # Don't forget to return the app object
