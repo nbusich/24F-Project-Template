@@ -69,8 +69,9 @@ if st.button('Act as Jennifer, the HR contact for Bhlarma Advance',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'company'
     st.session_state['first_name'] = 'Jennifer'
-    # For posting and accessing job listings, let's assume Jennifer represents the company with id 4
-    st.session_state['compID'] = 26
+    # For posting and accessing job listings, let's assume Jennifer represents the company with id 265
+    # This should be Bhlarma Advance
+    st.session_state['compID'] = 265
     st.session_state['current_listing'] = 1
     st.switch_page('pages/14_Company_Home.py')
 

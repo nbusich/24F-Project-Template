@@ -131,7 +131,7 @@ def access_all_joblistings ():
     
     query = f'''
         SELECT title, company.name AS 'companyName', 
-        description, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA, jobListing.id
+        description, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA, jobListing.id, company.id
         FROM jobListing JOIN company
             ON jobListing.companyID = company.id
         ORDER BY jobListing.id ASC
