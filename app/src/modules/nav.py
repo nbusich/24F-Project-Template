@@ -68,7 +68,9 @@ def SideBarLinks(show_home=False):
         st.session_state.authenticated = False
         st.switch_page("Home.py")
 
+    # Always show the Home page and show the About page at the bottom of the list of links
     HomeNav()
+    AboutPageNav()
 
     # Show the other page navigators depending on the users' role.
     if st.session_state["authenticated"]:
@@ -92,9 +94,6 @@ def SideBarLinks(show_home=False):
             st.sidebar.write("### Student Links")
             StudentDash()
             StudentLinks()
-        
-    # Always show the About page at the bottom of the list of links
-    AboutPageNav()
 
     if st.session_state["authenticated"]:
         # Always show a logout button if there is a logged in user
