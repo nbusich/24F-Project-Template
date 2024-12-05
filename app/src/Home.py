@@ -72,6 +72,8 @@ if st.button('Act as Catumbulo, an Northeastern Co-op Advisor',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'coop_advisor'
     st.session_state['first_name'] = 'Catumbulo'
+    st.session_state['adv_id'] = 41
+    #For creating and deleting chats, lets assume Catumbulo has an id of 41
     st.switch_page('pages/10_CoopAdvisor_Home.py')
 
 if st.button('Act as Jennifer, the HR contact for Bhlarma Advance', 
@@ -91,6 +93,14 @@ if st.button('Act as Winston, System Administrator',
     st.session_state['role'] = 'administrator'
     st.session_state['adminID'] = 16
     st.switch_page('pages/A1_admin_home.py')
+
+if st.button('Act as Vinny, a Northeastern Undergraduate Student',
+            type='primary',
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'student'
+    st.session_state['first_name'] = 'Vinny'
+    st.switch_page('pages/22_Student_Home.py')
 
 
 

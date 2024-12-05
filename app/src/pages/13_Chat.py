@@ -1,57 +1,42 @@
 import logging
 logger = logging.getLogger(__name__)
 import streamlit as st
-import pandas as pd
-from sklearn import datasets
-from sklearn.ensemble import RandomForestClassifier
-from streamlit_extras.app_logo import add_logo
+import requests
 from modules.nav import SideBarLinks
+
+st.set_page_config(layout='wide')
 
 SideBarLinks()
 
-st.write("""
-# Simple Iris Flower Prediction App
+st.title('Make or Delete Chats')
 
-This example is borrowed from [The Data Professor](https://github.com/dataprofessor/streamlit_freecodecamp/tree/main/app_7_classification_iris)
-         
-This app predicts the **Iris flower** type!
-""")
+# Add or delete a chat
+with st.container():
+    st.markdown('Start or Delete a Chat')
 
-st.sidebar.header('User Input Parameters')
+    # Advisor ID is fetched from session state (assumes it's already set)
+    if 'adv_id' not in st.session_state:
+        st.error("Advisor ID not found in session state. Please log in or provide credentials.")
+    else:
+        adv_id = st.session_state['adv_id']
 
-def user_input_features():
-    sepal_length = st.sidebar.slider('Sepal length', 4.3, 7.9, 5.4)
-    sepal_width = st.sidebar.slider('Sepal width', 2.0, 4.4, 3.4)
-    petal_length = st.sidebar.slider('Petal length', 1.0, 6.9, 1.3)
-    petal_width = st.sidebar.slider('Petal width', 0.1, 2.5, 0.2)
-    data = {'sepal_length': sepal_length,
-            'sepal_width': sepal_width,
-            'petal_length': petal_length,
-            'petal_width': petal_width}
-    features = pd.DataFrame(data, index=[0])
-    return features
+        # Input for company ID
+        comp_id = st.number_input('Company Id', step=1, min_value=0)
 
-df = user_input_features()
+        # Create chat button
+        if st.button('Make Chat', type='primary'):
+            # Make POST request
+            r = requests.post(f'http://api:4000/advisors/createcompanychat/{adv_id}/{comp_id}')
 
-st.subheader('User Input parameters')
-st.write(df)
+            if r.status_code == 200:
+                st.success(r.text)
+            else:
+                st.error(f"Failed to create chat: {r.text}")
 
-iris = datasets.load_iris()
-X = iris.data
-Y = iris.target
+        if st.button('Delete Chat', type='primary'):
+            response = requests.delete(f'http://api:4000/advisors/deletechat/{adv_id}/{comp_id}')
 
-clf = RandomForestClassifier()
-clf.fit(X, Y)
-
-prediction = clf.predict(df)
-prediction_proba = clf.predict_proba(df)
-
-st.subheader('Class labels and their corresponding index number')
-st.write(iris.target_names)
-
-st.subheader('Prediction')
-st.write(iris.target_names[prediction])
-#st.write(prediction)
-
-st.subheader('Prediction Probability')
-st.write(prediction_proba)
+            if response.status_code == 200:
+                st.success(response.text)
+            else:
+                st.error(f"Failed to delete chat: {response.text}")

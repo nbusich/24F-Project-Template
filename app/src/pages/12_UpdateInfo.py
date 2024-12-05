@@ -10,19 +10,30 @@ SideBarLinks()
 
 st.title('Edit Student Data')
 
-st.write("# Accessing a REST API from Within Streamlit")
+with st.container():
+    st.markdown("Update Student Info")
 
-"""
-Simply retrieving data from a REST api running in a separate Docker Container.
+    col1, col2, col3 = st.columns(3)
 
-If the container isn't running, this will be very unhappy.  But the Streamlit app 
-should not totally die. 
-"""
-data = {} 
-try:
-  data = requests.get('http://api:4000/p/products').json()
-except:
-  st.write("**Important**: Could not connect to sample api, so using dummy data.")
-  data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
+    with col1:
+        student_id = st.number_input('Student Id', step=1, min_value=0)
 
-st.dataframe(data)
+    with col2:
+        advisor_id = st.number_input('Advisor Id', step=1, min_value=0)
+
+    with col3:
+        resume = st.text_area('Student Resume')
+
+    logger.info(f'student_id = {student_id}')
+    logger.info(f'advisor_id = {advisor_id}')
+    logger.info(f'resume = {resume}')
+
+    if st.button('Update Student Info', type='primary', use_container_width=True):
+        post_data = {'student_id': student_id, 'advisor_id': advisor_id, 'resume': resume}
+
+        r = requests.put('http://api:4000/advisors/updateStudent', json=post_data)
+
+        if r.status_code == 200:
+            st.success(r.text)
+        else:
+            st.error(f"Error: {r.text} (Status code: {r.status_code})")

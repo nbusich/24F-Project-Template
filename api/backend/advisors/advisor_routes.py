@@ -149,78 +149,123 @@ def get_students_app_info(id):
 
 # ------------------------------------------------------------
 # Create a chatroom between advisor and a company from a certain application
-@advisors.route('/createcompanychat/id', methods=['POST'])
-def add_new_chat(id):
-    
-    # In a POST request, there is a 
-    # collecting data from the request object 
-    the_data = request.json
-    current_app.logger.info(the_data)
+@advisors.route('/createcompanychat/<adv_id>/<comp_id>', methods=['POST'])
+def add_new_chat(adv_id, comp_id):
+    try:
+        # Log the incoming IDs for debugging
+        current_app.logger.info(f"Advisor ID: {adv_id}, Company ID: {comp_id}")
 
-    
-    query = f'''
-        INSERT INTO chatroom (receiverID, senderID)
-        SELECT
-        advisor.id AS AdvisorID,
-        company.id AS CompanyID
-        FROM
-        application
-        JOIN
-        student ON application.applicantID = student.id
-        JOIN
-        advisor ON student.advisorID = advisor.id
-        JOIN
-        jobListing ON application.listingID = jobListing.id
-        JOIN
-        company ON jobListing.companyID = company.id
-        WHERE
-        application.id = id;
+        # Validate that the advisor and company exist
+        validation_query = '''
+            SELECT EXISTS(SELECT 1 FROM advisor WHERE id = %s) AS advisor_exists,
+                   EXISTS(SELECT 1 FROM company WHERE id = %s) AS company_exists
+        '''
+        cursor = db.get_db().cursor()
+        cursor.execute(validation_query, (adv_id, comp_id))
+        validation_result = cursor.fetchone()
 
-    '''
-    current_app.logger.info(query)
+        if not validation_result or not validation_result['advisor_exists'] or not validation_result['company_exists']:
+            response = make_response("Invalid advisor or company ID.")
+            response.status_code = 400
+            return response
 
-    # executing and committing the insert statement 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
-    
-    response = make_response("Successfully added chat")
-    response.status_code = 200
-    return response
+        # Insert a new chatroom
+        insert_query = '''
+            INSERT INTO chatroom (receiverID, senderID)
+            VALUES (%s, %s)
+        '''
+        cursor.execute(insert_query, (adv_id, comp_id))
+        db.get_db().commit()
+
+        response = make_response("Successfully added chat")
+        response.status_code = 200
+        return response
+
+    except Exception as e:
+        db.get_db().rollback()
+        current_app.logger.error(f"Error creating chatroom: {e}")
+        response = make_response(f"Error creating chatroom: {str(e)}")
+        response.status_code = 500
+        return response
 
 # ------------------------------------------------------------
 # Delete a chat 
-@advisors.route('/deletechat/id', methods=['DELETE'])
-def delete_chat(id):
+@advisors.route('/deletechat/<adv_id>/<comp_id>', methods=['DELETE'])
+def delete_chat(adv_id, comp_id):
+    try:
+        # Log the incoming IDs for debugging
+        current_app.logger.info(f"Advisor ID: {adv_id}, Company ID: {comp_id}")
 
-    
-    query = f'''
-        DELETE FROM chatroom 
-        WHERE
-        sender.id = id;
-    '''
+        # Confirm the chatroom exists
+        validation_query = '''
+            SELECT EXISTS(
+                SELECT 1 FROM chatroom 
+                WHERE receiverID = %s AND senderID = %s
+            ) AS chatroom_exists
+        '''
+        cursor = db.get_db().cursor()
+        cursor.execute(validation_query, (adv_id, comp_id))
+        validation_result = cursor.fetchone()
 
-    # executing and committing the delete statement 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
-    
-    response = make_response("Successfully deleted chat")
-    response.status_code = 200
-    return response
+        if not validation_result or not validation_result['chatroom_exists']:
+            response = make_response("Chatroom not found.")
+            response.status_code = 404
+            return response
+
+        # Delete the chatroom
+        delete_query = '''
+            DELETE FROM chatroom 
+            WHERE receiverID = %s AND senderID = %s
+        '''
+        cursor.execute(delete_query, (adv_id, comp_id))
+        db.get_db().commit()
+
+        # Confirm deletion
+        if cursor.rowcount > 0:
+            response = make_response("Successfully deleted chat")
+            response.status_code = 200
+        else:
+            response = make_response("Failed to delete chat.")
+            response.status_code = 400
+        return response
+
+    except Exception as e:
+        db.get_db().rollback()
+        current_app.logger.error(f"Error deleting chatroom: {e}")
+        response = make_response(f"Error deleting chatroom: {str(e)}")
+        response.status_code = 500
+        return response
 
 #------------------------------------------------------------
 # Update student info for student with particular ID
 @advisors.route('/updateStudent', methods=['PUT'])
 def update_student():
-    current_app.logger.info('PUT /student route')
-    stud_info = request.json
-    stud_id = stud_info['id']
-    stud_resume = stud_info['resume']
+    current_app.logger.info('PUT /updateStudent route')
 
-    query = 'UPDATE student SET resume = %s where id = %s'
-    data = (stud_id, stud_resume)
-    cursor = db.get_db().cursor()
-    r = cursor.execute(query, data)
-    db.get_db().commit()
-    return 'customer updated!'
+    stud_info = request.json
+    student_id = stud_info['student_id']
+    advisor_id = stud_info['advisor_id']
+    resume = stud_info['resume']
+
+    query = 'UPDATE student SET advisorID = %s, resume = %s WHERE id = %s'
+    data = (advisor_id, resume, student_id)
+
+    try:
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+
+        if cursor.rowcount > 0:
+            response = make_response("Successfully updated student")
+            response.status_code = 200
+        else:
+            response = make_response("No rows updated, check the ID")
+            response.status_code = 404
+    except Exception as e:
+        db.get_db().rollback()
+        current_app.logger.error(f"Error updating student: {str(e)}", exc_info=True)
+        response = make_response(f"Error updating student: {str(e)}")
+        response.status_code = 500
+
+    return response
+
