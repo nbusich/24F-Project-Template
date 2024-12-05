@@ -89,6 +89,7 @@ if st.button('Act as Vinny, a Northeastern Undergraduate Student',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'student'
     st.session_state['first_name'] = 'Vinny'
+    st.session_state['last_name'] = 'Bernardi'
     st.switch_page('pages/22_Student_Home.py')
 
 

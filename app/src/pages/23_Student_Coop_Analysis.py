@@ -13,7 +13,7 @@ st.set_page_config(layout='wide')
 # Sidebar links for the role of the currently logged-in user
 SideBarLinks()
 
-st.title("Co-op Analysis")
+st.title("Co-op Analysis: Compare Your Stats")
 
 # Select user major
 major = st.selectbox("Select your major:", ["Computer Science", "Business", "Engineering", "Biology", "Chemistry", "Education", "Finance", "Mathematics", "Physics"])

@@ -81,12 +81,14 @@ def SideBarLinks(show_home=False):
 
         # If the user is an administrator, give them access to the administrator pages
         if st.session_state["role"] == "administrator":
+            st.sidebar.write("### Administrator Links")
             AdminDash()
             AdminChange()
             AdminUsage()
 
         # If the user is an HR Contact, give them access to the company pages
         if st.session_state["role"] == "company":
+            st.sidebar.write("### Company Links")
             CompanyNav()
 
         # If the user is a student, give them access to student pages
