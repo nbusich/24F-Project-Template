@@ -19,7 +19,7 @@ st.title(f"Welcome, {st.session_state.get('first_name', 'Vinny')}!")
 # Link to pages
 st.write('### What would you like to do today?')
 
-if st.button('🔍 Explore Co-op Opportunities', type='primary', use_container_width=True):
+if st.button('🔍 Co-op Opportunities', type='primary', use_container_width=True):
     st.switch_page('pages/23_Coop_Opportunities.py')
 
 if st.button('📅 Schedule an Advising Session', type='primary', use_container_width=True):
