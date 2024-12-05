@@ -41,31 +41,26 @@ def add_student():
 
 # ------------------------------------------------------------
 # This is a GET route for a specific student by ID.
-@students.route('/students/<student_id>', methods=['GET'])
+@students.route('/students/<int:student_id>', methods=['GET'])
 def get_student(student_id):
     query = '''
         SELECT id, firstName, lastName, bio, major, minor, graduation_year, resume
         FROM Student
         WHERE id = %s
     '''
+    current_app.logger.info(query)
+
     cursor = db.get_db().cursor()
     cursor.execute(query, (student_id,))
     result = cursor.fetchone()
 
-    if not result:
-        return jsonify({"error": f"Student not found"}), 404
+    if result:
+        response = make_response(jsonify(result), 200)
+  
+    else:
+        response = make_response({"error": f"Student not found"}), 404
 
-    student_data = {
-        "id": result[0],
-        "firstName": result[1],
-        "lastName": result[2],
-        "major": result[4],
-        "minor": result[5],
-        "graduation_year": result[6],
-        "resume": result[7]
-    }
-
-    return jsonify(student_data), 200
+    return response
 
 # ------------------------------------------------------------
 # This is a GET route for all students.
