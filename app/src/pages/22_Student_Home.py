@@ -27,9 +27,11 @@ with col1:
     if st.button('🔍 Explore Co-op Opportunities', type='primary', use_container_width=True):
         st.switch_page('pages/23_Coop_Opportunities.py')
 
+with col2:
     if st.button('📅 Schedule an Advising Session', type='primary', use_container_width=True):
         st.switch_page('pages/24_Advisor_Scheduler.py')
 
+with col3:
     if st.button('🤝 Connect with Alumni & Peers', type='primary', use_container_width=True):
         st.switch_page('pages/25_Connections.py')
 
