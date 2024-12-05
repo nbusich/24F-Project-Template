@@ -113,6 +113,20 @@ CREATE TABLE company
             ON DELETE CASCADE
 
 );
+
+CREATE TABLE position
+(
+    id int AUTO_INCREMENT NOT NULL,
+    comment text,
+    companyID int,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_pos_1
+        FOREIGN KEY (companyID) REFERENCES user (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+
 CREATE TABLE alumnus
 (
     id int AUTO_INCREMENT NOT NULL,
@@ -164,17 +178,7 @@ CREATE TABLE message
         ON DELETE CASCADE
 );
 
-CREATE TABLE position
-(
-    id int AUTO_INCREMENT NOT NULL,
-    comment text,
-    companyID int,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_pos_1
-        FOREIGN KEY (companyID) REFERENCES user (id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);
+
 
 CREATE TABLE jobListing
 (
