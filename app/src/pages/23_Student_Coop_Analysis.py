@@ -2,8 +2,11 @@
 # Co-op Opportunities
 ##################################################
 
-import streamlit as st
 import requests
+import logging
+logger = logging.getLogger(__name__)
+import streamlit as st
+from modules.nav import SideBarLinks
 
 st.set_page_config(layout='wide')
 
@@ -15,7 +18,7 @@ st.title("Co-op Analysis")
 # Select user major
 major = st.selectbox("Select your major:", ["Computer Science", "Business", "Engineering", "Biology", "Chemistry", "Education", "Finance", "Mathematics", "Physics"])
 
-st.write(f"### Co-op Opportunities for {major} Majors:")
+st.write(f"### Analyze Co-op Opportunities for {major} Majors:")
 
 # HTTP GET request to fetch job listings based on major
 try:
