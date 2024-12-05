@@ -10,11 +10,13 @@ st.set_page_config(layout = 'wide')
 # Display the appropriate sidebar links for the role of the logged in user
 SideBarLinks()
 
-st.title('All Job Listings')
+companyID = st.session_state['compID']
+
+st.title('My Job Listings')
 
 jobs_data = {} 
 try:
-  jobs_data = requests.get('http://api:4000/comp/jobListing').json()
+  jobs_data = requests.get(f'http://api:4000/comp/jobListing/{companyID}').json()
 except:
   st.write("**Important**: Could not connect to sample api, so using dummy data.")
   jobs_data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
@@ -26,13 +28,11 @@ with jobStuff:
     row = st.container(border=True)
     with row:
       
-      title, comp, pay, deadline, desc = st.columns(5)
+      title, pay, deadline, desc = st.columns(4)
 
       if i == -1:
         with title:
           st.button('**Job Title**')
-        with comp:
-          st.button('**Company**')
         with pay:
           st.button('**Pay per Hour**')
         with deadline:
@@ -42,12 +42,10 @@ with jobStuff:
         continue
 
       with title:
-        if st.button(label=jobs_data[i].get('title'), type='primary', help='View Full Listing', key=str(i) + 'title'):
+        if st.button(label=jobs_data[i].get('title'), type='primary', help='Edit Listing', key=str(i) + 'title'):
           st.session_state['current_listing'] = jobs_data[i].get('jobListingID')
           st.write(jobs_data[i].get('jobListingID'))
           st.switch_page('pages/16_View_Listing.py')
-      with comp:
-        st.button(jobs_data[i].get('companyName'), key=str(i) + 'comp')
       with pay:
         st.write('$' + str(jobs_data[i].get('payPerHour')))
       with deadline:
