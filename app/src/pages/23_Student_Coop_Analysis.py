@@ -18,7 +18,7 @@ st.title("Co-op Analysis")
 # Select user major
 major = st.selectbox("Select your major:", ["Computer Science", "Business", "Engineering", "Biology", "Chemistry", "Education", "Finance", "Mathematics", "Physics"])
 
-st.write(f"### Analyze Co-op Opportunities for {major} Majors:")
+st.write(f"### Analyze Co-op Positions for {major} Majors:")
 
 # HTTP GET request to fetch job listings based on major
 try:
