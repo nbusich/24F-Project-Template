@@ -41,7 +41,7 @@ def add_student():
 
 # ------------------------------------------------------------
 # This is a GET route for a specific student by ID.
-@students.route('/<student_id>', methods=['GET'])
+@students.route('/students/<student_id>', methods=['GET'])
 def get_student(student_id):
     try:
         query = '''
