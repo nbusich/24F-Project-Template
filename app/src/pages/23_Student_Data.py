@@ -32,7 +32,7 @@ def fetch_student_data(student_id):
         response.raise_for_status()
         return response.json()
     except Exception as e:
-        st.warning(f"Failed to fetch data from {student_id_data}. Using dummy data.")
+        st.warning(f"Failed to fetch data from {student_id_data}.")
         logger.error(f"API Error: {e}")
 
 # Fetch student data
@@ -69,16 +69,7 @@ logger.info(f'Session mapped to Student ID: {student_id}')
 # Fetch data from the updated route
 def fetch_student_data(student_id):
     endpoint = f'http://api:4000/students/{student_id}'
-    fallback = {
-        "id": student_id,
-        "name": "Vinny Test",
-        "email": "vinny.test@example.com",
-        "major": "Computer Science",
-        "graduation_year": 2025,
-        "phone": "123-456-7890",
-        "address": "123 Main St, City, Country",
-        "dob": "2000-01-01",
-    }
+
     try:
         response = requests.get(endpoint)
         response.raise_for_status()
@@ -86,13 +77,11 @@ def fetch_student_data(student_id):
     except Exception as e:
         st.warning(f"Failed to fetch data from {endpoint}. Using dummy data.")
         logger.error(f"API Error: {e}")
-        return fallback
 
 # Fetch student data
 student_data = fetch_student_data(student_id)
 
 # Display student profile
-st.subheader(f"Email: {student_data['email']}")
 st.divider()
 
 col1, col2 = st.columns(2)
