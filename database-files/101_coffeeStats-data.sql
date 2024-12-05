@@ -568,7 +568,7 @@ INSERT INTO company (id, name) VALUES (241, 'Bernard Inc');
 INSERT INTO company (id, name) VALUES (265, 'Bhlarma Advance');
 
 -- Populate the position table
-INSERT INTO position (comment, companyID) VALUES ('Chiropractor Position', 214);
+INSERT INTO position (id, comment, companyID) VALUES (1, 'Chiropractor Position', 214);
 INSERT INTO position (comment, companyID) VALUES ('Financial manager Position', 185);
 INSERT INTO position (comment, companyID) VALUES ('Secretary, company Position', 241);
 INSERT INTO position (comment, companyID) VALUES ('Land/geomatics surveyor Position', 208);
@@ -913,6 +913,7 @@ INSERT INTO alumnus (id, firstName, lastName, jobID) VALUES (267, 'Cameron', 'Wa
 INSERT INTO alumnus (id, firstName, lastName, jobID) VALUES (272, 'Brenda', 'Reed', 37);
 INSERT INTO alumnus (id, firstName, lastName, jobID) VALUES (285, 'Travis', 'Jenkins', 38);
 INSERT INTO alumnus (id, firstName, lastName, jobID) VALUES (288, 'Patrick', 'Evans', 39);
+INSERT INTO alumnus (id, firstName, lastName, jobID) VALUES (289, 'Jack', 'Richards', 1);
 
 -- Populate the friends table
 INSERT INTO friends (friend1ID, friend2ID) VALUES (292, 15);
