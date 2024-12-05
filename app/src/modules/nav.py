@@ -95,11 +95,7 @@ def SideBarLinks(show_home=False):
             st.sidebar.write("### Student Links")
             StudentDash()
             Links()
-
-        # Logout button
-        if st.sidebar.button("Logout", type="primary"):
-            st.experimental_rerun() 
-
+        
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
 
