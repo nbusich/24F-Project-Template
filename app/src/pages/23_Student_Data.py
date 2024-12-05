@@ -10,47 +10,6 @@ from modules.nav import SideBarLinks
 
 st.set_page_config(layout='wide')
 
-SideBarLinks()
-
-st.title("Student Data:")
-
-# Fetch the current student ID from session state
-student_id = st.session_state.get('studentID', None)
-
-if not student_id:
-    st.error("Student ID not found in session. Please log in again.")
-    st.stop()
-
-logger.info(f'Session mapped to Student ID: {student_id}')
-
-# Fetch data from the updated route
-def fetch_student_data(student_id):
-    student_id_data = f'http://api:4000/students/{student_id}'
-
-    try:
-        response = requests.get(student_id_data)
-        response.raise_for_status()
-        return response.json()
-    except Exception as e:
-        st.warning(f"Failed to fetch data from {student_id_data}.")
-        logger.error(f"API Error: {e}")
-
-# Fetch student data
-student_data = fetch_student_data(student_id)
-
-# Display student profile
-st.divider()
-
-col1, col2 = st.columns(2)
-
-import requests
-import logging
-logger = logging.getLogger(__name__)
-import streamlit as st
-from modules.nav import SideBarLinks
-
-st.set_page_config(layout='wide')
-
 # Sidebar links for the role of the currently logged-in user
 SideBarLinks()
 
