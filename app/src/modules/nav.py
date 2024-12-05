@@ -70,8 +70,13 @@ def AdminUsage():
 def CompanyNav():
     st.sidebar.page_link("pages/14_Company_Home.py", label="Company Home", icon="👤")
 
+#### ------------------------ Student Role ------------------------
+def StudentDash():
+    st.sidebar.page_link("pages/22_Student_Home.py", label="Student Dashboard", icon="🗂️")
 
-
+def Links():
+    st.sidebar.page_link("pages/22_Student_Home.py", label="Useful Links", icon="📎")
+    
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=False):
     """
