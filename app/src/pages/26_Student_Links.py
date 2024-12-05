@@ -2,7 +2,16 @@
 # Useful Student Links
 ##################################################
 
+import logging
+logger = logging.getLogger(__name__)
+
 import streamlit as st
+from modules.nav import SideBarLinks
+
+st.set_page_config(layout='wide')
+
+# Sidebar links for the role of the currently logged-in user
+SideBarLinks()
 
 def display_student_links():
     st.title("Helpful Links for Students")
