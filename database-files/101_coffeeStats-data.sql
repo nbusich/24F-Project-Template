@@ -319,7 +319,7 @@ INSERT INTO administrator (id, salary, firstName, lastName, startDate) VALUES (2
 INSERT INTO administrator (id, salary, firstName, lastName, startDate) VALUES (277, 76214, 'Scott', 'Garcia', '2024-07-30');
 INSERT INTO administrator (id, salary, firstName, lastName, startDate) VALUES (288, 71051, 'Sheryl', 'Maldonado', '2023-07-17');
 
-INSERT INTO advisor (id, firstName, lastName) VALUES (41, 'Jennifer', 'Hughes');
+INSERT INTO advisor (id, firstName, lastName) VALUES (41, 'Catumbulo', 'Wiggins');
 INSERT INTO advisor (id, firstName, lastName) VALUES (56, 'Joshua', 'Williams');
 INSERT INTO advisor (id, firstName, lastName) VALUES (61, 'Miguel', 'Fischer');
 INSERT INTO advisor (id, firstName, lastName) VALUES (95, 'Richard', 'Hendricks');
