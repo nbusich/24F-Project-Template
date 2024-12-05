@@ -39,7 +39,6 @@ def fetch_student_data(student_id):
 student_data = fetch_student_data(student_id)
 
 # Display student profile
-st.subheader(f"Email: {student_data['email']}")
 st.divider()
 
 col1, col2 = st.columns(2)
