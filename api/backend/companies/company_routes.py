@@ -221,3 +221,40 @@ def get_fields (listingID):
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+
+
+
+
+# ------------------------------------------------------------
+# This is a GET route for all job listings of a particular company.
+@companies.route('/jobListing/<companyID>', methods=['GET'])
+def access_company_joblistings (companyID):
+    
+    query = f'''
+        SELECT title, description, numApplicants, payPerHour, 
+        applicationDeadline, numOpenings, requiredGPA, jobListing.id
+        FROM jobListing JOIN company
+            ON jobListing.companyID = {str(companyID)}
+        ORDER BY jobListing.id ASC
+    '''
+
+    # logging the query for debugging purposes.  
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes. 
+    current_app.logger.info(f'GET /jobListing/<companyID> query={query}')
+
+    # get the database connection, execute the query, and 
+    # fetch the results as a Python Dictionary
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect. 
+    current_app.logger.info(f'GET /jobListing/<companyID> Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response

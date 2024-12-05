@@ -114,6 +114,35 @@ CREATE TABLE company
 
 );
 
+CREATE TABLE position
+(
+    id int AUTO_INCREMENT NOT NULL,
+    comment text,
+    companyID int,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_pos_1
+        FOREIGN KEY (companyID) REFERENCES user (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+
+CREATE TABLE alumnus
+(
+    id int AUTO_INCREMENT NOT NULL,
+    firstName varchar (30),
+    lastName varchar (30),
+    jobID int,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_alum_1
+        FOREIGN KEY (id) REFERENCES user (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT fk_alum_2
+        FOREIGN KEY (jobID) REFERENCES position (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
 
 CREATE TABLE chatroom
 (
@@ -149,35 +178,7 @@ CREATE TABLE message
         ON DELETE CASCADE
 );
 
-CREATE TABLE position
-(
-    id int AUTO_INCREMENT NOT NULL,
-    comment text,
-    companyID int,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_pos_1
-        FOREIGN KEY (companyID) REFERENCES user (id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);
 
-
-CREATE TABLE alumnus
-(
-    id int AUTO_INCREMENT NOT NULL,
-    firstName varchar (30),
-    lastName varchar (30),
-    jobID int,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_alum_1
-        FOREIGN KEY (id) REFERENCES user (id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT fk_alum_2
-        FOREIGN KEY (jobID) REFERENCES position (id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);
 
 CREATE TABLE jobListing
 (

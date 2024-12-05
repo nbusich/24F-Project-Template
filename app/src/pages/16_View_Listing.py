@@ -31,8 +31,9 @@ except:
 
 
 majors = []
-for i in range(0, len(majors_data)):
-  majors.append(majors_data[i].get('major'))
+if len(majors_data) > 0:
+  for i in range(0, len(majors_data)):
+    majors.append(majors_data[i].get('major'))
 
 fields_data = {} 
 try:
@@ -42,8 +43,9 @@ except:
   fields_data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
 
 fields = []
-for i in range(0, len(fields_data)):
-  fields.append(fields_data[i].get('field'))
+if len(fields_data) > 0:
+  for i in range(0, len(fields_data)):
+    fields.append(fields_data[i].get('field'))
 
 
 

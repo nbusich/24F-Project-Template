@@ -89,7 +89,7 @@ ORDER BY
 #-------------------------------------------------------------------ç
 
 SHOW VARIABLES LIKE 'performance_schema';
-SELECT * FROM performance_schema.events_statements_summary_global_by_event_name
+SELECT * FROM performance_schema.events_statements_summary_global_by_event_name;
 
 ####################################################################################
 # SELECT
@@ -102,7 +102,7 @@ SELECT * FROM performance_schema.events_statements_summary_global_by_event_name
 
 SHOW GLOBAL STATUS LIKE 'Slow_queries';
 
-SHOW STATUS WHERE `variable_name` = 'Threads_connected'
+SHOW STATUS WHERE `variable_name` = 'Threads_connected';
 
 SHOW GLOBAL STATUS LIKE 'Uptime';
 

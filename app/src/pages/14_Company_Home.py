@@ -26,4 +26,7 @@ if st.button('View all Job Listings',
              use_container_width=True):
   st.switch_page('pages/17_All_Listings.py')
 
-
+if st.button('View My Job Listings', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/18_My_Listings.py')
