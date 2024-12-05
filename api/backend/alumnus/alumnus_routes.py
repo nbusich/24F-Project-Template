@@ -36,8 +36,8 @@ def get_students_in_major(major):
 
 #------------------------------------------------------------
 # gets a specific alumn's job title
-@alumnus.route('/alumnJobTitle/<alumnid>', methods=['GET'])
-def get_alumnus_job(alumnid):
+@alumnus.route('/alumnJobTitle/<id>', methods=['GET'])
+def get_alumnus_job(id):
     query = '''
     SELECT p.comment 
              FROM position p JOIN alumnus a ON a.jobID = p.id
@@ -45,8 +45,7 @@ def get_alumnus_job(alumnid):
     '''
 
     cursor = db.get_db().cursor()
-    data = (alumnid)
-    cursor.execute(query, data)
+    cursor.execute(query, id)
 
     theData = cursor.fetchall()
     
@@ -57,7 +56,7 @@ def get_alumnus_job(alumnid):
 #------------------------------------------------------------
 # gets a job id by the name
 @alumnus.route('/positionByComment/<comment>', methods=['GET'])
-def get_alumnus_job(comment):
+def get_job_by_comment(comment):
     query = '''
     SELECT p.id
              FROM position
@@ -136,4 +135,5 @@ def delete_chat(id):
     response = make_response("chat deleted!")
     response.status_code = 200
     return response
+
 

@@ -25,7 +25,7 @@ def getItem(url, item_name):
         result = response.json()
         item = result[0][item_name]
     except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching item: {e} {item_name}")
+        logger.error(f"something happened with fetching item: {e} {item_name} {url}")
         item = "Error fetching item"
     return item
 
@@ -61,7 +61,7 @@ col1, col2, col3 = st.columns(3)
 
 alumnus_id = 4
 
-job_title = getItem((f"http://api:4000/alumnus/alumnJobTitle/{alumnus_id}"), 'comment')
+job_title = getItem(f"http://api:4000/alumnus/alumnJobTitle/{alumnus_id}", 'comment')
 
 job_id = getItem((f"http://api:4000/alumnus/positionByComment/{job_title}"), 'id')
 
@@ -90,8 +90,7 @@ with col1:
 
 
         
-        
-
+    
 
 
 with col2:
