@@ -18,8 +18,8 @@ st.title(f"Welcome, {st.session_state.get('first_name', 'Vinny')}!")
 st.write('### What would you like to do today?')
 
 # Link to pages
-if st.button('📇 Student Data', type='primary', use_container_width=True):
-    st.switch_page('pages/23_Student_Data.py')
+if st.button('📇 Student Profile', type='primary', use_container_width=True):
+    st.switch_page('pages/23_Student_Profile.py')
 
 if st.button('📅 Schedule an Advising Session', type='primary', use_container_width=True):
     st.switch_page('pages/24_Advisor_Coffee_Chat.py')
