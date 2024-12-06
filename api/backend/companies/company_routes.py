@@ -283,8 +283,11 @@ def update_joblisting(listingID):
     openings = the_data['listing_openings']
     gpa = the_data['listing_req_gpa']
 
-    rel_majors = the_data['rel_majors']
-    rel_fields = the_data['rel_fields']
+    new_majors = the_data['new_majors']
+    new_fields = the_data['new_fields']
+
+    dropped_majors = the_data['dropped_majors']
+    dropped_fields = the_data['dropped_fields']
     
     query = f'''
         UPDATE jobListing
@@ -292,7 +295,6 @@ def update_joblisting(listingID):
             description = '{description}',
             numApplicants = {str(applicants)}, 
             payPerHour = {str(pay)},
-            applicationDeadline = {str(deadline)},
             numOpenings = {str(openings)},
             requiredGPA = {str(gpa)}
         WHERE id = {str(listingID)}
@@ -305,10 +307,10 @@ def update_joblisting(listingID):
     cursor.execute(query)
     db.get_db().commit()
 
-    for major in rel_majors:
+    for major in new_majors:
         query = f'''
-            INSERT INTO relevantMajors (listingID, major)
-            VALUES ({str(id)}, '{major}')
+            INSERT IGNORE INTO relevantMajors (listingID, major)
+            VALUES ({str(listingID)}, '{major}')
         '''
         current_app.logger.info(query)
 
@@ -317,10 +319,33 @@ def update_joblisting(listingID):
         cursor.execute(query)
         db.get_db().commit()
     
-    for field in rel_fields:
+    for field in new_fields:
         query = f'''
-            INSERT INTO relevantFields (listingID, field)
-            VALUES ({str(id)}, '{field}')
+            INSERT IGNORE INTO relevantFields (listingID, field)
+            VALUES ({str(listingID)}, '{field}')
+        '''
+        current_app.logger.info(query)
+
+        # executing and committing the insert statement 
+        cursor = db.get_db().cursor()
+        cursor.execute(query)
+        db.get_db().commit()
+    
+
+    for major in dropped_majors:
+        query = f'''
+            DELETE FROM relevantMajors WHERE (listingID = {str(listingID)} AND major = '{major}')
+        '''
+        current_app.logger.info(query)
+
+        # executing and committing the insert statement 
+        cursor = db.get_db().cursor()
+        cursor.execute(query)
+        db.get_db().commit()
+    
+    for field in dropped_fields:
+        query = f'''
+            DELETE FROM relevantFields WHERE (listingID = {str(listingID)} AND field = '{field}')
         '''
         current_app.logger.info(query)
 

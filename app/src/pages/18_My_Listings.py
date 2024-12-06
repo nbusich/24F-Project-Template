@@ -45,8 +45,8 @@ with jobStuff:
         continue
 
       with title:
-        if st.button(label=jobs_data[i].get('title')+str((jobs_data[i].get('listingID'))), type='primary', help='Edit Listing', key=str(i) + 'title'):
-          st.session_state['current_listing'] = (jobs_data[i].get('id'))
+        if st.button(label=jobs_data[i].get('title'), type='primary', help='Edit Listing', key=str(i) + 'title'):
+          st.session_state['current_listing'] = (jobs_data[i].get('listingID'))
           st.switch_page('pages/19_Edit_Listing.py')
      
       with pay:

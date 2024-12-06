@@ -16,7 +16,7 @@ SideBarLinks()
 
 
 listingID = st.session_state['current_listing']
-listingID = 32
+#listingID = 32
 
 logger.info(f'listingID = {listingID}')
 
@@ -28,6 +28,37 @@ except:
   st.write("**Important**: Could not connect to sample api, so using dummy data.")
   data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
 
+
+
+#Major and Field lists###
+all_majors = {} 
+try:
+  all_majors = requests.get(f'http://api:4000/comp/relevantMajors').json()
+except:
+  st.write("**Important**: Could not connect to sample api, so using dummy data.")
+  all_majors = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
+
+ex_majors = ['Computer Science', 'Biology', 'Data Science', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Music Technology', 'Pre-med', 'English', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Design', 'Finance']
+
+for i in range(0, len(all_majors)):
+  if all_majors[i].get('major') not in ex_majors:
+    ex_majors.append(all_majors[i].get('major'))
+
+all_fields = {} 
+try:
+  all_fields = requests.get(f'http://api:4000/comp/relevantFields').json()
+except:
+  st.write("**Important**: Could not connect to sample api, so using dummy data.")
+  all_fields = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
+
+ex_fields = ['Software Engineering', 'Information Technology', 'Biology', 'Data Analysis', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Audio Engineering', 'Medical Research', 'Writing', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Graphic Design']
+
+for i in range(0, len(all_fields)):
+  if all_fields[i].get('field') not in ex_fields:
+    ex_fields.append(all_fields[i].get('field'))
+####
+
+#the majors and fields for this job##
 majors_data = {} 
 try:
   majors_data = requests.get(f'http://api:4000/comp/relevantMajors/{listingID}').json()
@@ -35,11 +66,9 @@ except:
   st.write("**Important**: Could not connect to sample api, so using dummy data.")
   majors_data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
 
-
 majors = []
-if len(majors_data) > 0:
-  for i in range(0, len(majors_data)):
-    majors.append(majors_data[i].get('major'))
+for i in range(0, len(majors_data)):
+  majors.append(majors_data[i].get('major'))
 
 fields_data = {} 
 try:
@@ -49,10 +78,9 @@ except:
   fields_data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
 
 fields = []
-if len(fields_data) > 0:
-  for i in range(0, len(fields_data)):
-    fields.append(fields_data[i].get('field'))
-
+for i in range(0, len(fields_data)):
+  fields.append(fields_data[i].get('field'))
+#####
 
 
 
@@ -104,11 +132,30 @@ listing_description = st.text_area('Job Description', value=desc)
 
 listing_deadline = st.date_input('Application Deadline', value=deadline)
 
-ex_majors = ['Computer Science', 'Biology', 'Data Science', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Music Technology', 'Pre-med', 'English', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Design', 'Finance']
 rel_majors = st.multiselect(label='Relevant Majors', options=ex_majors, default=majors)
 
-ex_fields = ['Software Engineering', 'Information Technology', 'Biology', 'Data Analysis', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Audio Engineering', 'Medical Research', 'Writing', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Graphic Design', 'Finance', 'Physics']
 rel_fields = st.multiselect(label='Relevant Fields', options=ex_fields, default=fields)
+
+new_majors = []
+for i in range(0, len(rel_majors)):
+  if rel_majors[i] not in majors:
+    new_majors.append(rel_majors[i])
+
+new_fields = []
+for i in range(0, len(rel_fields)):
+  if rel_fields[i] not in fields:
+    new_fields.append(rel_fields[i])
+
+
+dropped_majors = []
+for i in range(0, len(majors)):
+  if majors[i] not in rel_majors:
+    dropped_majors.append(majors[i])
+
+dropped_fields = []
+for i in range(0, len(fields)):
+  if fields[i] not in rel_fields:
+    dropped_fields.append(fields[i])
 
 logger.info(f'listing_title = {listing_title}')
 logger.info(f'listing_description = {listing_description}')
@@ -118,8 +165,10 @@ logger.info(f'listing_deadline = {listing_deadline}')
 logger.info(f'listing_openings = {listing_openings}')
 logger.info(f'listing_req_gpa = {listing_req_gpa}')
 logger.info(f'companyid = {companyid}')
-logger.info(f'rel_majors = {rel_majors}')
-logger.info(f'rel_fields = {rel_fields}')
+logger.info(f'new_majors = {new_majors}')
+logger.info(f'new_fields = {new_fields}')
+logger.info(f'dropped_majors = {dropped_majors}')
+logger.info(f'dropped_fields = {dropped_fields}')
 
 if st.button('Update Job Listing',
              type='primary',
@@ -132,9 +181,11 @@ if st.button('Update Job Listing',
         'listing_deadline': listing_deadline.isoformat(), 
         'listing_openings': listing_openings, 
         'listing_req_gpa': listing_req_gpa,
-        'rel_majors' : rel_majors,
-        'rel_fields' : rel_fields}
+        'new_majors' : new_majors,
+        'new_fields' : new_fields,
+        'dropped_majors' : dropped_majors,
+        'dropped_fields' : dropped_fields}
   
-  r = requests.put(f'http://api:4000/comp/jobListing', json=update_data)
+  r = requests.put(f'http://api:4000/comp/jobListing/{listingID}', json=update_data)
   st.write(r)
 
