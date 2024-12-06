@@ -13,6 +13,8 @@ from backend.db_connection import db
 # routes.
 alumnus = Blueprint('alumnus', __name__)
 
+alumnus_id = 289
+
 
 #------------------------------------------------------------
 # gets a list of students in a specific major
@@ -58,7 +60,7 @@ def get_alumnus_job(id):
 @alumnus.route('/positionByComment/<comment>', methods=['GET'])
 def get_job_by_comment(comment):
     query = '''
-    SELECT p.id
+    SELECT id
              FROM position
              WHERE comment =%s;
     '''
@@ -75,14 +77,12 @@ def get_job_by_comment(comment):
 
 #------------------------------------------------------------
 # updates a job from a user given their id, probably
-@alumnus.route('/update_job/<job_id>', methods=['PUT'])
-def update_alumni_job(job_id):
+@alumnus.route('/update_job', methods=['PUT'])
+def update_alumni_job():
 
-    try:
-        alumn_info = request.json
-        alumn_id = alumn_info['id']
-    except KeyError:
-        return jsonify({"error": "Missing 'id' in request body"}), 400
+    alumn_info = request.json
+    alumnus_id = alumn_info['id']
+    job_id = alumn_info['job_id']
 
     query = '''
     UPDATE alumnus
@@ -91,7 +91,7 @@ def update_alumni_job(job_id):
     '''
 
     cursor = db.get_db().cursor()
-    cursor.execute(query, (job_id, alumn_id))
+    cursor.execute(query, (job_id, alumnus_id))
     db.get_db().commit()
     response = make_response("job updated")
     response.status_code = 200
@@ -133,6 +133,48 @@ def delete_chat(id):
     db.get_db().commit()
     
     response = make_response("chat deleted!")
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
+# gets a specific alumn's email
+@alumnus.route('/alumnusEmail/<id>', methods=['GET'])
+def get_alumnus_email(id):
+    query = '''
+    SELECT email 
+             FROM alumnus
+             WHERE id =%s;
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, id)
+
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+
+
+ # updates a job from a user given their id, probably
+@alumnus.route('/update_email', methods=['PUT'])
+def update_alumni_email():
+
+    alumn_info = request.json
+    alumnus_id = alumn_info['id']
+    email = alumn_info['email']
+
+    query = '''
+    UPDATE alumnus
+    SET email = %s
+    WHERE id = %s;
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (email, alumnus_id))
+    db.get_db().commit()
+    response = make_response("email updated")
     response.status_code = 200
     return response
 
