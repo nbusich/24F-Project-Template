@@ -13,7 +13,7 @@ st.set_page_config(layout='wide')
 # Sidebar links for the role of the currently logged-in user
 SideBarLinks()
 
-st.title("Student Data:")
+st.title("Profile")
 
 # Fetch the current student ID from session state
 student_id = st.session_state.get('studentID', None)
