@@ -342,6 +342,7 @@ def all_majors ():
     query = f'''
         SELECT DISTINCT major
         FROM relevantMajors
+        ORDER BY major ASC
     '''
 
     # logging the query for debugging purposes.  
@@ -373,6 +374,7 @@ def all_fields ():
     query = f'''
         SELECT DISTINCT field
         FROM relevantFields
+        ORDER BY field ASC
     '''
 
     # logging the query for debugging purposes.  

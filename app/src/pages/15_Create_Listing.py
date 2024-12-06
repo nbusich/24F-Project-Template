@@ -61,16 +61,16 @@ except:
 
 
 ex_majors = ['Computer Science', 'Biology', 'Data Science', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Music Technology', 'Pre-med', 'English', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Design', 'Finance']
-ex_major = []
-for i in all_majors:
-  ex_major.append(i.get('major'))
+ex_majors = []
+for i in range(0, len(all_majors)):
+  ex_majors.append(all_majors[i].get('major'))
 
 rel_majors = st.multiselect(label='Relevant Majors', options=ex_majors)
 
 ex_fields = ['Software Engineering', 'Information Technology', 'Biology', 'Data Analysis', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Audio Engineering', 'Medical Research', 'Writing', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Graphic Design']
 ex_fields = []
-for i in ex_fields:
-  ex_fields.append(i.get('field'))
+for i in range(0, len(all_fields)):
+  ex_fields.append(all_fields[i].get('field'))
 
 rel_fields = st.multiselect(label='Relevant Fields', options=ex_fields)
 
