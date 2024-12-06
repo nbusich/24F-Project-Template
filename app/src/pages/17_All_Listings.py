@@ -26,7 +26,7 @@ jobStuff = st.container(border=True)
 
 #try:
 with jobStuff:
-  for i in range(-1, len(jobs_data)-1):
+  for i in range(-1, len(jobs_data)):
     row = st.container(border=True)
     with row:
       
@@ -50,7 +50,7 @@ with jobStuff:
           st.session_state['current_listing'] = (jobs_data[i].get('id'))
           st.switch_page('pages/16_View_Listing.py')
       with comp:
-        st.button(jobs_data[i].get('companyName'), key=str(i) + 'comp')
+        st.button(jobs_data[i].get('companyName'), key=str(i) + 'comp', help=str(((jobs_data[i].get('company.id')))))
       with pay:
         st.write('$' + str(jobs_data[i].get('payPerHour')))
       with deadline:

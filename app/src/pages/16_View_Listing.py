@@ -12,7 +12,7 @@ SideBarLinks()
 
 listingID = st.session_state['current_listing']
 
-logger.info(f'jobNum = {listingID}')
+logger.info(f'listingID = {listingID}')
 
 
 data = {} 

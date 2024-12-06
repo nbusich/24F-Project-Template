@@ -43,10 +43,35 @@ listing_description = st.text_area('Job Description')
 
 listing_deadline = st.date_input('Application Deadline')
 
-ex_majors = ['Computer Science', 'Biology', 'Data Science', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Music Technology', 'Pre-med', 'English', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Design']
+
+all_majors = {} 
+try:
+  all_majors = requests.get(f'http://api:4000/comp/relevantMajors').json()
+except:
+  st.write("**Important**: Could not connect to sample api, so using dummy data.")
+  all_majors = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
+
+
+all_fields = {} 
+try:
+  all_fields = requests.get(f'http://api:4000/comp/relevantFields').json()
+except:
+  st.write("**Important**: Could not connect to sample api, so using dummy data.")
+  all_fields = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
+
+
+ex_majors = ['Computer Science', 'Biology', 'Data Science', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Music Technology', 'Pre-med', 'English', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Design', 'Finance']
+ex_major = []
+for i in all_majors:
+  ex_major.append(i.get('major'))
+
 rel_majors = st.multiselect(label='Relevant Majors', options=ex_majors)
 
 ex_fields = ['Software Engineering', 'Information Technology', 'Biology', 'Data Analysis', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Audio Engineering', 'Medical Research', 'Writing', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Graphic Design']
+ex_fields = []
+for i in ex_fields:
+  ex_fields.append(i.get('field'))
+
 rel_fields = st.multiselect(label='Relevant Fields', options=ex_fields)
 
 logger.info(f'listing_title = {listing_title}')

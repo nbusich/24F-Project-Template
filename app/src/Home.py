@@ -28,6 +28,7 @@ st.session_state['authenticated'] = False
 # showSidebarNavigation = false in the [client] section
 SideBarLinks(show_home=True)
 
+
 # ***************************************************
 #    The major content of this page
 # ***************************************************

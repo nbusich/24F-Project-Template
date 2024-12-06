@@ -97,7 +97,7 @@ def add_new_joblisting():
 def view_joblisting (listingID):
     
     query = f'''
-        SELECT title, company.name AS 'companyName', description, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA
+        SELECT title, company.name AS 'companyName', description, jobListing.id, company.id, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA
         FROM jobListing JOIN company
             ON jobListing.companyID = company.id
         WHERE jobListing.id = {str(listingID)}
@@ -134,7 +134,7 @@ def access_all_joblistings ():
         description, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA, jobListing.id, company.id
         FROM jobListing JOIN company
             ON jobListing.companyID = company.id
-        ORDER BY jobListing.id ASC
+        ORDER BY jobListing.id DESC
     '''
 
     # logging the query for debugging purposes.  
@@ -228,22 +228,24 @@ def get_fields (listingID):
 
 # ------------------------------------------------------------
 # This is a GET route for all job listings of a particular company.
-@companies.route('/jobListing/<companyID>', methods=['GET'])
+@companies.route('/myJobListing/<companyID>', methods=['GET'])
 def access_company_joblistings (companyID):
     
     query = f'''
-        SELECT title, description, numApplicants, payPerHour, 
-        applicationDeadline, numOpenings, requiredGPA, jobListing.id
+        SELECT DISTINCT title, description, jobListing.id AS listingID, numApplicants, payPerHour, 
+        applicationDeadline, numOpenings, requiredGPA, jobListing.companyID AS lcid, company.id AS cid
         FROM jobListing JOIN company
-            ON jobListing.companyID = {str(companyID)}
-        ORDER BY jobListing.id ASC
+            ON company.id = {str(companyID)}
+                AND company.id = jobListing.companyID
+
+        ORDER BY jobListing.id DESC
     '''
 
     # logging the query for debugging purposes.  
     # The output will appear in the Docker logs output
     # This line has nothing to do with actually executing the query...
     # It is only for debugging purposes. 
-    current_app.logger.info(f'GET /jobListing/<companyID> query={query}')
+    current_app.logger.info(f'GET /myJobListing/<companyID> query={query}')
 
     # get the database connection, execute the query, and 
     # fetch the results as a Python Dictionary
@@ -253,8 +255,143 @@ def access_company_joblistings (companyID):
     
     # Another example of logging for debugging purposes.
     # You can see if the data you're getting back is what you expect. 
-    current_app.logger.info(f'GET /jobListing/<companyID> Result of query = {theData}')
+    current_app.logger.info(f'GET /myJobListing/<companyID> Result of query = {theData}')
     
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+
+
+
+# ------------------------------------------------------------
+# This is a PUT route to update an existing job listing.
+@companies.route('/jobListing/<listingID>', methods=['PUT'])
+def update_joblisting(listingID):
+    
+    # In a PUT request, there is a 
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    title = the_data['listing_title']
+    description = the_data['listing_description']
+    applicants = the_data['number_of_applicants']
+    pay = the_data['listing_pay']
+    deadline = the_data['listing_deadline']
+    openings = the_data['listing_openings']
+    gpa = the_data['listing_req_gpa']
+
+    rel_majors = the_data['rel_majors']
+    rel_fields = the_data['rel_fields']
+    
+    query = f'''
+        UPDATE jobListing
+        SET title = '{title}',
+            description = '{description}',
+            numApplicants = {str(applicants)}, 
+            payPerHour = {str(pay)},
+            applicationDeadline = {str(deadline)},
+            numOpenings = {str(openings)},
+            requiredGPA = {str(gpa)}
+        WHERE id = {str(listingID)}
+    '''
+
+    current_app.logger.info(query)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    for major in rel_majors:
+        query = f'''
+            INSERT INTO relevantMajors (listingID, major)
+            VALUES ({str(id)}, '{major}')
+        '''
+        current_app.logger.info(query)
+
+        # executing and committing the insert statement 
+        cursor = db.get_db().cursor()
+        cursor.execute(query)
+        db.get_db().commit()
+    
+    for field in rel_fields:
+        query = f'''
+            INSERT INTO relevantFields (listingID, field)
+            VALUES ({str(id)}, '{field}')
+        '''
+        current_app.logger.info(query)
+
+        # executing and committing the insert statement 
+        cursor = db.get_db().cursor()
+        cursor.execute(query)
+        db.get_db().commit()
+
+    response = make_response("Successfully updated job listing")
+    response.status_code = 200
+    return response
+
+
+# ------------------------------------------------------------
+# This is a GET route for all unique relevant majors in the db
+@companies.route('/relevantMajors', methods=['GET'])
+def all_majors ():
+    
+    query = f'''
+        SELECT DISTINCT major
+        FROM relevantMajors
+    '''
+
+    # logging the query for debugging purposes.  
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes. 
+    current_app.logger.info(f'GET /relevantMajors query={query}')
+
+    # get the database connection, execute the query, and 
+    # fetch the results as a Python Dictionary
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect. 
+    current_app.logger.info(f'GET /relevantMajors Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
+# ------------------------------------------------------------
+# This is a GET route for all unique relevant fields in the db
+@companies.route('/relevantFields', methods=['GET'])
+def all_fields ():
+    
+    query = f'''
+        SELECT DISTINCT field
+        FROM relevantFields
+    '''
+
+    # logging the query for debugging purposes.  
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes. 
+    current_app.logger.info(f'GET /relevantFields query={query}')
+
+    # get the database connection, execute the query, and 
+    # fetch the results as a Python Dictionary
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect. 
+    current_app.logger.info(f'GET /relevantFields Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
