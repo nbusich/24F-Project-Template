@@ -7,139 +7,109 @@ import requests
 import streamlit as st
 from modules.nav import SideBarLinks
 
-st.set_page_config(layout = 'wide')
+st.set_page_config(layout='wide')
 
-# Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
-st.session_state['edit'] = False
-
-
 ## ----------- functions ----------------------
-
 
 def getItem(url, item_name):
     try:
         response = requests.get(url)
-        response.raise_for_status() 
+        response.raise_for_status()
         result = response.json()
-        item = result[0][item_name]
+        item = result[0][item_name] if result else item_name
     except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching item: {e} {item_name}")
-        item = "Error fetching item"
+        logger.error(f"Error getting item: {e} {item_name} {url}")
+        item = "Error getting item"
     return item
 
 
-def putItem(url, item_name, item_call):
+def putItem(url, payload):
     try:
-        info = {item_name: item_call}
-        response = requests.put(url, json=info)
+        response = requests.put(url, json=payload)
         response.raise_for_status()
-
-        st.success("putItem updated successfully!")
     except requests.exceptions.RequestException as e:
-        logger.error(f"Error in put_Item: {e}")
-        st.error("Failed to putItem.")
-             
+        logger.error(f"Error in putItem: {e}")
+
 ## -------------------------------------------------------------
 
-# session state for editable
+## State initialization ----------------------------------------
 
-# Set title
-st.title(f"Welcome, {st.session_state['first_name']}")
+alumnus_id = 289
 
-if st.button(label="✎"):   
-     st.session_state['edit'] = True
+if "data_fetched" not in st.session_state:
+    st.session_state.curr_pos = getItem(f"http://api:4000/alumnus/alumnJobTitle/{alumnus_id}", "comment") or "N/A"
+    st.session_state.curr_email = getItem(f"http://api:4000/alumnus/alumnusEmail/{alumnus_id}", "email") or "N/A"
+    logger.info("email fetched!!!")
 
-if st.button(label="Save"):
-    st.session_state['edit'] = False
+    st.session_state.curr_bio = "Add a bio"  
+    st.session_state.edit = False
+    st.session_state.data_fetched = True
+
+job_title = st.session_state.curr_pos
+job_id = getItem(f"http://api:4000/alumnus/positionByComment/{job_title}", 'id')
+logger.info(f"Got job ID: {job_id}")
+
+## -------------------------------------------------------------
+
+# Page Title
+st.title(f"Welcome, {st.session_state.get('first_name', 'Alumnus')}")
+
+# Edit and Save Buttons
+col_buttons = st.columns(2)
+with col_buttons[0]:
+    if st.button(label="✎"):
+        st.session_state.edit = True
+
+with col_buttons[1]:
+    if st.button(label="Save"):
+        if st.session_state.edit:
+            st.session_state.edit = False
+            putItem(f"http://api:4000/alumnus/update_job", {"id": alumnus_id, "job_id": job_id})
+            logger.info(f"put email: {st.session_state.curr_email}")
+            putItem(f"http://api:4000/alumnus/update_email", {"id": alumnus_id, "email": st.session_state.curr_email})
+            logger.info(f"Saved email: {st.session_state.curr_email}")
+            logger.info(f"Saved position: {st.session_state.curr_pos}")
+
 
 
 col1, col2, col3 = st.columns(3)
 
-## saved variables ----------------------------------------------------------------
-
-alumnus_id = 4
-
-job_title = getItem((f"http://api:4000/alumnus/alumnJobTitle/{alumnus_id}"), 'comment')
-
-job_id = getItem((f"http://api:4000/alumnus/positionByComment/{job_title}"), 'id')
-
-get_job_url = (f"http://api:4000/alumnus/alumnJobTitle/{job_id}") 
-
-update_job_url = (f"http://api:4000/alumnus/update_job/{alumnus_id}") 
-
-job_id_url = (f"http://api:4000/alumnus/positionByComment/{job_title}")
-
-
- ## --------------------------------------------------------------------
 
 with col1:
-        
-    if not st.session_state['edit']:
-        st.markdown("### Current Position")
-        st.text(job_title)
-
-    elif st.session_state['edit']:
-        st.markdown("### Current Position")
-        job_title = st.text_input("Add a job", value=job_title)
-        job_id = getItem(job_id_url, 'id')
-        putItem(update_job_url, "id", alumnus_id)
-        curr_pos = getItem(get_job_url, 'comment')
-        curr_pos = job_title 
-
-
-        
-        
-
+    st.markdown("### Current Position")
+    if st.session_state.edit:
+        st.text_input(
+            "Add a job",
+            value=st.session_state.curr_pos,
+            key="curr_pos"
+        )
+    else:
+        st.text(st.session_state.curr_pos)
 
 
 with col2:
-    if st.session_state['edit']:
-        st.markdown("### Bio")
-        curr_bio = st.text_input("add a bio")
+    st.markdown("### Bio")
+    if st.session_state.edit:
+        st.text_area(
+            "Add a bio",
+            value=st.session_state.curr_bio,
+            key="curr_bio"
+        )
     else:
-        curr_bio = st.text_input("add a bio")
-        st.markdown("### Bio")
-        st.text(curr_bio)
+        st.text(st.session_state.curr_bio)
+
 
 with col3:
-    if st.session_state['edit']:
-        st.markdown("### Email")
-        curr_email = st.text_input("add an email")
+    st.markdown("### Email")
+    logger.info(f"in col outside email is: {st.session_state.curr_email}")
+   
+    if st.session_state.edit:
+        st.text_input("Add an email",
+            value=st.session_state.curr_email,
+            key="curr_email"
+        )
+        logger.info(f"in col email is: {st.session_state.curr_email}")
     else:
-        curr_email = "nothing"
-        st.markdown("### Email")
-        st.text("add an email")
-    
-    
-def getItem(url, item_name):
-    try:
-        response = requests.get(url)
-        response.raise_for_status() 
-        result = response.json()
-        item = result[0][item_name]
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching item: {e} {item_name}")
-        item = "Error fetching item"
-    return item
-
-
-def putItem(url, item_name, item_call):
-    try:
-        info = {item_name: item_call}
-        response = requests.put(api_url, json=info)
-        response.raise_for_status()
-
-        st.success("ptItem updated successfully!")
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error in put_Item: {e}")
-        st.error("Failed to putItem.")
-             
-
-
-
-
-
-
-
+        st.text(st.session_state.curr_email)
