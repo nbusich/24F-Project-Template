@@ -52,6 +52,6 @@ with jobStuff:
       with pay:
         st.write('$' + str(jobs_data[i].get('payPerHour')))
       with deadline:
-        st.write(jobs_data[i].get('applicationDeadline')[:16])
+        st.write(jobs_data[i].get('applicationDeadline')[4:16])
       with desc:
         st.write(jobs_data[i].get('description')[:16] + '...')

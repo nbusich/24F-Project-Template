@@ -50,11 +50,11 @@ with jobStuff:
           st.session_state['current_listing'] = (jobs_data[i].get('id'))
           st.switch_page('pages/16_View_Listing.py')
       with comp:
-        st.button(jobs_data[i].get('companyName'), key=str(i) + 'comp', help=str(((jobs_data[i].get('company.id')))))
+        st.button(jobs_data[i].get('companyName'), key=str(i) + 'comp', )
       with pay:
         st.write('$' + str(jobs_data[i].get('payPerHour')))
       with deadline:
-        st.write(jobs_data[i].get('applicationDeadline')[:16])
+        st.write(jobs_data[i].get('applicationDeadline')[4:16])
       with desc:
         st.write(jobs_data[i].get('description')[:16] + '...')
 #except:

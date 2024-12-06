@@ -422,3 +422,36 @@ def all_fields ():
     response.status_code = 200
     return response
 
+# ------------------------------------------------------------
+# This is a GET route for the user's company
+@companies.route('/myCompany', methods=['GET'])
+def mycompany ():
+    c = request.json
+    current_app.logger.info(c)
+    compID = c['compID']
+
+    query = f'''
+        SELECT name
+        FROM company
+        WHERE company.id = {str(compID)}
+    '''
+
+    # logging the query for debugging purposes.  
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes. 
+    current_app.logger.info(f'GET /myCompany query={query}')
+
+    # get the database connection, execute the query, and 
+    # fetch the results as a Python Dictionary
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect. 
+    current_app.logger.info(f'GET /myCompany Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
