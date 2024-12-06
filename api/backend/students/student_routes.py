@@ -41,21 +41,33 @@ def add_student():
 
 # ------------------------------------------------------------
 # This is a GET route for a specific student by ID.
-@students.route('/students/<student_id>', methods=['GET'])
+@students.route('/students/<int:student_id>', methods=['GET'])
 def get_student(student_id):
-    query = f'''
-        SELECT id, name, email, major, graduation_year
+    query = '''
+        SELECT id, firstName, lastName, bio, major, minor, graduation_year, resume
         FROM Student
-        WHERE id = {student_id}
+        WHERE id = %s
     '''
-    current_app.logger.info(query)
+    try: 
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (student_id,))
+        result = cursor.fetchone()
+        if not result:
+            return make_response({"error": f"Student not found"}, 404)
 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    the_data = cursor.fetchall()
-
-    response = make_response(jsonify(the_data), 200)
-    return response
+        student_data = {
+            "id": result[0],
+            "firstName": result[1],
+            "lastName": result[2],
+            "major": result[4],
+            "minor": result[5],
+            "graduation_year": result[6],
+            "resume": result[7]
+        }
+        return jsonify(student_data), 200
+    except Exception as e:
+        current_app.logger.error(f"Database Error: {e}")
+        return make_response({"error": "Server error"}, 500)
 
 # ------------------------------------------------------------
 # This is a GET route for all students.

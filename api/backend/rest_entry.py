@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from backend.admins.admin_routes import admins
 from backend.advisors.advisor_routes import advisors
 from backend.alumnus.alumnus_routes import alumnus
-
+from backend.students.student_routes import students
 
 def create_app():
     app = Flask(__name__)
@@ -47,6 +47,7 @@ def create_app():
     app.register_blueprint(admins, url_prefix='/admin')
     app.register_blueprint(advisors, url_prefix='/advisors')
     app.register_blueprint(alumnus, url_prefix='/alumnus')
+    app.register_blueprint(students, url_prefix='/students')
 
 
     # Don't forget to return the app object
