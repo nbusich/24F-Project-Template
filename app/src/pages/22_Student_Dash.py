@@ -13,7 +13,7 @@ st.set_page_config(layout='wide')
 SideBarLinks()
 
 # Welcome
-st.title(f"Welcome, {st.session_state.get('first_name', 'Vinny')}!")
+st.title(f"Welcome, {st.session_state.get('first_name')}!")
 
 st.write('### What would you like to do today?')
 
