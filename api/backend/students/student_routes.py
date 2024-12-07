@@ -16,7 +16,7 @@ students = Blueprint('students', __name__)
 
 # ------------------------------------------------------------
 # This is POST route to add a new student.
-@students.route('/studentsList', methods=['POST'])
+@students.route('/studentList', methods=['POST'])
 def add_student():
     the_data = request.json
     current_app.logger.info(the_data)
@@ -60,7 +60,7 @@ def get_student(studentId):
 
 # ------------------------------------------------------------
 # This is a GET route for all students.
-@students.route('/students', methods=['GET'])
+@students.route('/studentList', methods=['GET'])
 def get_all_students():
     query = '''
         SELECT id, name, email, major, graduation_year
@@ -78,7 +78,7 @@ def get_all_students():
 
 # ------------------------------------------------------------
 # This is a PUT Route for specific students.
-@students.route('/students/<student_id>', methods=['PUT'])
+@students.route('/studentList/<student_id>', methods=['PUT'])
 def update_student(student_id):
     the_data = request.json
     current_app.logger.info(the_data)
@@ -104,7 +104,7 @@ def update_student(student_id):
 
 # ------------------------------------------------------------
 # This is a DELETE route for specific students.
-@students.route('/students/<student_id>', methods=['DELETE'])
+@students.route('/studentList/<student_id>', methods=['DELETE'])
 def delete_student(student_id):
     query = f'''
         DELETE FROM Student
@@ -121,7 +121,7 @@ def delete_student(student_id):
 
 # ------------------------------------------------------------
 # This is a GET route for specific students.
-@students.route('/students/<studentid>/coop_jobs', methods=['GET'])
+@students.route('/studentList/<studentid>/coop_jobs', methods=['GET'])
 def get_coop_jobs(student_id):
     # Query to find the student's major using their unique ID
     query_student = f'''
