@@ -7,6 +7,8 @@ import requests
 
 st.set_page_config(layout = 'wide')
 
+st.session_state['compID'] = 265
+
 st.session_state['current_listing'] = 1
 
 # Show appropriate sidebar links for the role of the currently logged in user
@@ -17,13 +19,12 @@ compID = st.session_state['compID']
 c = {} 
 try:
   c = requests.get(f'http://api:4000/comp/myCompany/{compID}')
+  st.session_state['compName'] = c.json()[0].get('name')
+
 except:
-  st.write("**Important**: Could not connect to sample api, so using dummy data.")
   c = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
+  st.session_state['compName'] = 'Bhlarma Advance'
 
-
-
-st.session_state['compName'] = c.json()[0].get('name')
 
 st.title(f"Welcome HR Contact, {st.session_state['first_name']}.")
 st.markdown('##### Company: ' + st.session_state['compName'])
