@@ -17,7 +17,7 @@ if not id:
     st.error("Student ID not found in session. Please log in again.")
     st.stop()
 
-student_data_url = f"http://api:4000/students/studentList/id"
+student_data_url = f"http://api:4000/students/studentList/{id}"
 
 try:
     response = requests.get(student_data_url)
@@ -28,7 +28,7 @@ try:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.write(f"**ID:**" (id))
+        st.write(f"**ID:** {id}")
         st.write(f"**Name:** {data.get('firstName')} {data.get('lastName')}")
         st.write(f"**Bio:** {data.get('bio')}")
 
