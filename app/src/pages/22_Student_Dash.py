@@ -19,7 +19,7 @@ st.write('### What would you like to do today?')
 
 # Link to pages
 if st.button('📃 Explore Co-op Listings', type='primary', use_container_width=True):
-    st.switch_page('pages/23_Student_Profile.py')
+    st.switch_page('pages/pages/17_All_Listings.py')
 
 if st.button('📎 Useful Student Links', type='primary', use_container_width=True):
     st.switch_page('pages/26_Student_Links_Chat.py')
