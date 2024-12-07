@@ -17,7 +17,7 @@ if not student_id:
     st.error("Student ID not found in session. Please log in again.")
     st.stop()
 
-student_data_url = f"http://api:4000/student_list/student_id"
+student_data_url = f"http://api:4000/studentList/<student_id>"
 
 try:
     response = requests.get(student_data_url)
