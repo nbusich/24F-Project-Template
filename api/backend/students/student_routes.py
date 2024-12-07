@@ -45,11 +45,13 @@ def add_student():
 def get_student(studentId):
 
     cursor = db.get_db().cursor()
-    cursor.execute('''
-                   SELECT s.id, s.firstName, s.lastName, s.bio, s.major, s.minor, s.gpa, s.resume
-                   FROM student s
-                   WHERE s.id = %s;
-                   ''')
+    query = '''
+        SELECT s.id, s.firstName, s.lastName, s.bio, s.major, s.minor, s.gpa, s.resume
+        FROM student s
+        WHERE s.id = %s;
+        '''
+    
+    cursor.execute(query, (studentId,))
 
     student_data = cursor.fetchone()
 
