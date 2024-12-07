@@ -40,7 +40,7 @@ def add_new_joblisting():
     rel_fields = the_data['rel_fields']
     
     query = f'''
-        INSERT INTO jobListing (title,
+        INSERT IGNORE INTO jobListing (title,
                               description,
                               numApplicants, 
                               payPerHour,
@@ -424,11 +424,8 @@ def all_fields ():
 
 # ------------------------------------------------------------
 # This is a GET route for the user's company
-@companies.route('/myCompany', methods=['GET'])
-def mycompany ():
-    c = request.json
-    current_app.logger.info(c)
-    compID = c['compID']
+@companies.route('/myCompany/<compID>', methods=['GET'])
+def mycompany (compID):
 
     query = f'''
         SELECT name
@@ -451,6 +448,37 @@ def mycompany ():
     # Another example of logging for debugging purposes.
     # You can see if the data you're getting back is what you expect. 
     current_app.logger.info(f'GET /myCompany Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
+
+# ------------------------------------------------------------
+# This is a DELETE route for a particular job listing.
+@companies.route('/jobListing/<listingID>', methods=['DELETE'])
+def delete_joblisting (listingID):
+    
+    query = f'''
+        DELETE FROM jobListing WHERE jobListing.requiredGPA = 3
+    '''
+
+    # logging the query for debugging purposes.  
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes. 
+    current_app.logger.info(f'DELETE /jobListing/<listingID> query={query}')
+
+    # get the database connection, execute the query, and 
+    # fetch the results as a Python Dictionary
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect. 
+    current_app.logger.info(f'DELETE /jobListing/<listingID> Result of query = {theData}')
     
     response = make_response(jsonify(theData))
     response.status_code = 200

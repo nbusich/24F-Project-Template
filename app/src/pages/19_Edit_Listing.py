@@ -189,3 +189,10 @@ if st.button('Update Job Listing',
   r = requests.put(f'http://api:4000/comp/jobListing/{listingID}', json=update_data)
   st.write(r)
 
+if st.button('Delete Job Listing',
+             type='secondary',
+             use_container_width=True):
+  st.dataframe(requests.get(f'http://api:4000/comp/jobListing/{listingID}').json())
+  #r = requests.delete(f'http://api:4000/comp/jobListing/{listingID}').json()
+  
+
