@@ -105,4 +105,5 @@ if st.button('Post Job Listing',
   
   r = requests.post(f'http://api:4000/comp/jobListing', json=post_data)
   st.write(r)
+  st.switch_page('pages/18_My_Listings.py')
 

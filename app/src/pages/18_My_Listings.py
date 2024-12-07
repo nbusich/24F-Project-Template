@@ -31,11 +31,11 @@ with jobStuff:
     row = st.container(border=True)
     with row:
       
-      title, comp, pay, deadline, desc = st.columns(5)
+      title, pay, deadline, desc = st.columns([3, 2, 2, 2])
 
       if i == -1:
         with title:
-          st.button('**Job Title**')
+          st.button('**Job Title** | click to edit')
         with pay:
           st.button('**Pay per Hour**')
         with deadline:
