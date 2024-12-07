@@ -32,6 +32,12 @@ def AdminUsage():
     )
 
 #### ------------------------ HR Contact Role ------------------------
+def CreateListing():
+    st.sidebar.page_link("pages/15_Create_Listing.py", label="Create Job Listing", icon="➕")
+
+def MyListings():
+    st.sidebar.page_link("pages/18_My_Listings.py", label="My Job Listings", icon="👁️")
+
 def CompanyNav():
     st.sidebar.page_link("pages/14_Company_Home.py", label="Company Home", icon="👤")
 
@@ -90,6 +96,8 @@ def SideBarLinks(show_home=False):
         # If the user is an HR Contact, give them access to the company pages
         if st.session_state["role"] == "company":
             st.sidebar.write("### Company Links")
+            CreateListing()
+            MyListings()
             CompanyNav()
 
         # If the user is a student, give them access to student pages
@@ -104,3 +112,6 @@ def SideBarLinks(show_home=False):
             del st.session_state["role"]
             del st.session_state["authenticated"]
             st.switch_page("Home.py")
+
+    else:
+        HomeNav()
