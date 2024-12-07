@@ -1,5 +1,5 @@
 ##################################################
-# Student Home Page
+# Student Dashboard
 ##################################################
 
 import logging
@@ -25,7 +25,7 @@ if st.button('📅 Schedule an Advising Session', type='primary', use_container_
     st.switch_page('pages/24_Advisor_Coffee_Chat.py')
 
 if st.button('☕️ Connect with Alumni & Peers', type='primary', use_container_width=True):
-    st.switch_page('pages/25_Student_Connections.py')
+    st.switch_page('pages/25_Student_Chats.py')
 
 st.write("\n")
 st.markdown(

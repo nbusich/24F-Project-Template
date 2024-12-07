@@ -94,7 +94,7 @@ if st.button('Act as Vinny, a Northeastern Undergraduate Student',
     st.session_state['first_name'] = 'Vinny' 
     st.session_state['current_listing'] = 1
     st.session_state['studentID'] = 1
-    st.switch_page('pages/22_Student_Home.py')
+    st.switch_page('pages/22_Student_Dash.py')
 
 
 
