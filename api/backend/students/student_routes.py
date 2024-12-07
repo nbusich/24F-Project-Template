@@ -1,6 +1,6 @@
-########################################################
-# Student Routes
-########################################################
+###################################################################
+# Student Routes / Most are unused as this is our additional user
+###################################################################
 from flask import Blueprint
 from flask import request
 from flask import jsonify
