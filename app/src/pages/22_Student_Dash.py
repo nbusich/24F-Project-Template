@@ -22,7 +22,7 @@ if st.button('📃 Explore Co-op Listings', type='primary', use_container_width=
     st.switch_page('pages/17_All_Listings.py')
 
 if st.button('📎 Useful Student Links', type='primary', use_container_width=True):
-    st.switch_page('pages/26_Student_Links_Chat.py')
+    st.switch_page('pages/26_Student_Links.py')
 
 st.write("\n")
 st.markdown(
