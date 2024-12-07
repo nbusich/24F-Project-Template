@@ -11,13 +11,13 @@ SideBarLinks()
 st.title("Student Profile")
 
 # Fetch the current student ID from session state
-id = st.session_state.get('studentID')
+stu_id = st.session_state.get('studentID')
 
 if not id:
     st.error("Student ID not found in session. Please log in again.")
     st.stop()
 
-student_data_url = f"http://api:4000/students/{id}"
+student_data_url = f"http://api:4000/students/studentStats/{stu_id}"
 
 try:
     response = requests.get(student_data_url)
@@ -28,11 +28,10 @@ try:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.write(f"**ID:** {id}")
+        st.write(f"**ID:** {stu_id}")
         st.write(f"**Name:** {data.get('firstName')} {data.get('lastName')}")
         st.write(f"**Bio:** {data.get('bio')}")
 
-    # Display student data in the second column
     with col2:
         st.write(f"**Major:** {data.get('major')}")
         st.write(f"**Minor:** {data.get('minor')}")
