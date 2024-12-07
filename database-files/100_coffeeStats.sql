@@ -133,6 +133,7 @@ CREATE TABLE alumnus
     firstName varchar (30),
     lastName varchar (30),
     jobID int,
+    email varchar(75),
     PRIMARY KEY (id),
     CONSTRAINT fk_alum_1
         FOREIGN KEY (id) REFERENCES user (id)

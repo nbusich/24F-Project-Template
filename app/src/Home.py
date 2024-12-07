@@ -28,6 +28,7 @@ st.session_state['authenticated'] = False
 # showSidebarNavigation = false in the [client] section
 SideBarLinks(show_home=True)
 
+
 # ***************************************************
 #    The major content of this page
 # ***************************************************
@@ -43,12 +44,13 @@ st.write('### HI! As which user would you like to log in?')
 # can click to MIMIC logging in as that mock user. 
 
 # log in as John the alumn
-if st.button("Act as John, a Northeastern Alumnus", 
+if st.button("Act as Jack, a Northeastern Alumnus", 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'alumnus'
-    st.session_state['first_name'] = 'John'
+    st.session_state['first_name'] = 'Jack'
+    st.session_state['current_listing'] = 1
     st.switch_page('pages/AL_1_alumnus_profile.py')
 
 if st.button('Act as Catumbulo, an Northeastern Co-op Advisor', 
@@ -89,7 +91,8 @@ if st.button('Act as Vinny, a Northeastern Undergraduate Student',
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'student'
-    st.session_state['first_name'] = 'Vinny'
+    st.session_state['first_name'] = 'Vinny' 
+    st.session_state['current_listing'] = 1
     st.session_state['studentID'] = 1
     st.switch_page('pages/22_Student_Home.py')
 

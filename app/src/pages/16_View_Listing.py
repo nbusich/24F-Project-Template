@@ -12,7 +12,7 @@ SideBarLinks()
 
 listingID = st.session_state['current_listing']
 
-logger.info(f'jobNum = {listingID}')
+logger.info(f'listingID = {listingID}')
 
 
 data = {} 
@@ -22,6 +22,38 @@ except:
   st.write("**Important**: Could not connect to sample api, so using dummy data.")
   data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
 
+
+
+#Major and Field lists###
+all_majors = {} 
+try:
+  all_majors = requests.get(f'http://api:4000/comp/relevantMajors').json()
+except:
+  st.write("**Important**: Could not connect to sample api, so using dummy data.")
+  all_majors = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
+
+ex_majors = ['Computer Science', 'Biology', 'Data Science', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Music Technology', 'Pre-med', 'English', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Design', 'Finance']
+
+for i in range(0, len(all_majors)):
+  if all_majors[i].get('major') not in ex_majors:
+    ex_majors.append(all_majors[i].get('major'))
+
+all_fields = {} 
+try:
+  all_fields = requests.get(f'http://api:4000/comp/relevantFields').json()
+except:
+  st.write("**Important**: Could not connect to sample api, so using dummy data.")
+  all_fields = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
+
+ex_fields = ['Software Engineering', 'Information Technology', 'Biology', 'Data Analysis', 'Neuroscience', 'Mechanical Engineering', 'Civil Engineering', 'Music', 'Audio Engineering', 'Medical Research', 'Writing', 'Communications', 'Business', 'Economics', 'Theater', 'Art', 'Graphic Design']
+
+for i in range(0, len(all_fields)):
+  if all_fields[i].get('field') not in ex_fields:
+    ex_fields.append(all_fields[i].get('field'))
+####
+
+
+#the majors and fields for this job##
 majors_data = {} 
 try:
   majors_data = requests.get(f'http://api:4000/comp/relevantMajors/{listingID}').json()
@@ -29,11 +61,9 @@ except:
   st.write("**Important**: Could not connect to sample api, so using dummy data.")
   majors_data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
 
-
 majors = []
-if len(majors_data) > 0:
-  for i in range(0, len(majors_data)):
-    majors.append(majors_data[i].get('major'))
+for i in range(0, len(majors_data)):
+  majors.append(majors_data[i].get('major'))
 
 fields_data = {} 
 try:
@@ -43,9 +73,10 @@ except:
   fields_data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
 
 fields = []
-if len(fields_data) > 0:
-  for i in range(0, len(fields_data)):
-    fields.append(fields_data[i].get('field'))
+for i in range(0, len(fields_data)):
+  fields.append(fields_data[i].get('field'))
+#####
+
 
 
 

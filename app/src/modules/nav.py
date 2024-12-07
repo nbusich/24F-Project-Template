@@ -66,7 +66,9 @@ def SideBarLinks(show_home=False):
     # If there is no logged in user, redirect to the Home (Landing) page
     if "authenticated" not in st.session_state:
         st.session_state.authenticated = False
+        HomeNav()
         st.switch_page("Home.py")
+        
 
     # Always show the Home page and show the About page at the bottom of the list of links
     AboutPageNav()
@@ -76,7 +78,6 @@ def SideBarLinks(show_home=False):
 
         # All authenticated users get to use the Explore page
         if st.session_state["authenticated"]:
-            HomeNav()
             ExploreListingsNav()
 
         # If the user is an administrator, give them access to the administrator pages
