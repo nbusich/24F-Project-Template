@@ -192,7 +192,7 @@ if st.button('Update Job Listing',
 if st.button('Delete Job Listing',
              type='secondary',
              use_container_width=True):
-  st.dataframe(requests.get(f'http://api:4000/comp/jobListing/{listingID}').json())
-  #r = requests.delete(f'http://api:4000/comp/jobListing/{listingID}').json()
-  
+  #st.dataframe(requests.get(f'http://api:4000/comp/jobListing/{listingID}').json())
+  r = requests.delete(f'http://api:4000/comp/jobListing/{listingID}').json()
+  st.toast(r['message'])
 

@@ -461,7 +461,8 @@ def mycompany (compID):
 def delete_joblisting (listingID):
     
     query = f'''
-        DELETE FROM jobListing WHERE jobListing.requiredGPA = 3
+        DELETE FROM jobListing 
+        WHERE jobListing.id = {str(listingID)}
     '''
 
     # logging the query for debugging purposes.  
@@ -474,12 +475,22 @@ def delete_joblisting (listingID):
     # fetch the results as a Python Dictionary
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
+    db.get_db().commit()
+
+    affected_rows = cursor.rowcount  # Returns the number of rows affected
+
+    if affected_rows > 0:
+        current_app.logger.info(f'Deleted {affected_rows} job listing(s) with ID {listingID}')
+    else:
+        current_app.logger.warning(f'No job listing found with ID {listingID}')
     
     # Another example of logging for debugging purposes.
     # You can see if the data you're getting back is what you expect. 
-    current_app.logger.info(f'DELETE /jobListing/<listingID> Result of query = {theData}')
     
-    response = make_response(jsonify(theData))
-    response.status_code = 200
+    response_data = {
+    "message": "Job listing deleted successfully." if affected_rows > 0 else "Job listing not found."
+    }
+    response = make_response(jsonify(response_data))
+    response.status_code = 200 if affected_rows > 0 else 404  # 404 for not found
+
     return response
