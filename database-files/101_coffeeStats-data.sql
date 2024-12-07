@@ -1,6 +1,6 @@
 USE coffeeStats;
 
-INSERT INTO user (id, role, email, userName, password) VALUES (1, 'Student', 'vinnybernardi@hotmail.com', 'vinnyb', '0*P3_F&s_5KQ');
+INSERT INTO user (id, role, email, userName, password) VALUES (1, 'Student', 'aliciathompson@hotmail.com', 'hilljohn', '0*P3_F&s_5KQ');
 INSERT INTO user (id, role, email, userName, password) VALUES (2, 'Student', 'uerickson@wilson.com', 'laurawilliams', 's_W1Fqvo@zS3');
 INSERT INTO user (id, role, email, userName, password) VALUES (3, 'Student', 'mary87@gmail.com', 'aaron92', 's$ySTMe1_*8A');
 INSERT INTO user (id, role, email, userName, password) VALUES (4, 'Student', 'rmontgomery@gmail.com', 'beckeralicia', 'H$_P$PxW85Ld');
@@ -331,7 +331,7 @@ INSERT INTO advisor (id, firstName, lastName) VALUES (203, 'Adam', 'Jones');
 INSERT INTO advisor (id, firstName, lastName) VALUES (271, 'Stephanie', 'Bright');
 
 
-INSERT INTO student (id, firstName, lastName, bio, resume, major, minor, gpa, advisorID) VALUES (2, 'Samantha', 'Walker', 'Bio of Samantha Walker', 'Resume of Samantha Walker', 'Chemistry', NULL, 2.24, 271);
+INSERT INTO student (id, firstName, lastName, bio, resume, major, minor, gpa, advisorID) VALUES (1, 'Vinny', 'Bernardi', 'Bio of Vinny Bernardi', 'Resume of Vinny Bernardi', 'Data Science', NULL, 3.89, 271);
 INSERT INTO student (id, firstName, lastName, bio, resume, major, minor, gpa, advisorID) VALUES (3, 'Carrie', 'Parker', 'Bio of Carrie Parker', 'Resume of Carrie Parker', 'Computer Science', 'Physics', 2.81, 56);
 INSERT INTO student (id, firstName, lastName, bio, resume, major, minor, gpa, advisorID) VALUES (6, 'Aaron', 'Fernandez', 'Bio of Aaron Fernandez', 'Resume of Aaron Fernandez', 'Biology', 'Physics', 3.92, 181);
 INSERT INTO student (id, firstName, lastName, bio, resume, major, minor, gpa, advisorID) VALUES (7, 'Ryan', 'Johnson', 'Bio of Ryan Johnson', 'Resume of Ryan Johnson', 'Engineering', 'Literature', 3.82, 95);
@@ -2644,7 +2644,7 @@ INSERT INTO relevantMajors (listingID, major) VALUES (97, 'Physics');
 INSERT INTO relevantMajors (listingID, major) VALUES (97, 'Computer Science');
 INSERT INTO relevantMajors (listingID, major) VALUES (98, 'Engineering');
 INSERT INTO relevantMajors (listingID, major) VALUES (99, 'Biology');
-INSERT INTO relevantMajors (listingID, major) VALUES (100, 'Chemistry');
+INSERT INTO relevantMajors (listingID, major) VALUES (100, '');
 
 -- Populate the relevantFields table
 INSERT INTO relevantFields (listingID, field) VALUES (1, 'Web Development');
