@@ -28,7 +28,7 @@ try:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.write(f"**ID:** {data.get('id')}")
+        st.write(f"**ID:**" (id))
         st.write(f"**Name:** {data.get('firstName')} {data.get('lastName')}")
         st.write(f"**Bio:** {data.get('bio')}")
 
