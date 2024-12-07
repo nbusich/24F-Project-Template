@@ -16,7 +16,7 @@ students = Blueprint('students', __name__)
 
 # ------------------------------------------------------------
 # This is POST route to add a new student.
-@students.route('/students', methods=['POST'])
+@students.route('/student_list', methods=['POST'])
 def add_student():
     the_data = request.json
     current_app.logger.info(the_data)
@@ -41,33 +41,21 @@ def add_student():
 
 # ------------------------------------------------------------
 # This is a GET route for a specific student by ID.
-@students.route('/students/<int:student_id>', methods=['GET'])
+@students.route('/student_list/student_id', methods=['GET'])
 def get_student(student_id):
-    query = '''
-        SELECT id, firstName, lastName, bio, major, minor, graduation_year, resume
-        FROM Student
-        WHERE id = %s
-    '''
-    try: 
-        cursor = db.get_db().cursor()
-        cursor.execute(query, (student_id,))
-        result = cursor.fetchone()
-        if not result:
-            return make_response({"error": f"Student not found"}, 404)
 
-        student_data = {
-            "id": result[0],
-            "firstName": result[1],
-            "lastName": result[2],
-            "major": result[4],
-            "minor": result[5],
-            "graduation_year": result[6],
-            "resume": result[7]
-        }
-        return jsonify(student_data), 200
-    except Exception as e:
-        current_app.logger.error(f"Database Error: {e}")
-        return make_response({"error": "Server error"}, 500)
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+                   SELECT s.id, s.firstName, s.lastName, s.bio, s.major, s.minor, s.gpa, s.resume
+                   FROM student s
+                   WHERE s.id = %s;
+                   ''')
+
+    student_data = cursor.fetchall()
+
+    student_data = make_response(jsonify(student_data))
+    student_data.status_code = 200
+    return student_data
 
 # ------------------------------------------------------------
 # This is a GET route for all students.
