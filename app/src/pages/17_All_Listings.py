@@ -56,6 +56,6 @@ with jobStuff:
       with deadline:
         st.write(jobs_data[i].get('applicationDeadline')[4:16])
       with desc:
-        st.write(jobs_data[i].get('description')[:16] + '...')
+        st.write(jobs_data[i].get('description')[:32] + '...')
 #except:
 #  st.write("Could not view Job Listings at this time :(")

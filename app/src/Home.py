@@ -43,16 +43,17 @@ st.write('### HI! As which user would you like to log in?')
 # functionality, we put a button on the screen that the user 
 # can click to MIMIC logging in as that mock user. 
 
-# log in as John the alumn
-if st.button("Act as Jack, a Northeastern Alumnus", 
+# log in as Winston the system admin
+if st.button('Act as Winston, System Administrator',
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
-    st.session_state['role'] = 'alumnus'
-    st.session_state['first_name'] = 'Jack'
+    st.session_state['role'] = 'administrator'
+    st.session_state['adminID'] = 16
     st.session_state['current_listing'] = 1
-    st.switch_page('pages/AL_1_alumnus_profile.py')
+    st.switch_page('pages/A1_admin_home.py')
 
+# log in as Catumbulo the co-op advisor
 if st.button('Act as Catumbulo, an Northeastern Co-op Advisor', 
             type = 'primary', 
             use_container_width=True):
@@ -63,8 +64,18 @@ if st.button('Act as Catumbulo, an Northeastern Co-op Advisor',
     st.session_state['adv_id'] = 41
     #For creating and deleting chats, lets assume Catumbulo has an id of 41
     st.switch_page('pages/10_CoopAdvisor_Home.py')
-    
 
+# log in as John the alumn
+if st.button("Act as Jack, a Northeastern Alumnus", 
+            type = 'primary', 
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'alumnus'
+    st.session_state['first_name'] = 'Jack'
+    st.session_state['current_listing'] = 1
+    st.switch_page('pages/AL_1_alumnus_profile.py')
+    
+# log in as Jennifer the HR contact
 if st.button('Act as Jennifer, the HR contact for Bhlarma Advance', 
             type = 'primary', 
             use_container_width=True):
@@ -77,15 +88,8 @@ if st.button('Act as Jennifer, the HR contact for Bhlarma Advance',
     st.session_state['current_listing'] = 1
     st.switch_page('pages/14_Company_Home.py')
 
-if st.button('Act as Winston, System Administrator',
-            type = 'primary', 
-            use_container_width=True):
-    st.session_state['authenticated'] = True
-    st.session_state['role'] = 'administrator'
-    st.session_state['adminID'] = 16
-    st.session_state['current_listing'] = 1
-    st.switch_page('pages/A1_admin_home.py')
 
+# log in as Vinny the undergrad student
 if st.button('Act as Vinny, a Northeastern Undergraduate Student',
             type='primary',
             use_container_width=True):

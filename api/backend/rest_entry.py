@@ -2,7 +2,6 @@ from flask import Flask
 
 from backend.db_connection import db
 from backend.companies.company_routes import companies
-from backend.simple.simple_routes import simple_routes
 import os
 from dotenv import load_dotenv
 from backend.admins.admin_routes import admins
@@ -42,7 +41,6 @@ def create_app():
     # Register the routes from each Blueprint with the app object
     # and give a url prefix to each
     app.logger.info('current_app(): registering blueprints with Flask app object.')   
-    app.register_blueprint(simple_routes)
     app.register_blueprint(companies,   url_prefix='/comp')
     app.register_blueprint(admins, url_prefix='/admin')
     app.register_blueprint(advisors, url_prefix='/advisors')

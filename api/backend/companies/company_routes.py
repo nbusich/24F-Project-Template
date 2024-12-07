@@ -97,7 +97,7 @@ def add_new_joblisting():
 def view_joblisting (listingID):
     
     query = f'''
-        SELECT title, company.name AS 'companyName', description, jobListing.id, company.id, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA
+        SELECT title, company.name AS 'companyName', description, jobListing.id, company.id, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA, acceptanceRate
         FROM jobListing JOIN company
             ON jobListing.companyID = company.id
         WHERE jobListing.id = {str(listingID)}
@@ -131,7 +131,7 @@ def access_all_joblistings ():
     
     query = f'''
         SELECT title, company.name AS 'companyName', 
-        description, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA, jobListing.id, company.id
+        description, numApplicants, payPerHour, applicationDeadline, numOpenings, requiredGPA, jobListing.id, company.id, acceptanceRate
         FROM jobListing JOIN company
             ON jobListing.companyID = company.id
         ORDER BY jobListing.id DESC

@@ -1,7 +1,7 @@
 # `pages` Folder
 
-This folder contains all the pages that will be part of the application. Details on required numbers will be provided in the Phase 3 documentation.
+This pages folder contains pages for  CoffeeStats. This is a link to the streamlit documentation.
 
-These pages are meant to show you an example of some of the features of Streamlit and the way we will limit functionality access by role/persona. It is not meant to represent a complete application.
+https://docs.streamlit.io/get-started/tutorials/create-a-multipage-app
 
-TODO: Describe the pages folder and include link to documentation. Don't forget about ordering of pages.
+The user starts on Home.py when they open the app.
