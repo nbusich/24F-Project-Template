@@ -17,7 +17,7 @@ Welcome to CoffeeStats!
 
     - System Administrators can see info relating to the backend of the app, with database analytics as well as usage statistics for the app itself. They maintain a changelog, allowing them to create and view change documentation.
 
-Video Demo:
+Video Demo: https://youtu.be/Roib-zIwDv4
 
 For information about the structure of this repo and how to get the application to spin up on your computer, read below!
 
