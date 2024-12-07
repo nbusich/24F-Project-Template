@@ -37,7 +37,7 @@ def CompanyNav():
 
 #### ------------------------ Student Role ------------------------
 def StudentDash():
-    st.sidebar.page_link("pages/22_Student_Home.py", label="Student Dashboard", icon="🗂️")
+    st.sidebar.page_link("pages/22_Student_Dash.py", label="Student Dashboard", icon="🗂️")
 
 def StudentLinks():
     st.sidebar.page_link("pages/26_Student_Links.py", label="Useful Links", icon="📎")
