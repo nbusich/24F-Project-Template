@@ -16,7 +16,7 @@ students = Blueprint('students', __name__)
 
 # ------------------------------------------------------------
 # This is POST route to add a new student.
-@students.route('/studentList', methods=['POST'])
+@students.route('/studentsList', methods=['POST'])
 def add_student():
     the_data = request.json
     current_app.logger.info(the_data)
@@ -41,8 +41,8 @@ def add_student():
 
 # ------------------------------------------------------------
 # This is a GET route for a specific student by ID.
-@students.route('/studentList/id', methods=['GET'])
-def get_student(student_id):
+@students.route('/students/<int:studentId>', methods=['GET'])
+def get_student(studentId):
 
     cursor = db.get_db().cursor()
     cursor.execute('''
@@ -51,11 +51,12 @@ def get_student(student_id):
                    WHERE s.id = %s;
                    ''')
 
-    student_data = cursor.fetchall()
+    student_data = cursor.fetchone()
 
-    student_data = make_response(jsonify(student_data))
-    student_data.status_code = 200
-    return student_data
+    if student_data:
+        return make_response(jsonify(student_data), 200)
+    else:
+        return make_response({"error": f"Student not found"}, 404)
 
 # ------------------------------------------------------------
 # This is a GET route for all students.
