@@ -11,13 +11,13 @@ SideBarLinks()
 st.title("Student Profile")
 
 # Fetch the current student ID from session state
-student_id = st.session_state.get('studentID')
+id = st.session_state.get('studentID')
 
-if not student_id:
+if not id:
     st.error("Student ID not found in session. Please log in again.")
     st.stop()
 
-student_data_url = f"http://api:4000/studentList/<student_id>"
+student_data_url = f"http://api:4000/studentList/id"
 
 try:
     response = requests.get(student_data_url)
